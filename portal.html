@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Client Portal | SHAADIGRAPHS</title>
+  <link rel="icon" type="image/png" href="chhotkadil.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="portal-app">
+
+  <header class="header portal-header">
+    <div class="container nav-wrap portal-nav">
+      <a href="index.html" class="brand-logo-wrap">
+        <img src="Shaadigraphs-white-logo.png" alt="Shaadigraphs Logo" class="main-site-logo portal-logo" />
+      </a>
+      <a href="index.html" class="portal-back-link">
+        <i class="fas fa-arrow-left"></i> Back to Home
+      </a>
+    </div>
+  </header>
+
+  <main class="portal-main">
+
+    <div id="portal-welcome-screen" class="portal-card">
+      <span class="eyebrow portal-eyebrow">SECURE GATEWAY</span>
+      <h2 class="portal-card-title">Client &amp; Guest Portal</h2>
+      <p class="portal-card-copy">Please choose your profile below to proceed to your memories.</p>
+      <div class="portal-choice-stack">
+        <button type="button" class="portal-btn portal-btn-primary" onclick="showScreen('couple')">
+          <i class="fas fa-ring"></i> We are the Couple (Client Login)
+        </button>
+        <button type="button" class="portal-btn portal-btn-ghost" onclick="showScreen('guest')">
+          <i class="fas fa-users"></i> We are Family / Guests
+        </button>
+      </div>
+    </div>
+
+    <div id="couple-login-screen" class="portal-card" hidden>
+      <span class="eyebrow portal-eyebrow">CLIENT ALBUM SELECTION</span>
+      <h3 class="portal-card-title portal-card-title-sm">Couple Login</h3>
+      <p class="portal-card-copy">Enter your registered mobile number &amp; wedding date PIN.</p>
+      <div class="portal-form">
+        <label class="portal-label">REGISTERED MOBILE NUMBER</label>
+        <input type="tel" id="client-phone-input" class="portal-input" placeholder="e.g. 7909014192" />
+        <label class="portal-label">WEDDING DATE / PIN (DDMMYYYY)</label>
+        <input type="password" id="client-pin-input" class="portal-input" placeholder="e.g. 28062026" />
+        <p id="client-login-error" class="portal-error" hidden></p>
+        <div class="portal-form-actions">
+          <button type="button" class="portal-btn portal-btn-ghost" onclick="showScreen('welcome')">Back</button>
+          <button type="button" class="portal-btn portal-btn-primary" onclick="handleClientLogin()">Unlock Gallery</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="guest-access-screen" class="portal-card" hidden>
+      <span class="eyebrow portal-eyebrow">FAMILY &amp; GUESTS</span>
+      <h3 class="portal-card-title portal-card-title-sm">Guest Gallery Access</h3>
+      <p class="portal-card-copy">Enter your details &amp; wedding side to verify your access.</p>
+      <form id="guestForm" class="portal-form" onsubmit="handleGuestSubmit(event)">
+        <label class="portal-label">YOUR FULL NAME</label>
+        <input type="text" id="guest-name" class="portal-input" placeholder="e.g. Rahul Kumar" required />
+        <label class="portal-label">MOBILE NUMBER</label>
+        <input type="tel" id="guest-phone" class="portal-input" placeholder="e.g. 9876543210" pattern="[0-9]{10}" maxlength="10" required />
+        <label class="portal-label">EVENT DATE (DDMMYYYY)</label>
+        <input type="text" id="guest-date" class="portal-input" placeholder="e.g. 28062026" required />
+        <label class="portal-label">YOU ARE FROM</label>
+        <select id="guest-side" class="portal-input" onchange="updateGuestSideLabel()">
+          <option value="groom">Groom's Side (लड़का पक्ष)</option>
+          <option value="bride">Bride's Side (लड़की पक्ष)</option>
+        </select>
+        <label id="guest-couple-label" class="portal-label">GROOM'S FIRST NAME</label>
+        <input type="text" id="guest-couple-name" class="portal-input" placeholder="e.g. Abhishek" required />
+        <p id="guest-login-error" class="portal-error" hidden></p>
+        <div class="portal-form-actions">
+          <button type="button" class="portal-btn portal-btn-ghost" onclick="showScreen('welcome')">Back</button>
+          <button type="submit" class="portal-btn portal-btn-primary">Verify &amp; View</button>
+        </div>
+      </form>
+    </div>
+
+    <div id="client-dashboard-container" class="portal-dashboard" hidden>
+      <div class="portal-dash-head">
+        <div>
+          <span class="eyebrow portal-eyebrow">EVENT GALLERY VERIFIED</span>
+          <h2 id="client-dash-name" class="portal-dash-title"></h2>
+          <p id="client-dash-meta" class="portal-dash-meta"></p>
+        </div>
+        <div id="client-action-buttons" class="portal-dash-actions">
+          <a id="client-drive-btn" href="#" target="_blank" hidden></a>
+          <button type="button" id="save-selection-btn" class="portal-btn portal-btn-ghost portal-btn-compact" onclick="saveAlbumSelection(false)">
+            <i class="fas fa-save"></i> Save
+          </button>
+          <button type="button" id="submit-album-btn" class="portal-btn portal-btn-primary portal-btn-compact" onclick="saveAlbumSelection(true)">
+            <i class="fab fa-whatsapp"></i> Submit
+          </button>
+        </div>
+      </div>
+
+      <div id="selection-bar" class="portal-selection-hint">
+        <span id="client-selection-counter">Selected: 0 / 0</span>
+        <button type="button" id="filter-toggle-btn" class="portal-chip" onclick="toggleViewMode()">Show Selected Only</button>
+      </div>
+
+      <div id="client-photo-grid" class="portal-photo-grid"></div>
+    </div>
+
+  </main>
+
+  <footer class="site-footer portal-footer">
+    <div class="container">
+      <p>&copy; 2026 Shaadigraphs. All Rights Reserved.</p>
+    </div>
+  </footer>
+
+  <div id="portal-selection-dock" class="portal-dock" hidden>
+    <div class="portal-dock-glass">
+      <div class="portal-dock-top">
+        <div class="portal-dock-counter">
+          <span>Selected</span>
+          <strong id="dock-selection-counter">0 / 0</strong>
+        </div>
+        <button type="button" id="dock-filter-btn" class="portal-dock-filter" onclick="toggleViewMode()">
+          <i class="fas fa-heart"></i>
+          <span id="dock-filter-label">Show Selected Only</span>
+        </button>
+      </div>
+      <div class="portal-dock-actions">
+        <button type="button" class="portal-btn portal-btn-ghost" onclick="saveAlbumSelection(false)">
+          <i class="fas fa-save"></i> Save
+        </button>
+                <button type="button" class="portal-btn portal-btn-emerald" onclick="saveAlbumSelection(true)">
+          <i class="fab fa-whatsapp"></i> Submit Selection
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const API_URL = "https://script.google.com/macros/s/AKfycbxiicife5FUbMsQZqzio27S5_FOxf-b7D5dXFNLWs5g9ehpVcDs4Hif5X98pG9KDdFW/exec";
+
+    let clientDatabase = [];
+    let currentActiveClient = null;
+    let selectedPhotoSet = new Set();
+    let isUserGuest = false;
+    let allDrivePhotos = [];
+    let viewOnlySelected = false;
+    let currentGalleryPhotos = [];
+    let currentPhotoObjects = [];
+    let currentIndex = 0;
+
+    function getStorageKey() {
+      return currentActiveClient ? `shaadigraphs_sel_${currentActiveClient.phone}` : '';
+    }
+
+    function loadLocalSelections() {
+      selectedPhotoSet.clear();
+      const key = getStorageKey();
+      if (!key) return;
+      const saved = localStorage.getItem(key);
+      if (saved) {
+        try {
+          JSON.parse(saved).forEach(name => selectedPhotoSet.add(name));
+        } catch (e) {}
+      }
+    }
+
+    function saveLocalSelections() {
+      const key = getStorageKey();
+      if (!key) return;
+      localStorage.setItem(key, JSON.stringify(Array.from(selectedPhotoSet)));
+    }
+
+    function setHidden(el, hidden) {
+      if (!el) return;
+      el.hidden = hidden;
+      el.style.display = hidden ? 'none' : '';
+    }
+
+    function setGalleryMode(open, guest) {
+      document.body.classList.toggle('is-gallery-open', open);
+      document.body.classList.toggle('is-guest-gallery', open && guest);
+      const dock = document.getElementById('portal-selection-dock');
+      setHidden(dock, !open || guest);
+    }
+
+    function showScreen(type) {
+      setGalleryMode(false, false);
+      setHidden(document.getElementById('portal-welcome-screen'), true);
+      setHidden(document.getElementById('couple-login-screen'), true);
+      setHidden(document.getElementById('guest-access-screen'), true);
+      setHidden(document.getElementById('client-dashboard-container'), true);
+      setHidden(document.getElementById('client-login-error'), true);
+      setHidden(document.getElementById('guest-login-error'), true);
+
+      if (type === 'welcome') {
+        setHidden(document.getElementById('portal-welcome-screen'), false);
+      } else if (type === 'couple') {
+        setHidden(document.getElementById('couple-login-screen'), false);
+      } else if (type === 'guest') {
+        setHidden(document.getElementById('guest-access-screen'), false);
+      }
+    }
+
+    function cleanDigits(val) {
+      if (!val) return '';
+      return String(val).replace(/\D/g, '').trim();
+    }
+
+    function extractFolderId(url) {
+      if (!url) return '';
+      const cleanUrl = url.split('?')[0].split('#')[0];
+      const match = cleanUrl.match(/folders\/([a-zA-Z0-9_-]+)/);
+      if (match) return match[1];
+      const idMatch = url.match(/[-\w]{25,}/);
+      return idMatch ? idMatch[0] : '';
+    }
+
+    window.handleClientsSync = function(data) {
+      if (data && data.clients && data.clients.length > 0) {
+        clientDatabase = data.clients;
+      }
+    };
+
+    function fetchClientDatabase() {
+      const oldScript = document.getElementById('client-db-engine-script');
+      if (oldScript) oldScript.remove();
+      const script = document.createElement('script');
+      script.id = 'client-db-engine-script';
+      script.src = `${API_URL}?action=getClients&callback=handleClientsSync&_t=${Date.now()}`;
+      document.body.appendChild(script);
+    }
+
+    function handleClientLogin() {
+      const phoneInput = cleanDigits(document.getElementById('client-phone-input').value);
+      const pinInput = cleanDigits(document.getElementById('client-pin-input').value);
+      const errEl = document.getElementById('client-login-error');
+
+      if (!phoneInput || !pinInput) {
+        errEl.innerText = "Please enter both mobile number and PIN.";
+        setHidden(errEl, false);
+        return;
+      }
+
+      const match = clientDatabase.find(c => c.phone === phoneInput && c.pin === pinInput);
+
+      if (match) {
+        currentActiveClient = match;
+        isUserGuest = false;
+        setHidden(errEl, true);
+        setHidden(document.getElementById('couple-login-screen'), true);
+        setHidden(document.getElementById('client-dashboard-container'), false);
+        setHidden(document.getElementById('selection-bar'), false);
+        setHidden(document.getElementById('submit-album-btn'), false);
+        setHidden(document.getElementById('save-selection-btn'), false);
+        setGalleryMode(true, false);
+        renderClientDashboard();
+      } else {
+        errEl.innerText = "Invalid Mobile Number or Wedding Date PIN. Please try again.";
+        setHidden(errEl, false);
+      }
+    }
+
+    function updateGuestSideLabel() {
+      const side = document.getElementById('guest-side').value;
+      const label = document.getElementById('guest-couple-label');
+      const input = document.getElementById('guest-couple-name');
+      if (side === 'bride') {
+        label.innerText = "BRIDE'S FIRST NAME";
+        input.placeholder = "e.g. Pooja";
+      } else {
+        label.innerText = "GROOM'S FIRST NAME";
+        input.placeholder = "e.g. Abhishek";
+      }
+    }
+
+    function handleGuestSubmit(e) {
+      e.preventDefault();
+      const guestName = document.getElementById('guest-name').value.trim();
+      const guestPhone = cleanDigits(document.getElementById('guest-phone').value);
+      const guestDate = cleanDigits(document.getElementById('guest-date').value);
+      const guestSide = document.getElementById('guest-side').value;
+      const enteredTargetName = document.getElementById('guest-couple-name').value.trim().toLowerCase();
+      const errEl = document.getElementById('guest-login-error');
+
+      if (!guestName || !guestPhone || !guestDate || !enteredTargetName) {
+        errEl.innerText = "Please fill in all details.";
+        setHidden(errEl, false);
+        return;
+      }
+
+      setHidden(errEl, true);
+
+      const matchedClient = clientDatabase.find(c => {
+        if (c.pin !== guestDate) return false;
+        const brideName = (c.bride || '').toLowerCase().trim();
+        const groomName = (c.groom || '').toLowerCase().trim();
+        if (guestSide === 'bride') {
+          return brideName && (brideName.includes(enteredTargetName) || enteredTargetName.includes(brideName));
+        }
+        return groomName && (groomName.includes(enteredTargetName) || enteredTargetName.includes(groomName));
+      });
+
+      if (matchedClient && matchedClient.driveLink) {
+        currentActiveClient = matchedClient;
+        isUserGuest = true;
+        const leadUrl = `${API_URL}?action=addLead&name=${encodeURIComponent(guestName)}&phone=${encodeURIComponent(guestPhone)}&date=${encodeURIComponent(guestDate)}&side=${encodeURIComponent(guestSide + ': ' + enteredTargetName)}&_t=${Date.now()}`;
+        fetch(leadUrl, { mode: 'no-cors' }).catch(() => {});
+
+        setHidden(document.getElementById('guest-access-screen'), true);
+        setHidden(document.getElementById('client-dashboard-container'), false);
+        setHidden(document.getElementById('selection-bar'), true);
+        setHidden(document.getElementById('submit-album-btn'), true);
+        setHidden(document.getElementById('save-selection-btn'), true);
+        setGalleryMode(true, true);
+        renderClientDashboard();
+      } else {
+        errEl.innerText = "Verification failed: Event date or Bride/Groom name did not match our records.";
+        setHidden(errEl, false);
+      }
+    }
+
+    window.handleDrivePhotos = function(data) {
+      if (data && data.photos) {
+        allDrivePhotos = data.photos;
+        currentPhotoObjects = allDrivePhotos;
+        currentGalleryPhotos = allDrivePhotos.map(photo => `https://lh3.googleusercontent.com/d/${photo.id}=s800`);
+      }
+      renderPhotoGrid();
+    };
+
+    function escapeAttr(str) {
+      return String(str).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+    }
+
+    function renderPhotoGrid() {
+      const grid = document.getElementById('client-photo-grid');
+      if (!grid) return;
+
+      const photosToDisplay = viewOnlySelected
+        ? allDrivePhotos.filter(photo => selectedPhotoSet.has(photo.name))
+        : allDrivePhotos;
+
+      currentPhotoObjects = photosToDisplay;
+      currentGalleryPhotos = photosToDisplay.map(photo => `https://lh3.googleusercontent.com/d/${photo.id}=s800`);
+
+      if (!photosToDisplay.length) {
+        grid.innerHTML = `<div class="portal-empty">${viewOnlySelected ? "No photos selected yet." : "No images found in this Google Drive folder."}</div>`;
+        return;
+      }
+
+      grid.innerHTML = '';
+      photosToDisplay.forEach((photo, idx) => {
+        const card = document.createElement('article');
+        const isSelected = selectedPhotoSet.has(photo.name);
+        const highResUrl = `https://lh3.googleusercontent.com/d/${photo.id}=s800`;
+        card.id = `pcard-${photo.id}`;
+        card.className = `portal-photo-card${isSelected ? ' is-selected' : ''}`;
+        card.innerHTML = `
+          <img src="${photo.thumbnail}" alt="${escapeAttr(photo.name)}" loading="lazy" decoding="async" />
+          <div class="portal-photo-meta">${escapeAttr(photo.name)}</div>
+          ${isUserGuest ? '' : `
+            <span class="portal-photo-check" aria-hidden="true"><i class="fas fa-check"></i></span>
+            <button type="button" class="portal-photo-preview" aria-label="Preview photo" data-idx="${idx}">
+              <i class="fas fa-expand"></i>
+            </button>
+          `}
+        `;
+
+        if (isUserGuest) {
+          card.onclick = () => openLightbox(highResUrl, idx);
+        } else {
+          card.onclick = (e) => {
+            if (e.target.closest('.portal-photo-preview')) return;
+            togglePhotoSelection(photo.name, photo.id);
+          };
+          const previewBtn = card.querySelector('.portal-photo-preview');
+          if (previewBtn) {
+            previewBtn.onclick = (e) => {
+              e.stopPropagation();
+              openLightbox(highResUrl, idx);
+            };
+          }
+        }
+        grid.appendChild(card);
+      });
+    }
+
+    function renderClientDashboard() {
+      if (!currentActiveClient) return;
+
+      document.getElementById('client-dash-name').innerText = currentActiveClient.name;
+      document.getElementById('client-dash-meta').innerText = isUserGuest
+        ? "Guest Viewing Mode"
+        : `Phone: ${currentActiveClient.phoneDisplay} • Max Selection: ${currentActiveClient.limit} Photos`;
+      document.getElementById('client-drive-btn').href = currentActiveClient.driveLink || "#";
+
+      if (!isUserGuest) loadLocalSelections();
+      updateSelectionCounter();
+
+      const grid = document.getElementById('client-photo-grid');
+      grid.innerHTML = `
+        <div class="portal-loading">
+          <i class="fas fa-heart fa-beat"></i>
+          <h3>Reliving ${currentActiveClient.name}'s Special Moments</h3>
+          <p>"Two souls, one heart, a lifetime of beautiful memories unfolding."</p>
+          <span>Thank you for choosing Shaadigraphs</span>
+        </div>
+      `;
+
+      const folderId = extractFolderId(currentActiveClient.driveLink);
+      setTimeout(() => {
+        const oldScript = document.getElementById('drive-photo-engine');
+        if (oldScript) oldScript.remove();
+        const script = document.createElement('script');
+        script.id = 'drive-photo-engine';
+        script.src = `${API_URL}?folderId=${folderId}&callback=handleDrivePhotos&_t=${Date.now()}`;
+        document.body.appendChild(script);
+      }, 1200);
+    }
+
+    function pulseCard(card) {
+      if (!card) return;
+      card.classList.remove('is-pulsing');
+      void card.offsetWidth;
+      card.classList.add('is-pulsing');
+    }
+
+    function togglePhotoSelection(fileName, id) {
+      if (isUserGuest) return;
+      const icon = document.getElementById(`icon-${id}`);
+      const card = document.getElementById(`pcard-${id}`);
+
+      if (selectedPhotoSet.has(fileName)) {
+        selectedPhotoSet.delete(fileName);
+        if (icon) { icon.className = "far fa-heart"; icon.style.color = "#fff"; }
+        if (card) card.classList.remove('is-selected');
+        if (viewOnlySelected) renderPhotoGrid();
+      } else {
+        if (selectedPhotoSet.size >= currentActiveClient.limit) {
+          alert(`You have reached the maximum selection limit of ${currentActiveClient.limit} photos.`);
+          return;
+        }
+        selectedPhotoSet.add(fileName);
+        if (icon) { icon.className = "fas fa-heart"; icon.style.color = "#ff4d6d"; }
+        if (card) {
+          card.classList.add('is-selected');
+          pulseCard(card);
+        }
+      }
+      saveLocalSelections();
+      updateSelectionCounter();
+      updateLightboxHeartState();
+    }
+
+    function updateSelectionCounter() {
+      const limit = currentActiveClient && !isUserGuest ? currentActiveClient.limit : 0;
+      const text = `Selected: ${selectedPhotoSet.size} / ${limit}`;
+      const countEl = document.getElementById('client-selection-counter');
+      const dockEl = document.getElementById('dock-selection-counter');
+      if (countEl && currentActiveClient && !isUserGuest) countEl.innerText = text;
+      if (dockEl) dockEl.innerText = `${selectedPhotoSet.size} / ${limit}`;
+    }
+
+    function toggleViewMode() {
+      viewOnlySelected = !viewOnlySelected;
+      const label = viewOnlySelected ? 'Show All Photos' : 'Show Selected Only';
+      const chip = document.getElementById('filter-toggle-btn');
+      const dockBtn = document.getElementById('dock-filter-btn');
+      const dockLabel = document.getElementById('dock-filter-label');
+      if (chip) {
+        chip.textContent = label;
+        chip.classList.toggle('is-active', viewOnlySelected);
+      }
+      if (dockLabel) dockLabel.textContent = label;
+      if (dockBtn) dockBtn.classList.toggle('is-active', viewOnlySelected);
+      renderPhotoGrid();
+    }
+
+    function saveAlbumSelection(isFinal) {
+      if (selectedPhotoSet.size === 0) {
+        alert("Please select at least 1 photo for your album before saving or submitting.");
+        return;
+      }
+
+      const fileList = Array.from(selectedPhotoSet).join(', ');
+      const clientName = currentActiveClient.name;
+      const clientPhone = currentActiveClient.phoneDisplay || "";
+      const totalCount = selectedPhotoSet.size;
+      const saveUrl = `${API_URL}?action=saveSelection&name=${encodeURIComponent(clientName)}&phone=${encodeURIComponent(clientPhone)}&count=${totalCount}&photos=${encodeURIComponent(fileList)}&final=${isFinal}&_t=${Date.now()}`;
+      fetch(saveUrl, { mode: 'no-cors' }).catch(() => {});
+
+      if (isFinal) {
+        const msg = `Hi Shaadigraphs, I (${clientName}) have finalized ${totalCount} photos for our Album Printing. The complete file list has been automatically synced and locked!`;
+        window.open(`https://wa.me/919123192566?text=${encodeURIComponent(msg)}`, '_blank');
+        alert("Album selection submitted and locked successfully!");
+      } else {
+        alert("Selection saved successfully! You can come back anytime to modify your choices.");
+      }
+    }
+
+    function updateLightboxHeartState() {
+      const heartBtn = document.getElementById('lightboxHeartBtn');
+      const heartIcon = document.getElementById('lightboxHeartIcon');
+      if (isUserGuest) {
+        if (heartBtn) heartBtn.style.display = 'none';
+        return;
+      }
+      if (heartBtn) heartBtn.style.display = 'flex';
+      if (!heartIcon || currentPhotoObjects.length === 0) return;
+      const currentPhoto = currentPhotoObjects[currentIndex];
+      if (currentPhoto && selectedPhotoSet.has(currentPhoto.name)) {
+        heartIcon.className = "fas fa-heart";
+        heartIcon.style.color = "#c9a84c";
+      } else {
+        heartIcon.className = "far fa-heart";
+        heartIcon.style.color = "#fff";
+      }
+    }
+
+    function toggleCurrentLightboxPhoto() {
+      if (isUserGuest || currentPhotoObjects.length === 0) return;
+      const currentPhoto = currentPhotoObjects[currentIndex];
+      if (currentPhoto) {
+        togglePhotoSelection(currentPhoto.name, currentPhoto.id);
+        updateLightboxHeartState();
+      }
+    }
+
+    function openLightbox(imgSrc, index = -1) {
+      currentIndex = index !== -1 ? index : currentGalleryPhotos.indexOf(imgSrc);
+      if (currentIndex === -1) currentIndex = 0;
+      const modal = document.getElementById('lightboxModal');
+      const img = document.getElementById('lightboxImg');
+      if (modal && img) {
+        img.src = currentGalleryPhotos[currentIndex];
+        modal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+        updateLightboxHeartState();
+        setTimeout(() => modal.classList.add('active'), 10);
+      }
+    }
+
+    function changeLightboxImage(direction) {
+      const img = document.getElementById('lightboxImg');
+      if (currentGalleryPhotos.length === 0 || !img) return;
+      currentIndex += direction;
+      if (currentIndex < 0) currentIndex = currentGalleryPhotos.length - 1;
+      else if (currentIndex >= currentGalleryPhotos.length) currentIndex = 0;
+      img.style.opacity = '0';
+      setTimeout(() => {
+        img.src = currentGalleryPhotos[currentIndex];
+        img.style.opacity = '1';
+        updateLightboxHeartState();
+      }, 150);
+    }
+
+    function closeLightbox() {
+      const modal = document.getElementById('lightboxModal');
+      const img = document.getElementById('lightboxImg');
+      if (modal && img) {
+        modal.classList.remove('active');
+        setTimeout(() => {
+          modal.style.display = 'none';
+          img.src = '';
+        }, 350);
+        document.body.style.overflow = '';
+      }
+    }
+
+    document.addEventListener('keydown', (e) => {
+      const modal = document.getElementById('lightboxModal');
+      if (!modal || !modal.classList.contains('active')) return;
+      if (e.key === 'ArrowLeft') changeLightboxImage(-1);
+      if (e.key === 'ArrowRight') changeLightboxImage(1);
+      if (e.key === 'Escape') closeLightbox();
+    });
+
+    document.addEventListener('click', (e) => {
+      const modal = document.getElementById('lightboxModal');
+      if (e.target && e.target.id === 'lightboxClose') closeLightbox();
+      if (e.target === modal) closeLightbox();
+    });
+
+    async function shareCurrentPhoto() {
+      if (currentPhotoObjects.length === 0) return;
+      const currentPhoto = currentPhotoObjects[currentIndex];
+      const clientName = currentActiveClient ? currentActiveClient.name : "Our Client";
+      const photoUrl = `https://lh3.googleusercontent.com/d/${currentPhoto.id}=s800`;
+      const shareMessage = `Hi! Look at this gorgeous captured moment of ${clientName} by *Shaadigraphs* 📸✨\n\n👉 Download your full high-quality (HQ) picture directly from our portal here: https://shaadigraphs.com`;
+
+      try {
+        if (navigator.clipboard) await navigator.clipboard.writeText(shareMessage);
+      } catch (e) {}
+
+      try {
+        const response = await fetch(photoUrl);
+        const blob = await response.blob();
+        const file = new File([blob], `${currentPhoto.name || 'memory'}.jpg`, { type: blob.type });
+        if (navigator.canShare && navigator.canShare({ files: [file] })) {
+          await navigator.share({ files: [file] });
+          return;
+        }
+      } catch (err) {}
+
+      window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(shareMessage + "\n\nPhoto Link: " + photoUrl)}`, '_blank');
+    }
+
+    function toggleCommentInputBox() {
+      const box = document.getElementById('lightboxCommentContainer');
+      if (box) box.hidden = !box.hidden;
+    }
+
+    function savePhotoComment() {
+      if (currentPhotoObjects.length === 0) return;
+      const currentPhoto = currentPhotoObjects[currentIndex];
+      const commentInput = document.getElementById('photoCommentInput');
+      const commentText = commentInput ? commentInput.value.trim() : '';
+      if (!commentText) {
+        alert("Please type a note before saving.");
+        return;
+      }
+      const clientName = currentActiveClient ? currentActiveClient.name : "Guest";
+      const clientPhone = currentActiveClient ? (currentActiveClient.phoneDisplay || currentActiveClient.phone) : "";
+      const photoName = currentPhoto.name;
+      const storageKey = `shaadigraphs_comments_${currentActiveClient ? currentActiveClient.phone : 'guest'}`;
+      let savedComments = JSON.parse(localStorage.getItem(storageKey) || '{}');
+      savedComments[photoName] = commentText;
+      localStorage.setItem(storageKey, JSON.stringify(savedComments));
+      const commentUrl = `${API_URL}?action=saveComment&name=${encodeURIComponent(clientName)}&phone=${encodeURIComponent(clientPhone)}&photo=${encodeURIComponent(photoName)}&comment=${encodeURIComponent(commentText)}&_t=${Date.now()}`;
+      fetch(commentUrl, { mode: 'no-cors' }).catch(() => {});
+      alert("Note saved successfully!");
+      commentInput.value = '';
+      toggleCommentInputBox();
+    }
+
+    window.addEventListener("DOMContentLoaded", fetchClientDatabase);
+  </script>
+
+  <div class="lightbox-modal" id="lightboxModal">
+    <button class="lightbox-close" id="lightboxClose" type="button">&times;</button>
+    <button class="lightbox-arrow lightbox-prev" type="button" onclick="changeLightboxImage(-1)">&#10094;</button>
+    <img class="lightbox-content" id="lightboxImg" src="" alt="Enlarged Preview" />
+    <div class="lightbox-action-bar">
+      <button type="button" class="lightbox-action-btn" id="lightboxHeartBtn" onclick="toggleCurrentLightboxPhoto()" title="Select Photo">
+        <i id="lightboxHeartIcon" class="far fa-heart"></i>
+      </button>
+      <button type="button" class="lightbox-action-btn" onclick="shareCurrentPhoto()" title="Share Photo">
+        <i class="fas fa-share-alt"></i>
+      </button>
+      <button type="button" class="lightbox-action-btn" onclick="toggleCommentInputBox()" title="Add Comment">
+        <i class="fas fa-comment-alt"></i>
+      </button>
+    </div>
+    <div id="lightboxCommentContainer" class="portal-comment-drawer" hidden>
+      <textarea id="photoCommentInput" placeholder="Type instructions for this photo (e.g., Put on front page)..."></textarea>
+      <div class="portal-comment-actions">
+        <button type="button" class="portal-btn portal-btn-primary portal-btn-compact" onclick="savePhotoComment()">Save Note</button>
+      </div>
+    </div>
+    <button class="lightbox-arrow lightbox-next" type="button" onclick="changeLightboxImage(1)">&#10095;</button>
+  </div>
+</body>
+</html>
