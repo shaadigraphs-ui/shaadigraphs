@@ -38,15 +38,38 @@
         <img src="images/Shaadigraphs-white-logo.png" alt="Shaadigraphs Logo" class="main-site-logo" />
       </a>
       
-      <nav class="nav-menu">
+      <!-- Desktop Navigation -->
+      <nav class="nav-menu desktop-nav">
         <a href="#about">Story</a>
         <a href="#films">Films</a>
         <a href="#gallery">Portfolio</a>
         <a href="#services">Services</a>
         <a href="#packages">Packages</a>
-        <!-- Linked directly to separate portal.html page -->
         <a href="portal.html"><i class="fas fa-user-lock"></i> Client Portal</a>
         <a href="javascript:void(0)" onclick="openCalendarModal()" class="nav-cta">Check Availability</a>
+      </nav>
+
+      <!-- Mobile Hamburger Button -->
+      <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle Navigation">
+        <i class="fas fa-bars"></i>
+      </button>
+    </div>
+
+    <!-- Mobile Drawer Overlay -->
+    <div class="mobile-drawer" id="mobileDrawer">
+      <div class="drawer-header">
+        <span class="drawer-title">MENU</span>
+        <button class="drawer-close-btn" id="drawerCloseBtn">&times;</button>
+      </div>
+      <nav class="drawer-nav">
+        <a href="#about" class="drawer-link">Story</a>
+        <a href="#films" class="drawer-link">Films</a>
+        <a href="#gallery" class="drawer-link">Portfolio</a>
+        <a href="#services" class="drawer-link">Services</a>
+        <a href="#packages" class="drawer-link">Packages</a>
+        <hr class="drawer-divider">
+        <a href="portal.html" class="drawer-portal-link"><i class="fas fa-user-lock"></i> VIP Client Portal</a>
+        <a href="javascript:void(0)" onclick="openCalendarModal(); closeDrawer();" class="drawer-cta">Check Availability</a>
       </nav>
     </div>
   </header>
@@ -1036,6 +1059,28 @@ function resetGalleryToDefault() {
       modal.classList.remove('active');
     }
   }
+</script>
+<!-- Mobile Drawer Toggle Script -->
+<script>
+  const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+  const drawerCloseBtn = document.getElementById('drawerCloseBtn');
+  const mobileDrawer = document.getElementById('mobileDrawer');
+
+  function openDrawer() {
+    if (mobileDrawer) mobileDrawer.classList.add('active');
+  }
+
+  function closeDrawer() {
+    if (mobileDrawer) mobileDrawer.classList.remove('active');
+  }
+
+  if (mobileMenuBtn) mobileMenuBtn.addEventListener('click', openDrawer);
+  if (drawerCloseBtn) drawerCloseBtn.addEventListener('click', closeDrawer);
+
+  // Link click hone par drawer auto-close ho jaye
+  document.querySelectorAll('.drawer-link, .drawer-portal-link, .drawer-cta').forEach(link => {
+    link.addEventListener('click', closeDrawer);
+  });
 </script>
 </body>
 </html>
