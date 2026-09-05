@@ -4,21 +4,21 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>Client Portal | SHAADIGRAPHS</title>
-  <link rel="icon" type="image/png" href="chhotkadil.png">
+  <link rel="icon" type="image/png" href="images/chhotkadil.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
     href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
     rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-  <link rel="stylesheet" href="portal.css" />
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body class="portal-app">
 
   <header class="header portal-header">
     <div class="container nav-wrap portal-nav">
       <a href="index.html" class="brand-logo-wrap">
-        <img src="Shaadigraphs-white-logo.png" alt="Shaadigraphs Logo" class="main-site-logo portal-logo" />
+        <img src="images/Shaadigraphs-white-logo.png" alt="Shaadigraphs Logo" class="main-site-logo portal-logo" />
       </a>
       <a href="index.html" class="portal-back-link">
         <i class="fas fa-arrow-left"></i> Back to Home
@@ -48,9 +48,9 @@
       <p class="portal-card-copy">Enter your registered mobile number &amp; wedding date PIN.</p>
       <div class="portal-form">
         <label class="portal-label">REGISTERED MOBILE NUMBER</label>
-        <input type="tel" id="client-phone-input" class="portal-input" placeholder="e.g. 7909014192" />
+        <input type="tel" id="client-phone-input" class="portal-input" placeholder="e.g. 9876543210" />
         <label class="portal-label">WEDDING DATE / PIN (DDMMYYYY)</label>
-        <input type="password" id="client-pin-input" class="portal-input" placeholder="e.g. 28062026" />
+        <input type="password" id="client-pin-input" class="portal-input" placeholder="e.g. 01012018" />
         <p id="client-login-error" class="portal-error" hidden></p>
         <div class="portal-form-actions">
           <button type="button" class="portal-btn portal-btn-ghost" onclick="showScreen('welcome')">Back</button>
@@ -69,11 +69,11 @@
         <label class="portal-label">MOBILE NUMBER</label>
         <input type="tel" id="guest-phone" class="portal-input" placeholder="e.g. 9876543210" pattern="[0-9]{10}" maxlength="10" required />
         <label class="portal-label">EVENT DATE (DDMMYYYY)</label>
-        <input type="text" id="guest-date" class="portal-input" placeholder="e.g. 28062026" required />
+        <input type="text" id="guest-date" class="portal-input" placeholder="e.g. 01012018" required />
         <label class="portal-label">YOU ARE FROM</label>
         <select id="guest-side" class="portal-input" onchange="updateGuestSideLabel()">
-          <option value="groom">Groom's Side (लड़का पक्ष)</option>
-          <option value="bride">Bride's Side (लड़की पक्ष)</option>
+          <option value="groom">Groom's Side </option>
+          <option value="bride">Bride's Side </option>
         </select>
         <label id="guest-couple-label" class="portal-label">GROOM'S FIRST NAME</label>
         <input type="text" id="guest-couple-name" class="portal-input" placeholder="e.g. Abhishek" required />
@@ -165,36 +165,9 @@
       <button type="button" class="lightbox-action-btn" id="lightboxCommentBtn" onclick="toggleCommentInputBox()" title="Add Note">
         <i class="fas fa-comment"></i>
       </button>
-
-      <!-- AI Curator Button -->
-      <button type="button" class="lightbox-action-btn btn-ai-selection" id="lightboxAiBtn" onclick="analyzeCurrentPhotoWithAI()" title="ShaadigraphsAI Advice">
-        <i class="fas fa-wand-magic-sparkles"></i>
-      </button>
     </div>
 
-    <!-- 2. ShaadigraphsAI Honest Curator Glass Card -->
-    <div id="aiCuratorCard" class="portal-ai-card" hidden>
-      <div class="ai-card-header">
-        <span class="ai-badge"><i class="fas fa-wand-magic-sparkles"></i> ShaadigraphsAI</span>
-        <button type="button" class="comment-close-btn" onclick="closeAiCurator()">&times;</button>
-      </div>
-
-      <div class="ai-verdict-banner" id="aiVerdictBanner">
-        <h4 id="aiRoleTitle">Evaluating Shot...</h4>
-      </div>
-
-      <p id="aiReasonText">Analyzing expressions, focus, lighting, and duplicate frames...</p>
-      
-      <div id="aiTagList" class="ai-tag-wrapper"></div>
-
-      <div class="ai-card-actions" id="aiActionButtons">
-        <button type="button" class="portal-btn portal-btn-primary portal-btn-compact" onclick="applyAiDecision(true)">
-          <i class="fas fa-check"></i> Select Photo
-        </button>
-      </div>
-    </div>
-
-    <!-- 3. Instructions Comment Drawer -->
+    <!-- 2. Instructions Comment Drawer -->
     <div id="lightboxCommentContainer" class="portal-comment-drawer" hidden>
       <div class="comment-drawer-header">
         <span><i class="fas fa-pen-nib"></i> Album Instructions</span>
@@ -217,17 +190,12 @@
     let clientDatabase = [];
     let currentActiveClient = null;
     let selectedPhotoSet = new Set();
-    let isUserGuest = false;
     let allDrivePhotos = [];
-    let viewOnlySelected = false;
-    let currentGalleryPhotos = [];
     let currentPhotoObjects = [];
+    let currentGalleryPhotos = [];
     let currentIndex = 0;
-
-    // AI Global State & Cache
-    const aiReviewCache = {};
-    let currentAiInsight = null;
-    let prefetchTimer = null;
+    let viewOnlySelected = false;
+    let isUserGuest = false;
 
     function getStorageKey() {
       return currentActiveClient ? `shaadigraphs_sel_${currentActiveClient.phone}` : '';
@@ -618,7 +586,6 @@
         document.body.style.overflow = 'hidden';
         updateLightboxHeartState();
         setTimeout(() => modal.classList.add('active'), 10);
-        triggerSilentPrefetch();
       }
     }
 
@@ -629,14 +596,11 @@
       if (currentIndex < 0) currentIndex = currentGalleryPhotos.length - 1;
       else if (currentIndex >= currentGalleryPhotos.length) currentIndex = 0;
       
-      closeAiCurator();
-      
       img.style.opacity = '0';
       setTimeout(() => {
         img.src = currentGalleryPhotos[currentIndex];
         img.style.opacity = '1';
         updateLightboxHeartState();
-        triggerSilentPrefetch();
       }, 150);
     }
 
@@ -644,7 +608,6 @@
       const modal = document.getElementById('lightboxModal');
       const img = document.getElementById('lightboxImg');
       if (modal && img) {
-        closeAiCurator();
         modal.classList.remove('active');
         setTimeout(() => {
           modal.style.display = 'none';
@@ -718,148 +681,6 @@
       alert("Note saved successfully!");
       commentInput.value = '';
       toggleCommentInputBox();
-    }
-
-    // ==========================================
-    // SHAADIGRAPHSAI HONEST CURATOR (OPTIMIZED)
-    // ==========================================
-
-    window.handleAiCuratorResponse = function(data) {
-      const currentPhoto = currentPhotoObjects[currentIndex];
-      const reqId = (data && data._reqId) ? data._reqId : (currentPhoto ? currentPhoto.id : null);
-
-      if (reqId && data && data.success && data.insight) {
-        aiReviewCache[reqId] = data.insight;
-      }
-
-      if (currentPhoto && reqId === currentPhoto.id) {
-        renderAiCardUI(data && data.insight ? data.insight : null);
-      }
-    };
-
-    function renderAiCardUI(insight) {
-      const aiBtn = document.getElementById('lightboxAiBtn');
-      if (aiBtn) {
-        aiBtn.classList.remove('is-scanning');
-        aiBtn.disabled = false;
-      }
-
-      if (insight) {
-        currentAiInsight = insight;
-        const banner = document.getElementById('aiVerdictBanner');
-        const title = document.getElementById('aiRoleTitle');
-        const reason = document.getElementById('aiReasonText');
-        const tagList = document.getElementById('aiTagList');
-        const actionContainer = document.getElementById('aiActionButtons');
-
-        title.innerText = insight.verdict;
-        reason.innerText = insight.advice;
-        banner.className = 'ai-verdict-banner status-' + (insight.statusColor || 'green');
-
-        const tags = insight.tags || [];
-        tagList.innerHTML = tags.map(t => `<span class="ai-pill-tag">${t}</span>`).join('');
-
-        if (insight.statusColor === 'green') {
-          actionContainer.innerHTML = `
-            <button type="button" class="portal-btn portal-btn-emerald portal-btn-compact" onclick="applyAiDecision(true)">
-              <i class="fas fa-heart"></i> Select This Photo
-            </button>
-          `;
-        } else {
-          actionContainer.innerHTML = `
-            <button type="button" class="portal-btn portal-btn-ghost portal-btn-compact" onclick="changeLightboxImage(1)">
-              Check Next Frame <i class="fas fa-arrow-right"></i>
-            </button>
-            <button type="button" class="portal-btn portal-btn-primary portal-btn-compact" onclick="applyAiDecision(true)">
-              Select Anyway
-            </button>
-          `;
-        }
-      } else {
-        document.getElementById('aiRoleTitle').innerText = "Consider Alternate";
-        document.getElementById('aiReasonText').innerText = "Check nearby burst frames to ensure eye contact and sharpness are optimal.";
-        document.getElementById('aiTagList').innerHTML = '<span class="ai-pill-tag">Review Needed</span>';
-      }
-    }
-
-    function analyzeCurrentPhotoWithAI() {
-      if (!currentPhotoObjects || currentPhotoObjects.length === 0) return;
-      const currentPhoto = currentPhotoObjects[currentIndex];
-
-      const commentBox = document.getElementById('lightboxCommentContainer');
-      if (commentBox) commentBox.hidden = true;
-
-      const aiCard = document.getElementById('aiCuratorCard');
-      aiCard.hidden = false;
-
-      // 1. Instant Cache Hit (0 ms)
-      if (aiReviewCache[currentPhoto.id]) {
-        renderAiCardUI(aiReviewCache[currentPhoto.id]);
-        return;
-      }
-
-      // 2. Fresh Network Fetch
-      const aiBtn = document.getElementById('lightboxAiBtn');
-      if (aiBtn) {
-        aiBtn.classList.add('is-scanning');
-        aiBtn.disabled = true;
-      }
-
-      const banner = document.getElementById('aiVerdictBanner');
-      banner.className = 'ai-verdict-banner status-orange';
-      document.getElementById('aiRoleTitle').innerText = "Curating Photo...";
-      document.getElementById('aiReasonText').innerText = "ShaadigraphsAI is evaluating artistic framing, lighting, and expressions...";
-      document.getElementById('aiTagList').innerHTML = '<span class="ai-pill-tag"><i class="fas fa-spinner fa-spin"></i> Analyzing</span>';
-
-      fetchAiReview(currentPhoto.id, currentPhoto.thumbnail);
-    }
-
-    function fetchAiReview(photoId, thumbUrl) {
-      const oldScript = document.getElementById('gemini-engine-' + photoId);
-      if (oldScript) oldScript.remove();
-
-      const script = document.createElement('script');
-      script.id = 'gemini-engine-' + photoId;
-      script.src = `${API_URL}?action=analyzePhoto&photoId=${encodeURIComponent(photoId)}&imageUrl=${encodeURIComponent(thumbUrl)}&callback=handleAiCuratorResponse&_t=${Date.now()}`;
-      document.body.appendChild(script);
-    }
-
-    function triggerSilentPrefetch() {
-      clearTimeout(prefetchTimer);
-      prefetchTimer = setTimeout(() => {
-        const nextIndex = currentIndex + 1;
-        if (nextIndex < currentPhotoObjects.length) {
-          const nextPhoto = currentPhotoObjects[nextIndex];
-          if (!aiReviewCache[nextPhoto.id]) {
-            fetchAiReview(nextPhoto.id, nextPhoto.thumbnail);
-          }
-        }
-      }, 1200);
-    }
-
-    function closeAiCurator() {
-      const card = document.getElementById('aiCuratorCard');
-      if (card) card.hidden = true;
-      currentAiInsight = null;
-    }
-
-    function applyAiDecision(forceSelect = false) {
-      if (!currentPhotoObjects || currentPhotoObjects.length === 0) return;
-      const currentPhoto = currentPhotoObjects[currentIndex];
-
-      if (forceSelect && !selectedPhotoSet.has(currentPhoto.name)) {
-        toggleCurrentLightboxPhoto();
-      }
-
-      if (currentAiInsight) {
-        const commentInput = document.getElementById('photoCommentInput');
-        if (commentInput) {
-          commentInput.value = `[ShaadigraphsAI]: ${currentAiInsight.verdict} - ${currentAiInsight.advice}`;
-          savePhotoComment();
-        }
-      }
-
-      closeAiCurator();
     }
 
     window.addEventListener("DOMContentLoaded", fetchClientDatabase);

@@ -4,7 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SHAADIGRAPHS | Luxury Wedding Cinematography & Editorial Photography</title>
-  <link rel="icon" type="image/png" href="chhotkadil.png">
+  <link href="https://fonts.googleapis.com/css2?family=Laila:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href="images/chhotkadil.png">
   <!-- ==========================================
        GOOGLE FONTS & ICONS
        ========================================== -->
@@ -28,13 +29,13 @@
     </div>
   </div>
 
-  <!-- ==========================================
+ <!-- ==========================================
        SECTION 2: HEADER & NAVIGATION MENU
        ========================================== -->
   <header class="header">
     <div class="container nav-wrap">
       <a href="#" class="brand-logo-wrap">
-        <img src="Shaadigraphs-white-logo.png" alt="Shaadigraphs Logo" class="main-site-logo" />
+        <img src="images/Shaadigraphs-white-logo.png" alt="Shaadigraphs Logo" class="main-site-logo" />
       </a>
       
       <nav class="nav-menu">
@@ -73,166 +74,201 @@
   <!-- ==========================================
        SECTION 4: ABOUT & STORY
        ========================================== -->
-  <section id="about" class="story-section">
-    <div class="container">
-      <div class="story-grid">
-        <div class="story-visual">
-          <div class="img-frame frame-main">
-            <img src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=800&q=80" alt="Indian Bride" />
-          </div>
-          <div class="img-frame frame-accent">
-            <img src="https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&w=500&q=80" alt="Couple Portrait" />
-          </div>
-        </div>
-
-        <div class="story-content">
-          <span class="eyebrow">OUR PHILOSOPHY</span>
-          <h2>Raw Emotions Captured With Cinematic Grandeur</h2>
-          <p class="lead-text">
-            Every celebration has a heartbeat, every glance tells a story, and every milestone is a grand chapter in your life.
-          </p>
-          <p>
-            At <strong>Shaadigraphs</strong>, our aesthetic blends modern documentary filmmaking with the elegance of timeless photography. From grand weddings and ring ceremonies to joyful birthday celebrations, we ensure your memories remain vibrant and alive forever.
-          </p>
-          
-          <div class="story-pillars">
-            <div class="pillar-box">
-              <i class="fas fa-film"></i>
-              <h4>4K Cinematic Color Science</h4>
-              <p>True-to-life tones with rich film palettes.</p>
-            </div>
-            <div class="pillar-box">
-              <i class="fas fa-camera"></i>
-              <h4>Unobtrusive Candid Focus</h4>
-              <p>Natural moments without stiff, awkward poses.</p>
-            </div>
+<!-- SECTION: STORY / PHILOSOPHY (SINGLE HERO) -->
+<section id="about" class="story-section">
+  <div class="container story-grid">
+    
+    <!-- LEFT: SINGLE CINEMATIC HERO PORTRAIT -->
+    <div class="story-visual">
+      <div class="story-hero-frame">
+        <img src="images/DSC_1100 (3).jpg" alt="Bihar Wedding Raw Emotion">
+        
+        <!-- FLOATING EDITORIAL BADGE -->
+        <div class="story-glass-badge">
+          <span class="badge-dot"></span>
+          <div class="badge-text">
+            <strong>BIHAR & PAN-INDIA</strong>
+            <span>Framing Legacies Since 2018</span>
           </div>
         </div>
       </div>
     </div>
-  </section>
 
-  <!-- ==========================================
-       SECTION 5: FEATURED CINEMATIC FILMS
-       ========================================== -->
-  <section id="films" class="films-section">
-    <div class="container">
-      <div class="section-title-wrap">
-        <span class="eyebrow">CINEMATIC WORKS</span>
-        <h2>Featured Cinematic Teasers</h2>
-        <p>Experience the emotion, rhythm, and poetry of our bespoke films.</p>
-      </div>
+    <!-- RIGHT: EDITORIAL COPY -->
+    <div class="story-content">
+      <span class="eyebrow">OUR PHILOSOPHY</span>
+      <h2 class="story-title">RAW EMOTIONS CAPTURED WITH CINEMATIC GRANDEUR</h2>
+      
+      <p class="story-lead">
+        Every celebration has a heartbeat, every glance tells a story, and every milestone is a grand chapter in your life.
+      </p>
+      
+      <p class="story-desc">
+        At Shaadigraphs, our aesthetic blends modern documentary filmmaking with the timeless grace of traditional heritage. From sacred vows and traditional Bihar rituals to heartfelt family chronicles, we ensure your memories remain vivid, authentic, and forever alive.
+      </p>
 
-      <div class="films-grid">
-        <div class="film-card">
-          <div class="film-thumbnail" style="position: relative; aspect-ratio: 16/9; background: #000; overflow: hidden; border-radius: 8px;">
-            <img id="mithila-poster" src="mithilathumb.jpg" alt="Mithila Wedding Teaser" style="width: 100%; height: 100%; object-fit: cover; display: block;" />
-            <button class="play-btn" id="mithila-play-btn" onclick="playMithilaVideo()" aria-label="Play Video" style="border: 2px solid var(--accent-primary); cursor: pointer; z-index: 10;">
-              <i class="fas fa-play"></i>
-            </button>
-            <video id="mithila-video" controls playsinline style="display: none; width: 100%; height: 100%; object-fit: cover;">
-              <source src="teasermithila.mp4" type="video/mp4">
-              Aapka browser is video ko support nahi karta.
-            </video>
-          </div>
-          <div class="film-meta">
-            <span class="film-tag">WEDDING TEASER</span>
-            <h3>The Royal Vows in Mithila</h3>
-            <p>A grand 3-day royal heritage celebration filled with traditional folk rituals and timeless elegance.</p>
-          </div>
+      <!-- HIGHLIGHT FEATURE BOXES -->
+      <div class="story-pillars">
+        <div class="pillar-box">
+          <i class="fas fa-film"></i>
+          <h4>4K Cinematic Color Science</h4>
+          <p>True-to-life tones with rich film palettes tailored for Indian skin tones.</p>
         </div>
 
-        <div class="film-card">
-          <div class="film-thumbnail" style="position: relative; aspect-ratio: 16/9; background: #000; overflow: hidden; border-radius: 8px;">
-            <img id="prewedding-poster" src="preweddingrajnagarthumb.jpg" alt="Pre-wedding Film" style="width: 100%; height: 100%; object-fit: cover; display: block;" />
-            <button class="play-btn" id="prewedding-play-btn" onclick="playPreweddingVideo()" aria-label="Play Video" style="border: 2px solid var(--accent-primary); cursor: pointer; z-index: 10;">
-              <i class="fas fa-play"></i>
-            </button>
-            <video id="prewedding-video" controls playsinline style="display: none; width: 100%; height: 100%; object-fit: cover;">
-              <source src="preweddingrajnagar.mp4" type="video/mp4">
-              Aapka browser is video ko support nahi karta.
-            </video>
-          </div>
-          <div class="film-meta">
-            <span class="film-tag">PRE-WEDDING FILM</span>
-            <h3>Whispers of Love & Sunset Frames</h3>
-            <p>An aesthetic cinematic pre-wedding narrative with drone visuals and soulful musical flow.</p>
-          </div>
+        <div class="pillar-box">
+          <i class="fas fa-camera"></i>
+          <h4>Unobtrusive Candid Focus</h4>
+          <p>Capturing raw, unposed emotions without stiff, staged interference.</p>
         </div>
       </div>
     </div>
-  </section>
+<!-- SUBTLE CTA LINK -->
+      <div class="story-action" style="margin-top: 28px;">
+        <a href="#films" class="story-link-btn">
+          Watch Wedding Teasers <i class="fas fa-arrow-right" style="margin-left: 8px; font-size: 0.85rem;"></i>
+        </a>
+      </div>
+  </div>
+</section>
+ <!-- SECTION: FILMS (CUSTOM THUMBNAILS + MODAL POPUP) -->
+<section id="films" class="films-section">
+  <div class="container">
+    <div class="section-header text-center">
+      <span class="eyebrow">CINEMATIC ARCHIVE</span>
+      <h2>Featured Wedding Films</h2>
+      <p>Handcrafted stories captured across Mithila, Bihar & Pan-India</p>
+    </div>
 
+    <div class="films-grid-3">
+      <!-- BOX 1: WEDDING TEASER -->
+      <div class="film-card" onclick="openFilmModal('PLAjfMTvNNS-E')">
+        <div class="film-thumb-wrap">
+          <img src="images/thumb-teaser.jpg" alt="Recent Wedding Teaser" class="film-thumb-img">
+          <div class="film-overlay">
+            <span class="custom-play-btn"><i class="fas fa-play"></i></span>
+          </div>
+        </div>
+        <div class="film-details">
+          <span class="film-tag">Cinematic Highlight</span>
+          <h3>Recent Wedding Teasers</h3>
+        </div>
+      </div>
+
+      <!-- BOX 2: PRE-WEDDING -->
+      <div class="film-card" onclick="openFilmModal('PLeiJgMOxuAFM')">
+        <div class="film-thumb-wrap">
+          <img src="images/thumb-prewedding.jpg" alt="Recent Pre-Wedding Story" class="film-thumb-img">
+          <div class="film-overlay">
+            <span class="custom-play-btn"><i class="fas fa-play"></i></span>
+          </div>
+        </div>
+        <div class="film-details">
+          <span class="film-tag">Pre-Wedding Tale</span>
+          <h3>Recent Pre-Wedding Stories</h3>
+        </div>
+      </div>
+
+      <!-- BOX 3: FULL WEDDING -->
+      <div class="film-card" onclick="openFilmModal('PLFoWc4HjhvbU')">
+        <div class="film-thumb-wrap">
+          <img src="images/thumb-fullevent.jpg" alt="Recent Traditional Film" class="film-thumb-img">
+          <div class="film-overlay">
+            <span class="custom-play-btn"><i class="fas fa-play"></i></span>
+          </div>
+        </div>
+        <div class="film-details">
+          <span class="film-tag">Tradition & Culture</span>
+          <h3>Recent Full Wedding Films</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CINEMATIC VIDEO MODAL (POPUP) -->
+<div id="videoModal" class="video-modal" onclick="closeFilmModal(event)">
+  <div class="video-modal-content">
+    <button class="video-modal-close" onclick="closeFilmModal(event)">&times;</button>
+    <div class="video-modal-frame">
+      <iframe id="modalIframe" src="" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+    </div>
+  </div>
+</div>
   <!-- ==========================================
        SECTION 6: EDITORIAL GALLERY & DRIVE FETCH GRID
        ========================================== -->
   <section id="gallery" class="gallery-section">
     <div class="container">
-      <div class="section-title-wrap">
-        <span class="eyebrow">EDITORIAL GALLERY</span>
-        <h2>Moments Frozen in Gold</h2>
-        <p>Click any category box below to explore live photos fetched directly from Google Drive.</p>
-      </div>
-
-      <!-- Quick Filter Navigation -->
-      <div class="filter-wrapper">
-        <button class="filter-btn active" onclick="resetGalleryToDefault()">All Categories</button>
-        <button class="filter-btn" onclick="loadCategoryGallery('wedding', 'Weddings')">Weddings</button>
-        <button class="filter-btn" onclick="loadCategoryGallery('bridal', 'Bridal Elegance')">Bridal Elegance</button>
-        <button class="filter-btn" onclick="loadCategoryGallery('engagement', 'Engagement')">Engagement</button>
-        <button class="filter-btn" onclick="loadCategoryGallery('birthday', 'Birthdays & Parties')">Birthdays & Parties</button>
-        <button class="filter-btn" onclick="loadCategoryGallery('prewedding', 'Pre-Wedding')">Pre-Wedding</button>
-        <button class="filter-btn" onclick="loadCategoryGallery('special', 'Special Events')">Special Events</button>
+      
+      <!-- Catchy Editorial Header -->
+      <div class="section-title-wrap text-center">
+        <span class="eyebrow">EDITORIAL ARCHIVE</span>
+        <h2 id="gallery-heading">Moments Frozen in Gold</h2>
+        <p id="gallery-subheading">
+          Every celebration is a chapter of raw devotion and timeless heritage. Step inside a collection to relive the memories.
+        </p>
       </div>
 
       <!-- Dynamic Portfolio Grid -->
       <div class="masonry-gallery" id="portfolio-gallery">
         
         <!-- 1. Weddings -->
-        <div class="gallery-item item-cat wedding" onclick="loadCategoryGallery('wedding', 'Weddings')">
-          <img id="cover-wedding" src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=800&q=80" alt="Weddings" style="width:100%; height:350px; object-fit:cover; display:block;" />
+        <div class="gallery-item item-cat wedding" onclick="loadCategoryGallery('wedding', 'The Royal Wedding')">
+          <img id="cover-wedding" src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=800&q=80" alt="Weddings" />
           <div class="item-overlay">
-            <span>WEDDING</span>
+            <span class="collection-tag">Collection</span>
+            <h3>THE ROYAL WEDDING</h3>
+            <span class="explore-hint">Step Inside <i class="fas fa-arrow-right"></i></span>
           </div>
         </div>
 
         <!-- 2. Bridal Elegance -->
         <div class="gallery-item item-cat bridal" onclick="loadCategoryGallery('bridal', 'Bridal Elegance')">
-          <img id="cover-bridal" src="https://images.unsplash.com/photo-1594552072238-b8a3da72ae9a?auto=format&fit=crop&w=800&q=80" alt="Bridal Elegance" style="width:100%; height:350px; object-fit:cover; display:block;" />
+          <img id="cover-bridal" src="https://images.unsplash.com/photo-1594552072238-b8a3da72ae9a?auto=format&fit=crop&w=800&q=80" alt="Bridal Elegance" />
           <div class="item-overlay">
-            <span>BRIDAL ELEGANCE</span>
+            <span class="collection-tag">Collection</span>
+            <h3>BRIDAL ELEGANCE</h3>
+            <span class="explore-hint">Step Inside <i class="fas fa-arrow-right"></i></span>
           </div>
         </div>
 
         <!-- 3. Engagement -->
-        <div class="gallery-item item-cat engagement" onclick="loadCategoryGallery('engagement', 'Engagement')">
-          <img id="cover-engagement" src="https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&w=800&q=80" alt="Engagement" style="width:100%; height:350px; object-fit:cover; display:block;" />
+        <div class="gallery-item item-cat engagement" onclick="loadCategoryGallery('engagement', 'Engagement Tales')">
+          <img id="cover-engagement" src="https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&w=800&q=80" alt="Engagement" />
           <div class="item-overlay">
-            <span>ENGAGEMENT</span>
+            <span class="collection-tag">Collection</span>
+            <h3>ENGAGEMENT TALES</h3>
+            <span class="explore-hint">Step Inside <i class="fas fa-arrow-right"></i></span>
           </div>
         </div>
 
-        <!-- 4. Birthdays & Parties -->
-        <div class="gallery-item item-cat birthday" onclick="loadCategoryGallery('birthday', 'Birthdays & Parties')">
-          <img id="cover-birthday" src="https://images.unsplash.com/photo-1530103862676-de8c9debad1d?auto=format&fit=crop&w=800&q=80" alt="Birthdays & Parties" style="width:100%; height:350px; object-fit:cover; display:block;" />
+        <!-- 4. Birthdays & Milestones -->
+        <div class="gallery-item item-cat birthday" onclick="loadCategoryGallery('birthday', 'Family Feasts & Milestones')">
+          <img id="cover-birthday" src="https://images.unsplash.com/photo-1530103862676-de8c9debad1d?auto=format&fit=crop&w=800&q=80" alt="Family Feasts" />
           <div class="item-overlay">
-            <span>BIRTHDAYS & PARTIES</span>
+            <span class="collection-tag">Collection</span>
+            <h3>FAMILY FEASTS & MILESTONES</h3>
+            <span class="explore-hint">Step Inside <i class="fas fa-arrow-right"></i></span>
           </div>
         </div>
 
         <!-- 5. Pre-Wedding -->
-        <div class="gallery-item item-cat prewedding" onclick="loadCategoryGallery('prewedding', 'Pre-Wedding')">
-          <img id="cover-prewedding" src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=80" alt="Pre-Wedding" style="width:100%; height:350px; object-fit:cover; display:block;" />
+        <div class="gallery-item item-cat prewedding" onclick="loadCategoryGallery('prewedding', 'Pre-Wedding Chronicles')">
+          <img id="cover-prewedding" src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=80" alt="Pre-Wedding" />
           <div class="item-overlay">
-            <span>PRE-WEDDING</span>
+            <span class="collection-tag">Collection</span>
+            <h3>PRE-WEDDING CHRONICLES</h3>
+            <span class="explore-hint">Step Inside <i class="fas fa-arrow-right"></i></span>
           </div>
         </div>
 
-        <!-- 6. Special Events -->
-        <div class="gallery-item item-cat special" onclick="loadCategoryGallery('special', 'Special Events')">
-          <img id="cover-special" src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=800&q=80" alt="Special Events" style="width:100%; height:350px; object-fit:cover; display:block;" />
+        <!-- 6. Special / Bihar Rituals -->
+        <div class="gallery-item item-cat special" onclick="loadCategoryGallery('special', 'Bihar Rituals & Emotions')">
+          <img id="cover-special" src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=800&q=80" alt="Bihar Rituals" />
           <div class="item-overlay">
-            <span>SPECIAL EVENTS</span>
+            <span class="collection-tag">Collection</span>
+            <h3>BIHAR RITUALS & EMOTIONS</h3>
+            <span class="explore-hint">Step Inside <i class="fas fa-arrow-right"></i></span>
           </div>
         </div>
 
@@ -243,7 +279,7 @@
   <!-- LOVE STORIES / TESTIMONIALS SECTION -->
   <section class="testimonials-section">
     <div class="container">
-      <div class="section-title-wrap">
+      <div class="section-title-wrap text-center">
         <span class="eyebrow">LOVE STORIES</span>
         <h2>Words from Our Couples</h2>
         <p>The realest emotions and moments, preserved forever through our cinematic lens.</p>
@@ -252,21 +288,41 @@
       <div class="testimonials-grid">
         <!-- Testimonial Card 1 -->
         <div class="testimonial-card">
-          <div class="quote-icon"><i class="fas fa-quote-left"></i></div>
-          <p class="testimonial-text">"Shaadigraphs didn’t just film our wedding; they captured the exact soul and feeling of those days. Every time we watch our film, we relive every single emotion."</p>
+          <div class="testimonial-header">
+            <div class="quote-icon"><i class="fas fa-quote-left"></i></div>
+            <div class="review-stars">
+              <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+            </div>
+          </div>
+          <p class="testimonial-text">
+            "Shaadigraphs didn’t just film our wedding; they captured the exact soul and feeling of those days. Every time we watch our film, we relive every single raw emotion."
+          </p>
           <div class="client-info">
-            <h4>Priya & Rohan</h4>
-            <span>Darbhanga</span>
+            <div class="client-avatar">P&R</div>
+            <div>
+              <h4>Priya & Rohan</h4>
+              <span>Darbhanga • Mithila Rituals</span>
+            </div>
           </div>
         </div>
 
         <!-- Testimonial Card 2 -->
         <div class="testimonial-card">
-          <div class="quote-icon"><i class="fas fa-quote-left"></i></div>
-          <p class="testimonial-text">"Anand and his team have an incredible cinematic eye. They were so professional and discreet, yet caught every intimate glance and tear of joy. Absolute masters."</p>
+          <div class="testimonial-header">
+            <div class="quote-icon"><i class="fas fa-quote-left"></i></div>
+            <div class="review-stars">
+              <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+            </div>
+          </div>
+          <p class="testimonial-text">
+            "Anand and his team have an incredible cinematic eye. They were so professional and discreet, yet caught every intimate glance and tear of joy. Absolute masters."
+          </p>
           <div class="client-info">
-            <h4>Sneha & Vikram</h4>
-            <span>Patna</span>
+            <div class="client-avatar">S&V</div>
+            <div>
+              <h4>Sneha & Vikram</h4>
+              <span>Patna • Royal Vows</span>
+            </div>
           </div>
         </div>
       </div>
@@ -274,139 +330,224 @@
   </section>
 
   <!-- ==========================================
-       SECTION 7: SIGNATURE SERVICES
+       SECTION 7: THE SHAADIGRAPHS CRAFT
        ========================================== -->
   <section id="services" class="services-section">
     <div class="container">
-      <div class="section-title-wrap">
-        <span class="eyebrow">WHAT WE DELIVER</span>
-        <h2>Signature Services</h2>
+      <div class="section-title-wrap text-center">
+        <span class="eyebrow">OUR ARTISTRY & STANDARDS</span>
+        <h2>The Shaadigraphs Craft</h2>
+        <p>Beyond standard event documentation—we direct, capture, and preserve your legacy like cinema.</p>
       </div>
 
       <div class="services-row">
+        <!-- Pillar 01 -->
         <div class="service-box">
-          <span class="num">01</span>
-          <h3>Wedding Cinematography & Films</h3>
-          <p>4K Multi-camera coverage, director’s cut editing, bespoke sound design, and color grading tailored to your wedding.</p>
+          <div class="service-top">
+            <span class="num">01</span>
+            <i class="fas fa-palette craft-icon"></i>
+          </div>
+          <h3>Cinematic Color Science</h3>
+          <p>Bespoke rich color grading calibrated for Indian skin tones, authentic Mithila rituals, and vibrant ceremonies.</p>
         </div>
 
+        <!-- Pillar 02 -->
         <div class="service-box">
-          <span class="num">02</span>
-          <h3>Engagement & Roka Shoots</h3>
-          <p>Romantic ring exchange portraits and emotional ceremony coverage with elegant lighting.</p>
+          <div class="service-top">
+            <span class="num">02</span>
+            <i class="fas fa-eye craft-icon"></i>
+          </div>
+          <h3>Unscripted Candid Vision</h3>
+          <p>Zero awkward staging. Our crew stays unobtrusive, capturing genuine family tears, quiet glances, and untamed laughter.</p>
         </div>
 
+        <!-- Pillar 03 -->
         <div class="service-box">
-          <span class="num">03</span>
-          <h3>Concept Pre-Wedding Shoots</h3>
-          <p>Stylized couple portraits and aesthetic cinematic love stories filmed at scenic outdoor locations.</p>
+          <div class="service-top">
+            <span class="num">03</span>
+            <i class="fas fa-bolt craft-icon"></i>
+          </div>
+          <h3>72-Hour Social Preview</h3>
+          <p>First look portraits and a 60-second 9:16 high-impact reel delivered while the celebration excitement is at its peak.</p>
         </div>
 
+        <!-- Pillar 04 -->
         <div class="service-box">
-          <span class="num">04</span>
-          <h3>Birthdays & Private Celebrations</h3>
-          <p>High-energy milestone birthdays, 1st cake smashes, and anniversary event coverage.</p>
+          <div class="service-top">
+            <span class="num">04</span>
+            <i class="fas fa-book-open craft-icon"></i>
+          </div>
+          <h3>Heirloom Archival Prints</h3>
+          <p>Handcrafted, flush-mount leather photo books alongside private lifetime Google Drive cloud vault access.</p>
         </div>
       </div>
     </div>
   </section>
 
   <!-- ==========================================
-       SECTION 8: PACKAGES / PRICING
+       SECTION 8: PACKAGES & INVESTMENT
        ========================================== -->
   <section id="packages" class="packages-section">
     <div class="container">
-      <div class="section-title-wrap">
-        <span class="eyebrow">INVESTMENT</span>
-        <h2>Curated Collections</h2>
-        <p>Customizable packages designed to fit your unique schedule and celebration.</p>
+      
+      <div class="section-title-wrap text-center">
+        <span class="eyebrow">YOUR INVESTMENT</span>
+        <h2>Curated Wedding Collections</h2>
+        <p>High-value cinema coverage designed to keep your family legacy alive forever.</p>
       </div>
 
       <div class="packages-grid">
+        
+        <!-- Package 1: Intimate Saga -->
         <div class="package-card">
-          <h3>Silver Experience</h3>
-          <div class="package-tag">Essential Coverage</div>
-          <ul>
-            <li><i class="fas fa-check"></i> 1 Candid Photographer</li>
-            <li><i class="fas fa-check"></i> 1 Traditional Videographer</li>
-            <li><i class="fas fa-check"></i> Highlight Teaser (3-5 Mins)</li>
-            <li><i class="fas fa-check"></i> Full HD Edited Video & Photos</li>
-            <li><i class="fas fa-check"></i> 1 Premium Photobook Album</li>
-          </ul>
-          <a href="https://wa.me/919123192566?text=Hi%20Shaadigraphs,%20I%20am%20interested%20in%20the%20Silver%20Experience%20Package.%20Please%20share%20pricing%20and%20details." target="_blank" class="btn-pkg">
-            <i class="fab fa-whatsapp"></i> Inquire Package
-          </a>
+          <div class="pkg-header">
+            <span class="pkg-type">IN-DEMAND ESSENTIAL</span>
+            <h3>The Intimate Saga</h3>
+            <p class="pkg-subtitle">Tailored for 1–2 Day Celebrations, Haldi & Family Rituals</p>
+          </div>
+
+          <div class="pkg-features">
+            <ul>
+              <li><i class="fas fa-check-circle"></i> <strong>1 Senior Candid Photographer</strong> (Raw expressions)</li>
+              <li><i class="fas fa-check-circle"></i> <strong>1 Traditional Cinematographer</strong> (Complete ritual coverage)</li>
+              <li><i class="fas fa-check-circle"></i> <strong>Cinematic Highlight Reel</strong> (3–5 min musical cut)</li>
+              <li><i class="fas fa-check-circle"></i> <strong>Full HD Ceremony Video</strong> (Complete timeline edit)</li>
+              <li><i class="fas fa-check-circle"></i> <strong>1 Handcrafted Hardcover Photobook</strong> (100+ select images)</li>
+              <li><i class="fas fa-check-circle"></i> Direct Google Drive Private Vault Delivery</li>
+            </ul>
+          </div>
+
+          <div class="pkg-footer">
+            <a href="https://wa.me/919123192566?text=Hi%20Shaadigraphs,%20we%20are%20planning%20an%20intimate%20wedding%20and%20interested%20in%20The%20Intimate%20Saga%20collection.%20Please%20share%20availability." target="_blank" class="btn-pkg">
+              <i class="fab fa-whatsapp"></i> Inquire Dates & Quote
+            </a>
+          </div>
         </div>
 
+        <!-- Package 2: The Royal Heritage (Highlighted) -->
         <div class="package-card featured">
-          <div class="badge-pop">MOST POPULAR</div>
-          <h3>Gold Royal Collection</h3>
-          <div class="package-tag">Complete Cinematic Experience</div>
-          <ul>
-            <li><i class="fas fa-check"></i> 2 Senior Candid Photographers</li>
-            <li><i class="fas fa-check"></i> 2 Cinematic Filmmakers + Drone Pilot</li>
-            <li><i class="fas fa-check"></i> 4K Cinematic Teaser + Full Wedding Film</li>
-            <li><i class="fas fa-check"></i> Pre-Wedding Photo & Video Shoot</li>
-            <li><i class="fas fa-check"></i> 2 Luxury Flush-Mount Leather Albums</li>
-          </ul>
-          <a href="https://wa.me/919123192566?text=Hi%20Shaadigraphs,%20I%20want%20to%20book%20the%20Gold%20Royal%20Collection%20for%20my%20wedding.%20Please%20check%20date%20availability." target="_blank" class="btn-pkg-featured">
-            <i class="fab fa-whatsapp"></i> Book This Package
-          </a>
+          <div class="badge-pop">MOST CHOSEN BY 70% COUPLES</div>
+          <div class="pkg-header">
+            <span class="pkg-type">SIGNATURE CINEMA & HERITAGE</span>
+            <h3>The Royal Heritage</h3>
+            <p class="pkg-subtitle">Multi-Day Grand Wedding Saga (Darbhanga • Patna • Pan-India)</p>
+          </div>
+
+          <div class="pkg-features">
+            <ul>
+              <li><i class="fas fa-check-circle"></i> <strong>2 Senior Candid Photographers</strong> (Bride & groom focus)</li>
+              <li><i class="fas fa-check-circle"></i> <strong>2 4K Cinematic Filmmakers</strong> + Aerial Drone Pilot</li>
+              <li><i class="fas fa-check-circle"></i> <strong>Complimentary 60-Sec Reel</strong> delivered within 72 hours</li>
+              <li><i class="fas fa-check-circle"></i> <strong>Director’s Cut Teaser</strong> + Full 45-Min Wedding Feature Film</li>
+              <li><i class="fas fa-check-circle"></i> <strong>Pre-Wedding Sunset Session</strong> included</li>
+              <li><i class="fas fa-check-circle"></i> <strong>2 Heirloom Leather Flush-Mount Albums</strong> (Parent copies)</li>
+            </ul>
+          </div>
+
+          <div class="pkg-footer">
+            <a href="https://wa.me/919123192566?text=Hi%20Shaadigraphs,%20we%20want%20to%20reserve%20The%20Royal%20Heritage%20collection%20for%20our%20wedding.%20Are%20your%20dates%20available?" target="_blank" class="btn-pkg-featured">
+              <i class="fab fa-whatsapp"></i> Reserve Your Date
+            </a>
+          </div>
         </div>
 
+        <!-- Package 3: Pre-Wedding & Milestones -->
         <div class="package-card">
-          <h3>Events & Celebrations</h3>
-          <div class="package-tag">Engagement / Birthday Special</div>
-          <ul>
-            <li><i class="fas fa-check"></i> Candid & Traditional Photo Crew</li>
-            <li><i class="fas fa-check"></i> 4K Event Highlight Reel / Reel Edit</li>
-            <li><i class="fas fa-check"></i> High-Resolution Retouched Photos</li>
-            <li><i class="fas fa-check"></i> Same-Day Teaser for Social Media</li>
-            <li><i class="fas fa-check"></i> Online Cloud Gallery Delivery</li>
-          </ul>
-          <a href="https://wa.me/919123192566?text=Hi%20Shaadigraphs,%20I%20am%20interested%20in%20the%20Events%20%26%20Celebrations%20Package.%20Please%20share%20details." target="_blank" class="btn-pkg">
-            <i class="fab fa-whatsapp"></i> Inquire Package
-          </a>
+          <div class="pkg-header">
+            <span class="pkg-type">EXCLUSIVE SESSIONS</span>
+            <h3>Pre-Wedding & Roka</h3>
+            <p class="pkg-subtitle">Stylized Couple Chemistry, Engagement Vows & Milestones</p>
+          </div>
+
+          <div class="pkg-features">
+            <ul>
+              <li><i class="fas fa-check-circle"></i> <strong>Candid Photo & Cinema Duo</strong> (Unstaged chemistry)</li>
+              <li><i class="fas fa-check-circle"></i> <strong>Scenic Outdoor Location Shoot</strong> with creative art direction</li>
+              <li><i class="fas fa-check-circle"></i> <strong>4K Cinematic Love Story Video</strong> with music track</li>
+              <li><i class="fas fa-check-circle"></i> <strong>30 Retouched High-Res Editorial Portraits</strong></li>
+              <li><i class="fas fa-check-circle"></i> <strong>9:16 Social Media Reel</strong> optimized for Instagram</li>
+              <li><i class="fas fa-check-circle"></i> High-Speed Google Drive Archival Access</li>
+            </ul>
+          </div>
+
+          <div class="pkg-footer">
+            <a href="https://wa.me/919123192566?text=Hi%20Shaadigraphs,%20we%20are%20interested%20in%20a%20Pre-Wedding%20/%20Engagement%20shoot.%20Please%20share%20details." target="_blank" class="btn-pkg">
+              <i class="fab fa-whatsapp"></i> Inquire Package
+            </a>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ZERO-FRICTION TRUST BANNER -->
+      <div class="pricing-trust-banner">
+        <div class="trust-item">
+          <i class="fas fa-shield-alt"></i>
+          <div>
+            <strong>Transparent & Flexible</strong>
+            <span>Lock your wedding date with just 20% token. Rest split across deliverables.</span>
+          </div>
+        </div>
+        <div class="trust-item">
+          <i class="fas fa-calendar-check"></i>
+          <div>
+            <strong>Limited Weddings Per Season</strong>
+            <span>We only take 25 weddings a year to guarantee editorial post-production perfection.</span>
+          </div>
         </div>
       </div>
+
     </div>
   </section>
-
   <!-- ==========================================
-       SECTION 9: BOOKING & CONTACT CALLOUT
+       SECTION 12: BESPOKE BOOKING & EMOTIONAL CONNECT
        ========================================== -->
-  <section id="contact" class="booking-section">
+  <section id="booking" class="booking-section">
     <div class="container">
+      
+      <!-- 1. Shaadi Typography Hindi Hook (Card ke Baahar & Upar) -->
+      <div class="booking-hindi-intro">
+        <p class="emotional-hook-outside">
+          “विवाह केवल दो लोगों का मिलन नहीं, एक परिवार का सबसे पवित्र और भावुक उत्सव है। लोग यहाँ किसी 'एजेंसी' को नहीं, बल्कि एक ऐसे 'कलाकार' को चुनना चाहते हैं, जिसके हाथों में वे अपने परिवार की जीवन भर की यादें सुरक्षित सौंप सकें।”
+        </p>
+      </div>
+
+      <!-- 2. Main Booking Action Card -->
       <div class="booking-card">
-        <span class="eyebrow">RESERVE YOUR DATES</span>
-        <h2>Let’s Make Magic Together</h2>
-        <p>Connect with us directly to check availability and get a custom quote for your wedding, engagement, or birthday celebration.</p>
+        
+        <span class="eyebrow">RESERVE YOUR CHAPTER</span>
+        <h2>Let’s Frame Your Legacy Together</h2>
+
+        <!-- Reassurance Strip -->
+        <div class="frictionless-promise">
+          <i class="fas fa-calendar-check"></i>
+          <span>No pressure, no hard sales. Bas apni wedding dates share kijiye—15 minute mein availability aur customized package estimate bhej denge.</span>
+        </div>
+
+        <!-- Contact Channels (Studio Base Removed) -->
         <div class="contact-methods">
-          <a href="tel:+919123192566" class="cm-item" style="text-decoration: none; color: inherit;">
-            <i class="fas fa-phone-volume"></i>
+          <a href="tel:+919123192566" class="cm-item">
+            <i class="fas fa-phone"></i>
             <div>
-              <strong>Call / WhatsApp</strong>
+              <strong>DIRECT DIAL</strong>
               <p>+91 91231 92566</p>
             </div>
           </a>
-          <a href="https://maps.app.goo.gl/5NDmc1wiqc4jzubj6" target="_blank" class="cm-item" style="text-decoration: none; color: inherit;">
-            <i class="fas fa-map-marked-alt"></i>
-            <div>
-              <strong>Studio Base</strong>
-              <p>Darbhanga, Bihar</p>
-            </div>
-          </a>
-          <a href="https://www.instagram.com/shaadigraphs" target="_blank" class="cm-item" style="text-decoration: none; color: inherit;">
+
+          <a href="https://instagram.com/shaadigraphs" target="_blank" class="cm-item">
             <i class="fab fa-instagram"></i>
             <div>
-              <strong>Instagram</strong>
+              <strong>INSTAGRAM</strong>
               <p>@shaadigraphs</p>
             </div>
           </a>
         </div>
-        <a href="https://wa.me/919123192566?text=Hi%20Shaadigraphs,%20I%20would%20like%20to%20check%20availability%20for%20my%20event." target="_blank" class="btn-wa-cta">
-          <i class="fab fa-whatsapp"></i> Chat Directly on WhatsApp
+
+        <!-- Master WhatsApp CTA -->
+        <a href="https://wa.me/919123192566?text=Hi%20Anand,%20we%20are%20checking%20availability%20for%20our%20wedding%20dates.%20Please%20share%20your%20calendar%20and%20custom%20estimate." target="_blank" class="btn-wa-cta">
+          <i class="fab fa-whatsapp"></i> Check Dates & Get Custom Estimate
         </a>
+
       </div>
     </div>
   </section>
@@ -485,9 +626,6 @@
   </div>
 
   <!-- ==========================================
-       SECTION 14: JAVASCRIPT ENGINE (ONLY FOR FILMS, GALLERY & CALENDAR)
-       ========================================== -->
-  <!-- ==========================================
        SECTION 14: JAVASCRIPT ENGINE (FILMS, GALLERY & LIVE CALENDAR)
        ========================================== -->
   <script>
@@ -545,89 +683,138 @@
       }
     }
 
-    async function loadCategoryGallery(categoryKey, categoryTitle) {
-      const grid = document.getElementById('portfolio-gallery');
-      const sectionTitle = document.querySelector('#gallery .section-title-wrap h2');
-      if (!grid) return;
+    /* ==========================================
+   GALLERY CONTROLLER: LIVE DRIVE & EDITORIAL ARCHIVE
+   ========================================== */
+async function loadCategoryGallery(categoryKey, categoryTitle) {
+  const grid = document.getElementById('portfolio-gallery');
+  const sectionTitle = document.getElementById('gallery-heading');
+  const sectionSub = document.getElementById('gallery-subheading');
+  if (!grid) return;
 
-      const folderId = CATEGORY_FOLDERS[categoryKey];
-      if (!folderId) return;
+  const folderId = CATEGORY_FOLDERS[categoryKey];
+  if (!folderId) return;
 
-      if (sectionTitle) {
-        sectionTitle.innerHTML = `${categoryTitle} <button onclick="resetGalleryToDefault()" style="background:none; border:1px solid #f15290; color:#f15290; padding:4px 12px; border-radius:20px; font-size:0.75rem; cursor:pointer; margin-left:15px;"><i class="fas fa-arrow-left"></i> Back to All</button>`;
-      }
+  // Title aur Back Button switch
+  if (sectionTitle) {
+    sectionTitle.innerHTML = `${categoryTitle} <button class="back-collection-btn" onclick="resetGalleryToDefault()"><i class="fas fa-arrow-left"></i> Back to Collections</button>`;
+  }
+  if (sectionSub) {
+    sectionSub.textContent = `Curated archival frames fetched directly from our vault. Tap any photograph for high-resolution view.`;
+  }
 
-      grid.innerHTML = `<div style="color: #a2aab8; text-align: center; grid-column: 1 / -1; padding: 60px 0;"><i class="fas fa-circle-notch fa-spin" style="font-size: 2.5rem; color: #f15290; margin-bottom: 15px; display: block;"></i> Loading ${categoryTitle} photos from Google Drive...</div>`;
+  // Elegant Loading State
+  grid.innerHTML = `
+    <div style="color: rgba(255,255,255,0.7); text-align: center; grid-column: 1 / -1; padding: 80px 0;">
+      <i class="fas fa-circle-notch fa-spin" style="font-size: 2.4rem; color: #db296f; margin-bottom: 16px; display: block;"></i> 
+      Unfolding ${categoryTitle} collection...
+    </div>
+  `;
 
-      try {
-        const response = await fetch(`${API_URL}?folderId=${folderId}&_t=${Date.now()}`);
-        const data = await response.json();
+  try {
+    const response = await fetch(`${API_URL}?folderId=${folderId}&_t=${Date.now()}`);
+    const data = await response.json();
 
-        if (data && data.photos && data.photos.length > 0) {
-          grid.innerHTML = '';
-          data.photos.forEach(photo => {
-            const item = document.createElement('div');
-            item.className = 'gallery-item';
-            const highResUrl = photo.thumbnail.replace('=s220', '=s1600');
-            item.setAttribute('data-src', highResUrl);
-            
-            item.innerHTML = `
-              <img src="${photo.thumbnail}" alt="${categoryTitle}" loading="lazy" style="width:100%; height:350px; object-fit:cover; display:block;" />
-              <div class="item-overlay">
-                <span>${categoryTitle.toUpperCase()}</span>
-              </div>
-            `;
+    if (data && data.photos && data.photos.length > 0) {
+      grid.innerHTML = '';
+      data.photos.forEach(photo => {
+        const item = document.createElement('div');
+        item.className = 'gallery-item';
+        
+        // High-res zoom preview link
+        const highResUrl = photo.thumbnail.replace('=s400', '=s1600').replace('=s220', '=s1600');
+        item.setAttribute('data-src', highResUrl);
+        
+        item.innerHTML = `
+          <img src="${photo.thumbnail}" alt="${categoryTitle}" loading="lazy" />
+          <div class="item-overlay">
+            <span class="collection-tag">${categoryTitle}</span>
+            <span class="explore-hint"><i class="fas fa-search-plus"></i> View High-Res</span>
+          </div>
+        `;
 
-            item.addEventListener('click', function() {
-              openLightbox(this.getAttribute('data-src'));
-            });
+        item.addEventListener('click', function() {
+          openLightbox(this.getAttribute('data-src'));
+        });
 
-            grid.appendChild(item);
-          });
-        } else {
-          grid.innerHTML = `<div style="color: #ff4d6d; text-align: center; grid-column: 1 / -1; padding: 60px 0;">No photos found in this folder yet.</div>`;
-        }
-      } catch (err) {
-        console.error("Error loading drive photos:", err);
-        grid.innerHTML = `<div style="color: #ff4d6d; text-align: center; grid-column: 1 / -1; padding: 60px 0;">Failed to load photos from Google Drive. Please check connection.</div>`;
-      }
+        grid.appendChild(item);
+      });
+    } else {
+      grid.innerHTML = `<div style="color: #ff4d6d; text-align: center; grid-column: 1 / -1; padding: 60px 0;">No photographs found in this collection yet.</div>`;
     }
+  } catch (err) {
+    console.error("Error loading drive photos:", err);
+    grid.innerHTML = `<div style="color: #ff4d6d; text-align: center; grid-column: 1 / -1; padding: 60px 0;">Failed to load photos from Google Drive. Please check connection.</div>`;
+  }
+}
 
-    function resetGalleryToDefault() {
-      const sectionTitle = document.querySelector('#gallery .section-title-wrap h2');
-      if (sectionTitle) sectionTitle.innerHTML = "Moments Frozen in Gold";
+function resetGalleryToDefault() {
+  const sectionTitle = document.getElementById('gallery-heading');
+  const sectionSub = document.getElementById('gallery-subheading');
 
-      const grid = document.getElementById('portfolio-gallery');
-      if (!grid) return;
+  // Subtext wapas editorial ho jayega
+  if (sectionTitle) sectionTitle.innerHTML = "Moments Frozen in Gold";
+  if (sectionSub) sectionSub.textContent = "Every celebration is a chapter of raw devotion and timeless heritage. Step inside a collection to relive the memories.";
 
-      grid.innerHTML = `
-        <div class="gallery-item item-cat wedding" onclick="loadCategoryGallery('wedding', 'Weddings')">
-          <img id="cover-wedding" src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=800&q=80" alt="Weddings" style="width:100%; height:350px; object-fit:cover; display:block;" />
-          <div class="item-overlay"><span>WEDDING</span></div>
-        </div>
-        <div class="gallery-item item-cat bridal" onclick="loadCategoryGallery('bridal', 'Bridal Elegance')">
-          <img id="cover-bridal" src="https://images.unsplash.com/photo-1594552072238-b8a3da72ae9a?auto=format&fit=crop&w=800&q=80" alt="Bridal Elegance" style="width:100%; height:350px; object-fit:cover; display:block;" />
-          <div class="item-overlay"><span>BRIDAL ELEGANCE</span></div>
-        </div>
-        <div class="gallery-item item-cat engagement" onclick="loadCategoryGallery('engagement', 'Engagement')">
-          <img id="cover-engagement" src="https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&w=800&q=80" alt="Engagement" style="width:100%; height:350px; object-fit:cover; display:block;" />
-          <div class="item-overlay"><span>ENGAGEMENT</span></div>
-        </div>
-        <div class="gallery-item item-cat birthday" onclick="loadCategoryGallery('birthday', 'Birthdays & Parties')">
-          <img id="cover-birthday" src="https://images.unsplash.com/photo-1530103862676-de8c9debad1d?auto=format&fit=crop&w=800&q=80" alt="Birthdays & Parties" style="width:100%; height:350px; object-fit:cover; display:block;" />
-          <div class="item-overlay"><span>BIRTHDAYS & PARTIES</span></div>
-        </div>
-        <div class="gallery-item item-cat prewedding" onclick="loadCategoryGallery('prewedding', 'Pre-Wedding')">
-          <img id="cover-prewedding" src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=80" alt="Pre-Wedding" style="width:100%; height:350px; object-fit:cover; display:block;" />
-          <div class="item-overlay"><span>PRE-WEDDING</span></div>
-        </div>
-        <div class="gallery-item item-cat special" onclick="loadCategoryGallery('special', 'Special Events')">
-          <img id="cover-special" src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=800&q=80" alt="Special Events" style="width:100%; height:350px; object-fit:cover; display:block;" />
-          <div class="item-overlay"><span>SPECIAL EVENTS</span></div>
-        </div>
-      `;
-      loadLatestCovers();
-    }
+  const grid = document.getElementById('portfolio-gallery');
+  if (!grid) return;
+
+  // 6 Main Collections with clean mobile-friendly markup
+  grid.innerHTML = `
+    <div class="gallery-item item-cat wedding" onclick="loadCategoryGallery('wedding', 'The Royal Wedding')">
+      <img id="cover-wedding" src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=800&q=80" alt="Weddings" />
+      <div class="item-overlay">
+        <span class="collection-tag">Collection</span>
+        <h3>THE ROYAL WEDDING</h3>
+        <span class="explore-hint">Step Inside <i class="fas fa-arrow-right"></i></span>
+      </div>
+    </div>
+    <div class="gallery-item item-cat bridal" onclick="loadCategoryGallery('bridal', 'Bridal Elegance')">
+      <img id="cover-bridal" src="https://images.unsplash.com/photo-1594552072238-b8a3da72ae9a?auto=format&fit=crop&w=800&q=80" alt="Bridal Elegance" />
+      <div class="item-overlay">
+        <span class="collection-tag">Collection</span>
+        <h3>BRIDAL ELEGANCE</h3>
+        <span class="explore-hint">Step Inside <i class="fas fa-arrow-right"></i></span>
+      </div>
+    </div>
+    <div class="gallery-item item-cat engagement" onclick="loadCategoryGallery('engagement', 'Engagement Tales')">
+      <img id="cover-engagement" src="https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&w=800&q=80" alt="Engagement" />
+      <div class="item-overlay">
+        <span class="collection-tag">Collection</span>
+        <h3>ENGAGEMENT TALES</h3>
+        <span class="explore-hint">Step Inside <i class="fas fa-arrow-right"></i></span>
+      </div>
+    </div>
+    <div class="gallery-item item-cat birthday" onclick="loadCategoryGallery('birthday', 'Family Feasts & Milestones')">
+      <img id="cover-birthday" src="https://images.unsplash.com/photo-1530103862676-de8c9debad1d?auto=format&fit=crop&w=800&q=80" alt="Family Feasts" />
+      <div class="item-overlay">
+        <span class="collection-tag">Collection</span>
+        <h3>FAMILY FEASTS & MILESTONES</h3>
+        <span class="explore-hint">Step Inside <i class="fas fa-arrow-right"></i></span>
+      </div>
+    </div>
+    <div class="gallery-item item-cat prewedding" onclick="loadCategoryGallery('prewedding', 'Pre-Wedding Chronicles')">
+      <img id="cover-prewedding" src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=80" alt="Pre-Wedding" />
+      <div class="item-overlay">
+        <span class="collection-tag">Collection</span>
+        <h3>PRE-WEDDING CHRONICLES</h3>
+        <span class="explore-hint">Step Inside <i class="fas fa-arrow-right"></i></span>
+      </div>
+    </div>
+    <div class="gallery-item item-cat special" onclick="loadCategoryGallery('special', 'Bihar Rituals & Emotions')">
+      <img id="cover-special" src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=800&q=80" alt="Bihar Rituals" />
+      <div class="item-overlay">
+        <span class="collection-tag">Collection</span>
+        <h3>BIHAR RITUALS & EMOTIONS</h3>
+        <span class="explore-hint">Step Inside <i class="fas fa-arrow-right"></i></span>
+      </div>
+    </div>
+  `;
+
+  if (typeof loadLatestCovers === "function") {
+    loadLatestCovers();
+  }
+}
 
     /* --- Lightbox Modal Controllers --- */
     let currentGalleryPhotos = [];
@@ -802,7 +989,7 @@
         waBtn.href = `https://wa.me/919123192566?text=Hi%20Shaadigraphs,%20I%20want%20to%20check%20availability%20and%20book%20for%20Date:%20${dateStr}.`;
       }
     }
-
+      
     // Google Calendar API response handler
     window.handleCalendarAvailability = function(response) {
       try {
@@ -833,5 +1020,22 @@
       loadLatestCovers();
     });
   </script>
+  <script>
+  function openFilmModal(playlistId) {
+    const modal = document.getElementById('videoModal');
+    const iframe = document.getElementById('modalIframe');
+    iframe.src = `https://www.youtube-nocookie.com/embed/videoseries?list=${playlistId}&autoplay=1`;
+    modal.classList.add('active');
+  }
+
+  function closeFilmModal(e) {
+    if (e.target.id === 'videoModal' || e.target.classList.contains('video-modal-close')) {
+      const modal = document.getElementById('videoModal');
+      const iframe = document.getElementById('modalIframe');
+      iframe.src = ''; // Stops audio/video immediately
+      modal.classList.remove('active');
+    }
+  }
+</script>
 </body>
 </html>
