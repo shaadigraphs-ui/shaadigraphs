@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Studio Console | Shaadigraphs</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Cinzel:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <style>
+    :root {
+      --bg: #0b0c10;
+      --card: #13151c;
+      --card-hover: #181b24;
+      --border: rgba(255, 255, 255, 0.08);
+      --accent: #db296f;
+      --accent-gold: #c9a84c;
+      --text: #f4efe6;
+      --muted: #8e95a5;
+      --green: #25d366;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
+    body { background: var(--bg); color: var(--text); min-height: 100vh; padding-bottom: 50px; }
+    
+    .top-nav {
+      background: rgba(19, 21, 28, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .brand { font-family: 'Cinzel', serif; font-size: 1.1rem; color: #fff; letter-spacing: 1px; }
+    .brand span { color: var(--accent); }
+    .auth-badge { font-size: 0.8rem; background: rgba(37, 211, 102, 0.1); border: 1px solid rgba(37, 211, 102, 0.3); color: var(--green); padding: 4px 12px; border-radius: 20px; }
+
+    .container { max-width: 1100px; margin: 28px auto; width: 92%; }
+
+    /* AUTH SCREEN */
+    #auth-box {
+      max-width: 400px;
+      margin: 80px auto;
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: 32px;
+      border-radius: 16px;
+      text-align: center;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+    }
+    #auth-box h2 { font-size: 1.3rem; margin-bottom: 8px; }
+    #auth-box p { font-size: 0.85rem; color: var(--muted); margin-bottom: 24px; }
+
+    .field { text-align: left; margin-bottom: 16px; }
+    .field label { display: block; font-size: 0.72rem; text-transform: uppercase; color: var(--muted); font-weight: 700; margin-bottom: 6px; letter-spacing: 0.5px; }
+    .field input, .field select {
+      width: 100%;
+      background: #07080a;
+      border: 1px solid var(--border);
+      padding: 11px 14px;
+      border-radius: 8px;
+      color: #fff;
+      font-size: 0.9rem;
+      outline: none;
+      transition: border 0.3s;
+    }
+    .field input:focus, .field select:focus { border-color: var(--accent); }
+
+    .btn {
+      width: 100%;
+      background: linear-gradient(135deg, var(--accent), #a01d50);
+      color: #fff;
+      border: none;
+      padding: 12px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .btn:hover { opacity: 0.92; }
+
+    /* TABS SYSTEM */
+    .tabs-bar {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 22px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 12px;
+      overflow-x: auto;
+    }
+    .tab-btn {
+      background: var(--card);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      padding: 9px 18px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.25s;
+    }
+    .tab-btn.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
+
+    /* CARD CONTAINERS */
+    .panel-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+    .card-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    .card-head h3 { font-size: 1.15rem; font-weight: 700; }
+
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+
+    @media (max-width: 768px) {
+      .grid-2, .grid-3 { grid-template-columns: 1fr; }
+    }
+
+    /* DATA TABLES */
+    .data-table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.85rem; text-align: left; }
+    th { background: #07080a; padding: 12px; color: var(--muted); font-size: 0.72rem; text-transform: uppercase; border-bottom: 1px solid var(--border); }
+    td { padding: 12px; border-bottom: 1px solid var(--border); color: #dedfe3; }
+    tr:hover td { background: var(--card-hover); }
+
+    .badge {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 0.72rem;
+      font-weight: 600;
+    }
+    .badge-pink { background: rgba(219, 41, 111, 0.15); color: var(--accent); }
+    .badge-gold { background: rgba(201, 168, 76, 0.15); color: var(--accent-gold); }
+    .badge-green { background: rgba(37, 211, 102, 0.15); color: var(--green); }
+
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+
+  <nav class="top-nav">
+    <div class="brand">SHAADI<span>GRAPHS</span> • ADMIN</div>
+    <div id="status-badge" class="auth-badge hidden"><i class="fas fa-shield-alt"></i> Master Verified</div>
+  </nav>
+
+  <div class="container">
+    <!-- 1. LOGIN BOX -->
+    <div id="auth-box">
+      <h2>Studio Login</h2>
+      <p>Enter Master PIN to access management console</p>
+      <div class="field">
+        <label>Admin Phone</label>
+        <input type="tel" id="adm-phone" placeholder="9123192566" value="9123192566" />
+      </div>
+      <div class="field">
+        <label>Master PIN</label>
+        <input type="password" id="adm-pin" placeholder="Enter PIN" />
+      </div>
+      <button class="btn" onclick="handleAdminLogin()"><i class="fas fa-lock-open"></i> Unlock Console</button>
+    </div>
+
+    <!-- 2. MAIN DASHBOARD CONTENT -->
+    <div id="dashboard-content" class="hidden">
+      <!-- NAVIGATION TABS -->
+      <div class="tabs-bar">
+        <button class="tab-btn active" onclick="switchTab('new-client')"><i class="fas fa-user-plus"></i> New Client Entry</button>
+        <button class="tab-btn" onclick="switchTab('leads')"><i class="fas fa-users"></i> Guest Leads</button>
+        <button class="tab-btn" onclick="switchTab('selections')"><i class="fas fa-check-circle"></i> Photo Shortlists</button>
+        <button class="tab-btn" onclick="switchTab('comments')"><i class="fas fa-comment-alt"></i> Photo Notes</button>
+      </div>
+
+      <!-- TAB 1: NEW CLIENT ONBOARDING -->
+      <div id="tab-new-client" class="tab-pane">
+        <div class="panel-card">
+          <div class="card-head">
+            <h3>Add New Client to Sheet1</h3>
+            <span style="font-size: 0.8rem; color: var(--muted);">Auto-maps Col A to Q</span>
+          </div>
+
+          <form id="add-client-form" onsubmit="submitNewClient(event)">
+            <!-- Primary Identifiers -->
+            <div class="grid-3">
+              <div class="field">
+                <label>Client Mobile Number (Col A)</label>
+                <input type="tel" id="c-phone" placeholder="e.g. 7909014192" required />
+              </div>
+              <div class="field">
+                <label>Wedding Date / PIN (Col B)</label>
+                <input type="text" id="c-pin" placeholder="e.g. 28062026" required />
+              </div>
+              <div class="field">
+                <label>Client Display Name (Col C)</label>
+                <input type="text" id="c-name" placeholder="e.g. Abhishek ❤️ Pooja" required />
+              </div>
+            </div>
+
+            <!-- Couple Names -->
+            <div class="grid-2">
+              <div class="field">
+                <label>Bride Name (Col D)</label>
+                <input type="text" id="c-bride" placeholder="Pooja" />
+              </div>
+              <div class="field">
+                <label>Groom Name (Col E)</label>
+                <input type="text" id="c-groom" placeholder="Abhishek" />
+              </div>
+            </div>
+
+            <!-- Drive & Limit -->
+            <div class="grid-2">
+              <div class="field">
+                <label>Drive Original Folder Link (Col F)</label>
+                <input type="url" id="c-drive" placeholder="Google Drive Link" required />
+              </div>
+              <div class="field">
+                <label>Max Selection Limit (Col G)</label>
+                <input type="number" id="c-limit" value="100" />
+              </div>
+            </div>
+
+            <!-- Commercials & Stage -->
+            <div class="grid-3">
+              <div class="field">
+                <label>Booking Amount (Col I)</label>
+                <input type="number" id="c-booking" placeholder="25000" />
+              </div>
+              <div class="field">
+                <label>Advance Paid (Col J)</label>
+                <input type="number" id="c-advance" placeholder="70000" required />
+              </div>
+              <div class="field">
+                <label>Total Package Amount (Col K)</label>
+                <input type="number" id="c-total" placeholder="120000" required />
+              </div>
+            </div>
+
+            <div class="grid-2">
+              <div class="field">
+                <label>Committed Delivery Date (Col L)</label>
+                <input type="date" id="c-delivery" required />
+              </div>
+              <div class="field">
+                <label>Current Production Stage (Col M)</label>
+                <select id="c-stage">
+                  <option value="Ingesting Footage">Ingesting Footage</option>
+                  <option value="Photo Selection Active">Photo Selection Active</option>
+                  <option value="Trailer Editing">Trailer Editing</option>
+                  <option value="Color Grading & Master">Color Grading & Master</option>
+                  <option value="Ready for Download">Ready for Download</option>
+                  <option value="Delivered">Delivered</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Marketing & Video Link -->
+            <div class="grid-3">
+              <div class="field">
+                <label>Master Video Download Link (Col N)</label>
+                <input type="url" id="c-video" placeholder="Drive Video File Link" />
+              </div>
+              <div class="field">
+                <label>Client Email (Col O)</label>
+                <input type="email" id="c-email" placeholder="client@gmail.com" />
+              </div>
+              <div class="field">
+                <label>Instagram Handle (Col P)</label>
+                <input type="text" id="c-insta" placeholder="@username" />
+              </div>
+            </div>
+
+            <div class="field">
+              <label>Groom / Bride Birthdays (Col Q)</label>
+              <input type="text" id="c-dob" placeholder="e.g. Groom: 14 Aug / Bride: 20 Dec" />
+            </div>
+
+            <button type="submit" class="btn" id="btn-save"><i class="fas fa-cloud-upload-alt"></i> Save to Sheet1</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- TAB 2: LEADS VIEWER (With Manual Lead Entry) -->
+      <div id="tab-leads" class="tab-pane hidden">
+        
+        <!-- MANUAL LEAD FORM -->
+        <div class="panel-card" style="border-color: rgba(219, 41, 111, 0.3); margin-bottom: 20px;">
+          <div class="card-head">
+            <h3><i class="fas fa-user-plus" style="color: var(--accent);"></i> Add Manual / Offline Lead</h3>
+            <span style="font-size: 0.78rem; color: var(--muted);">Direct Save to Leads Sheet</span>
+          </div>
+          <form id="manual-lead-form" onsubmit="submitManualLead(event)">
+            <div class="grid-3">
+              <div class="field">
+                <label>Guest / Prospect Name</label>
+                <input type="text" id="m-lead-name" placeholder="e.g. Rahul Sharma" required />
+              </div>
+              <div class="field">
+                <label>Mobile Number (WhatsApp)</label>
+                <input type="tel" id="m-lead-phone" placeholder="e.g. 9876543210" required />
+              </div>
+              <div class="field">
+                <label>Event Date / Reference PIN</label>
+                <input type="text" id="m-lead-date" placeholder="e.g. 28062026 / Nov 2026" />
+              </div>
+            </div>
+            <div class="grid-2">
+              <div class="field">
+                <label>Source / Side / Note</label>
+                <input type="text" id="m-lead-side" placeholder="e.g. Groom Side / Direct Enquiry / Card Received" required />
+              </div>
+              <div class="field" style="display: flex; align-items: flex-end;">
+                <button type="submit" class="btn" id="btn-save-lead" style="height: 42px;">
+                  <i class="fas fa-plus-circle"></i> Save Lead to Sheet
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <!-- LEADS DATA TABLE -->
+        <div class="panel-card">
+          <div class="card-head">
+            <h3>Guest Access & Inquired Leads</h3>
+            <span id="leads-count" class="badge badge-pink">0 Leads</span>
+          </div>
+          <div class="data-table-wrap">
+            <table id="leads-table">
+              <thead>
+                <tr>
+                  <th>Timestamp</th>
+                  <th>Guest Name</th>
+                  <th>Mobile Number</th>
+                  <th>Event PIN / Date</th>
+                  <th>Side / Source</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 3: SELECTIONS VIEWER -->
+      <div id="tab-selections" class="tab-pane hidden">
+        <div class="panel-card">
+          <div class="card-head">
+            <h3>Photo Shortlists & Submissions</h3>
+            <span id="selections-count" class="badge badge-gold">0 Submissions</span>
+          </div>
+          <div class="data-table-wrap">
+            <table id="selections-table">
+              <thead>
+                <tr>
+                  <th>Timestamp</th>
+                  <th>Client</th>
+                  <th>Mobile</th>
+                  <th>Total Selected</th>
+                  <th>Status</th>
+                  <th>Selected Files</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 4: COMMENTS VIEWER -->
+      <div id="tab-comments" class="tab-pane hidden">
+        <div class="panel-card">
+          <div class="card-head">
+            <h3>Client Photo Instructions</h3>
+            <span id="comments-count" class="badge badge-green">0 Notes</span>
+          </div>
+          <div class="data-table-wrap">
+            <table id="comments-table">
+              <thead>
+                <tr>
+                  <th>Timestamp</th>
+                  <th>Client</th>
+                  <th>Phone</th>
+                  <th>Photo Name</th>
+                  <th>Client Note</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    // Exact deployed Web App URL
+    const API_URL = "https://script.google.com/macros/s/AKfycbxiicife5FUbMsQZqzio27S5_FOxf-b7D5dXFNLWs5g9ehpVcDs4Hif5X98pG9KDdFW/exec";
+
+    function handleAdminLogin() {
+      const phone = document.getElementById("adm-phone").value.replace(/\D/g, '').trim();
+      const pin = document.getElementById("adm-pin").value.trim();
+      if (!phone || !pin) return alert("Enter Phone & Master PIN");
+
+      const script = document.createElement("script");
+      script.src = `${API_URL}?action=adminLogin&phone=${phone}&pin=${pin}&callback=onAdminLoginSuccess&_t=${Date.now()}`;
+      document.body.appendChild(script);
+    }
+
+    window.onAdminLoginSuccess = function(res) {
+      if (res && res.success) {
+        document.getElementById("auth-box").classList.add("hidden");
+        document.getElementById("dashboard-content").classList.remove("hidden");
+        document.getElementById("status-badge").classList.remove("hidden");
+        loadAdminData();
+      } else {
+        alert("Incorrect PIN or Phone Number!");
+      }
+    };
+
+    function loadAdminData() {
+      const phone = document.getElementById("adm-phone").value.replace(/\D/g, '').trim();
+      const pin = document.getElementById("adm-pin").value.trim();
+
+      const script = document.createElement("script");
+      script.src = `${API_URL}?action=getAdminOverview&phone=${phone}&pin=${pin}&callback=renderOverviewTables&_t=${Date.now()}`;
+      document.body.appendChild(script);
+    }
+
+    window.renderOverviewTables = function(res) {
+      if (!res || !res.success) return;
+
+      // 1. Leads Table with WhatsApp Message & Direct Call
+      const leadsBody = document.querySelector("#leads-table tbody");
+      leadsBody.innerHTML = "";
+      document.getElementById("leads-count").innerText = `${res.leads.length} Leads`;
+      
+      res.leads.reverse().forEach(l => {
+        const cleanPhone = String(l.phone).replace(/\D/g, '');
+        const guestName = l.name || "Guest";
+
+        // Pre-typed WhatsApp Pitch with Direct Call Mention
+        const messageText = `Hello ${guestName} ji, warm greetings from Shaadigraphs! ✨\nHope you had a wonderful time viewing the wedding moments on our VIP guest portal.\n\nIf you or your family are planning an upcoming wedding or celebration, we would love to connect. Feel free to call us directly or reply here to discuss dates and packages.\n\n📞 Direct Studio Call: +91 91231 92566\nPortfolio: https://shaadigraphs-ui.github.io/shaadigraphs/\n\nWarm Regards,\nTeam Shaadigraphs`;
+
+        const waUrl = `https://wa.me/91${cleanPhone}?text=${encodeURIComponent(messageText)}`;
+        const callUrl = `tel:+91${cleanPhone}`;
+
+        leadsBody.innerHTML += `
+          <tr>
+            <td>${l.timestamp}</td>
+            <td><strong>${l.name}</strong></td>
+            <td>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span>${l.phone}</span>
+                <!-- WhatsApp Pitch Button -->
+                <a href="${waUrl}" target="_blank" title="Send WhatsApp Pitch" style="background: rgba(37, 211, 102, 0.15); border: 1px solid rgba(37, 211, 102, 0.4); color: var(--green); padding: 4px 8px; border-radius: 6px; text-decoration: none; font-size: 0.78rem; font-weight: 600; display: inline-flex; align-items: center; gap: 4px;">
+                  <i class="fab fa-whatsapp"></i> Chat
+                </a>
+                <!-- Direct Phone Call Button -->
+                <a href="${callUrl}" title="Call Directly" style="background: rgba(201, 168, 76, 0.15); border: 1px solid rgba(201, 168, 76, 0.4); color: var(--accent-gold); padding: 4px 8px; border-radius: 6px; text-decoration: none; font-size: 0.78rem;">
+                  <i class="fas fa-phone-alt"></i>
+                </a>
+              </div>
+            </td>
+            <td><span class="badge badge-pink">${l.pinDate}</span></td>
+            <td>${l.side}</td>
+          </tr>
+        `;
+      });
+
+      // 2. Selections Table
+      const selBody = document.querySelector("#selections-table tbody");
+      selBody.innerHTML = "";
+      document.getElementById("selections-count").innerText = `${res.selections.length} Submissions`;
+      res.selections.reverse().forEach(s => {
+        selBody.innerHTML += `
+          <tr>
+            <td>${s.timestamp}</td>
+            <td><strong>${s.name}</strong></td>
+            <td>${s.phone}</td>
+            <td><span class="badge badge-gold">${s.count} Photos</span></td>
+            <td>${s.type}</td>
+            <td style="max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${s.photos}</td>
+          </tr>
+        `;
+      });
+
+      // 3. Comments Table
+      const comBody = document.querySelector("#comments-table tbody");
+      comBody.innerHTML = "";
+      document.getElementById("comments-count").innerText = `${res.comments.length} Notes`;
+      res.comments.reverse().forEach(c => {
+        comBody.innerHTML += `
+          <tr>
+            <td>${c.timestamp}</td>
+            <td><strong>${c.name}</strong></td>
+            <td>${c.phone}</td>
+            <td><span class="badge badge-pink">${c.photo}</span></td>
+            <td>${c.comment}</td>
+          </tr>
+        `;
+      });
+    };
+
+    function switchTab(tabId) {
+      document.querySelectorAll(".tab-pane").forEach(el => el.classList.add("hidden"));
+      document.querySelectorAll(".tab-btn").forEach(el => el.classList.remove("active"));
+      
+      document.getElementById("tab-" + tabId).classList.remove("hidden");
+      event.currentTarget.classList.add("active");
+    }
+
+    function submitNewClient(e) {
+      e.preventDefault();
+      const btn = document.getElementById("btn-save");
+      btn.innerText = "Syncing to Sheet1...";
+      btn.disabled = true;
+
+      const params = new URLSearchParams({
+        action: "addClient",
+        phone: document.getElementById("c-phone").value.trim(),
+        pin: document.getElementById("c-pin").value.trim(),
+        name: document.getElementById("c-name").value.trim(),
+        bride: document.getElementById("c-bride").value.trim(),
+        groom: document.getElementById("c-groom").value.trim(),
+        driveLink: document.getElementById("c-drive").value.trim(),
+        limit: document.getElementById("c-limit").value,
+        bookingAmount: document.getElementById("c-booking").value || 0,
+        advancePaid: document.getElementById("c-advance").value || 0,
+        totalAmount: document.getElementById("c-total").value || 0,
+        deliveryDate: document.getElementById("c-delivery").value,
+        currentStage: document.getElementById("c-stage").value,
+        videoDownloadLink: document.getElementById("c-video").value.trim(),
+        email: document.getElementById("c-email").value.trim(),
+        instagram: document.getElementById("c-insta").value.trim(),
+        dob: document.getElementById("c-dob").value.trim(),
+        callback: "onClientSaveDone",
+        _t: Date.now()
+      });
+
+      const script = document.createElement("script");
+      script.src = `${API_URL}?${params.toString()}`;
+      document.body.appendChild(script);
+    }
+
+    window.onClientSaveDone = function(res) {
+      const btn = document.getElementById("btn-save");
+      btn.innerText = "Save to Sheet1";
+      btn.disabled = false;
+      if (res && res.success) {
+        alert("Client successfully added to Sheet1!");
+        document.getElementById("add-client-form").reset();
+      } else {
+        alert("Error saving client. Please try again.");
+      }
+    };
+
+    function submitManualLead(e) {
+      e.preventDefault();
+      const btn = document.getElementById("btn-save-lead");
+      btn.innerText = "Saving Lead...";
+      btn.disabled = true;
+
+      const params = new URLSearchParams({
+        action: "addLead",
+        name: document.getElementById("m-lead-name").value.trim(),
+        phone: document.getElementById("m-lead-phone").value.replace(/\D/g, '').trim(),
+        date: document.getElementById("m-lead-date").value.trim() || "Offline Entry",
+        side: document.getElementById("m-lead-side").value.trim() || "Manual Studio Lead",
+        callback: "onManualLeadDone",
+        _t: Date.now()
+      });
+
+      const script = document.createElement("script");
+      script.src = `${API_URL}?${params.toString()}`;
+      document.body.appendChild(script);
+    }
+
+    window.onManualLeadDone = function(res) {
+      const btn = document.getElementById("btn-save-lead");
+      btn.innerHTML = `<i class="fas fa-plus-circle"></i> Save Lead to Sheet`;
+      btn.disabled = false;
+      if (res && res.status === "success") {
+        alert("Lead successfully saved to Leads sheet!");
+        document.getElementById("manual-lead-form").reset();
+        loadAdminData(); // Table ko turant auto-refresh kar dega
+      } else {
+        alert("Error saving lead. Please try again.");
+      }
+    };
+  </script>
+</body>
+</html>
