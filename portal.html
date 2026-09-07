@@ -12,6 +12,105 @@
     rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <link rel="stylesheet" href="style.css" />
+
+  <style>
+    /* PRE-BOOKING & REVIEW CARD LUXURY STYLES */
+    .prebooking-luxury-card {
+      background: linear-gradient(145deg, #13151c, #0e1017);
+      border: 1px solid rgba(201, 168, 76, 0.3);
+      border-radius: 16px;
+      padding: 40px 24px;
+      text-align: center;
+      max-width: 650px;
+      margin: 40px auto;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+    }
+    .prebooking-icon {
+      font-size: 2.8rem;
+      color: #c9a84c;
+      margin-bottom: 18px;
+    }
+    .prebooking-title {
+      font-family: 'Cinzel', serif;
+      font-size: 1.6rem;
+      color: #f4efe6;
+      margin-bottom: 12px;
+      letter-spacing: 1px;
+    }
+    .prebooking-badge {
+      display: inline-block;
+      background: rgba(37, 211, 102, 0.15);
+      border: 1px solid rgba(37, 211, 102, 0.4);
+      color: #25d366;
+      padding: 6px 16px;
+      border-radius: 30px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .prebooking-copy {
+      color: #8e95a5;
+      font-size: 0.95rem;
+      line-height: 1.6;
+      margin-bottom: 25px;
+    }
+
+    /* GOOGLE REVIEW BANNER */
+    .review-banner-card {
+      background: linear-gradient(135deg, rgba(201, 168, 76, 0.1), rgba(219, 41, 111, 0.1));
+      border: 1px solid rgba(201, 168, 76, 0.4);
+      border-radius: 14px;
+      padding: 22px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 30px 0 15px 0;
+      gap: 15px;
+    }
+    .review-btn {
+      background: #c9a84c;
+      color: #0b0c10;
+      font-weight: 700;
+      padding: 10px 18px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 0.88rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      white-space: nowrap;
+      transition: opacity 0.2s;
+    }
+    .review-btn:hover { opacity: 0.9; }
+
+    .nav-review-link {
+      background: rgba(201, 168, 76, 0.15);
+      border: 1px solid rgba(201, 168, 76, 0.4);
+      color: #c9a84c;
+      padding: 6px 14px;
+      border-radius: 20px;
+      text-decoration: none;
+      font-size: 0.8rem;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-right: 12px;
+    }
+
+    .master-video-box {
+      background: rgba(37, 211, 102, 0.1);
+      border: 1px solid rgba(37, 211, 102, 0.3);
+      padding: 18px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+  </style>
 </head>
 <body class="portal-app">
 
@@ -20,9 +119,14 @@
       <a href="index.html" class="brand-logo-wrap">
         <img src="images/Shaadigraphs-white-logo.png" alt="Shaadigraphs Logo" class="main-site-logo" />
       </a>
-      <a href="index.html" class="portal-back-link">
-        <i class="fas fa-arrow-left"></i> Back to Home
-      </a>
+      <div class="portal-nav-actions">
+        <a href="https://g.page/r/CUMu_LL1QUqcEBM/review" target="_blank" class="nav-review-link">
+          <i class="fas fa-star" style="color: #c9a84c;"></i> Review Us
+        </a>
+        <a href="index.html" class="portal-back-link">
+          <i class="fas fa-arrow-left"></i> Back to Home
+        </a>
+      </div>
     </div>
   </header>
 
@@ -30,7 +134,7 @@
 
     <div id="portal-welcome-screen" class="portal-card">
       <span class="eyebrow portal-eyebrow">SECURE GATEWAY</span>
-      <h2 class="portal-card-title">Client &amp; Guest Portal</h2>
+      <h2 class="portal-card-title">Client & Guest Portal</h2>
       <p class="portal-card-copy">Please choose your profile below to proceed to your memories.</p>
       <div class="portal-choice-stack">
         <button type="button" class="portal-btn portal-btn-primary" onclick="showScreen('couple')">
@@ -45,7 +149,7 @@
     <div id="couple-login-screen" class="portal-card" hidden>
       <span class="eyebrow portal-eyebrow">CLIENT ALBUM SELECTION</span>
       <h3 class="portal-card-title portal-card-title-sm">Couple Login</h3>
-      <p class="portal-card-copy">Enter your registered mobile number &amp; wedding date PIN.</p>
+      <p class="portal-card-copy">Enter your registered mobile number & wedding date PIN.</p>
       <div class="portal-form">
         <label class="portal-label">REGISTERED MOBILE NUMBER</label>
         <input type="tel" id="client-phone-input" class="portal-input" placeholder="e.g. 9876543210" />
@@ -60,9 +164,9 @@
     </div>
 
     <div id="guest-access-screen" class="portal-card" hidden>
-      <span class="eyebrow portal-eyebrow">FAMILY &amp; GUESTS</span>
+      <span class="eyebrow portal-eyebrow">FAMILY & GUESTS</span>
       <h3 class="portal-card-title portal-card-title-sm">Guest Gallery Access</h3>
-      <p class="portal-card-copy">Enter your details &amp; wedding side to verify your access.</p>
+      <p class="portal-card-copy">Enter your details & wedding side to verify your access.</p>
       <form id="guestForm" class="portal-form" onsubmit="handleGuestSubmit(event)">
         <label class="portal-label">YOUR FULL NAME</label>
         <input type="text" id="guest-name" class="portal-input" placeholder="e.g. Rahul Kumar" required />
@@ -80,9 +184,26 @@
         <p id="guest-login-error" class="portal-error" hidden></p>
         <div class="portal-form-actions">
           <button type="button" class="portal-btn portal-btn-ghost" onclick="showScreen('welcome')">Back</button>
-          <button type="submit" class="portal-btn portal-btn-primary">Verify &amp; View</button>
+          <button type="submit" class="portal-btn portal-btn-primary">Verify & View</button>
         </div>
       </form>
+    </div>
+
+    <div id="prebooking-screen" class="prebooking-luxury-card" hidden>
+      <div class="prebooking-icon"><i class="fas fa-heart"></i></div>
+      <div class="prebooking-badge"><i class="fas fa-shield-alt"></i> Booking Confirmed & Dates Locked</div>
+      <h2 id="pre-couple-name" class="prebooking-title">Abhishek ❤️ Pooja</h2>
+      <p class="prebooking-copy">
+        Warmest congratulations! Your wedding production schedule is officially locked with <strong>Shaadigraphs</strong>.<br/>
+        Our pre-production team is actively preparing the creative storyboard and timelines. Your live interactive selection gallery and footage streams will unlock immediately post-wedding rituals.
+      </p>
+      <div style="background: rgba(255,255,255,0.04); padding: 14px; border-radius: 10px; border: 1px dashed rgba(201, 168, 76, 0.3); margin-bottom: 24px;">
+        <span style="font-size: 0.78rem; color: #8e95a5; text-transform: uppercase;">Current Studio Stage</span>
+        <div style="color: #c9a84c; font-weight: 700; font-size: 1.05rem; margin-top: 4px;">Pre-Production & Creative Planning</div>
+      </div>
+      <a href="tel:+919123192566" class="portal-btn portal-btn-ghost" style="display: inline-flex; width: auto; padding: 10px 20px;">
+        <i class="fas fa-phone-alt"></i> Contact Creative Director
+      </a>
     </div>
 
     <div id="client-dashboard-container" class="portal-dashboard" hidden>
@@ -103,19 +224,39 @@
         </div>
       </div>
 
+      <div id="master-video-container" class="master-video-box" hidden>
+        <div>
+          <div style="color: #25d366; font-weight: 700; font-size: 0.95rem;"><i class="fas fa-film"></i> Master Wedding Film Ready</div>
+          <p style="color: #8e95a5; font-size: 0.8rem; margin-top: 2px;">Your final color-graded cinematic master is available for download in full 4K.</p>
+        </div>
+        <a id="master-video-link" href="#" target="_blank" class="portal-btn portal-btn-primary" style="width: auto; padding: 8px 16px; font-size: 0.85rem;">
+          <i class="fas fa-download"></i> Download Video
+        </a>
+      </div>
+
       <div id="selection-bar" class="portal-selection-hint">
         <span id="client-selection-counter">Selected: 0 / 0</span>
         <button type="button" id="filter-toggle-btn" class="portal-chip" onclick="toggleViewMode()">Show Selected Only</button>
       </div>
-
+      <div id="event-tabs-bar" class="portal-tabs-row" style="display: flex; gap: 8px; overflow-x: auto; margin-bottom: 16px; padding-bottom: 8px;"></div>
       <div id="client-photo-grid" class="portal-photo-grid"></div>
+
+      <div id="review-prompt-card" class="review-banner-card" hidden>
+        <div>
+          <div style="color: #c9a84c; font-weight: 700; font-size: 1rem;"><i class="fas fa-heart"></i> Loved Reliving Your Memories?</div>
+          <p style="color: #8e95a5; font-size: 0.82rem; margin-top: 3px;">Your honest review means the world to our small creative crew. Leave us a 5-star rating on Google!</p>
+        </div>
+        <a href="https://g.page/r/CUMu_LL1QUqcEBM/review" target="_blank" class="review-btn">
+          <i class="fab fa-google"></i> Rate Us 5 Stars
+        </a>
+      </div>
     </div>
 
   </main>
 
   <footer class="site-footer portal-footer">
     <div class="container">
-      <p>&copy; 2026 Shaadigraphs. All Rights Reserved.</p>
+      <p>© 2026 Shaadigraphs. All Rights Reserved.</p>
     </div>
   </footer>
 
@@ -142,36 +283,28 @@
     </div>
   </div>
 
-  <!-- LIGHTBOX MODAL -->
   <div class="lightbox-modal" id="lightboxModal">
-    <button class="lightbox-close" id="lightboxClose" type="button">&times;</button>
-    <button class="lightbox-arrow lightbox-prev" type="button" onclick="changeLightboxImage(-1)">&#10094;</button>
+    <button class="lightbox-close" id="lightboxClose" type="button">×</button>
+    <button class="lightbox-arrow lightbox-prev" type="button" onclick="changeLightboxImage(-1)">❮</button>
     
     <img class="lightbox-content" id="lightboxImg" src="" alt="Enlarged Preview" />
 
-    <!-- 1. Floating Glass Dock -->
     <div class="lightbox-action-bar">
-      <!-- Heart / Select Button -->
       <button type="button" class="lightbox-action-btn" id="lightboxHeartBtn" onclick="toggleCurrentLightboxPhoto()" title="Select Photo">
         <i id="lightboxHeartIcon" class="far fa-heart"></i>
       </button>
-
-      <!-- Share Button -->
       <button type="button" class="lightbox-action-btn" id="lightboxShareBtn" onclick="shareCurrentPhoto()" title="Share">
         <i class="fas fa-share-alt"></i>
       </button>
-
-      <!-- Comment Toggle Button -->
       <button type="button" class="lightbox-action-btn" id="lightboxCommentBtn" onclick="toggleCommentInputBox()" title="Add Note">
         <i class="fas fa-comment"></i>
       </button>
     </div>
 
-    <!-- 2. Instructions Comment Drawer -->
     <div id="lightboxCommentContainer" class="portal-comment-drawer" hidden>
       <div class="comment-drawer-header">
         <span><i class="fas fa-pen-nib"></i> Album Instructions</span>
-        <button type="button" class="comment-close-btn" onclick="toggleCommentInputBox()">&times;</button>
+        <button type="button" class="comment-close-btn" onclick="toggleCommentInputBox()">×</button>
       </div>
       <textarea id="photoCommentInput" placeholder="Type instructions for this photo (e.g., Put on front page)..."></textarea>
       <div class="portal-comment-actions">
@@ -181,7 +314,7 @@
       </div>
     </div>
 
-    <button class="lightbox-arrow lightbox-next" type="button" onclick="changeLightboxImage(1)">&#10095;</button>
+    <button class="lightbox-arrow lightbox-next" type="button" onclick="changeLightboxImage(1)">❯</button>
   </div>
 
   <script>
@@ -196,6 +329,7 @@
   let currentIndex = 0;
   let viewOnlySelected = false;
   let isUserGuest = false;
+  let activeCategoryFilter = "ALL";
 
   function getStorageKey() {
     return currentActiveClient ? `shaadigraphs_sel_${currentActiveClient.phone}` : '';
@@ -238,6 +372,7 @@
     setHidden(document.getElementById('couple-login-screen'), true);
     setHidden(document.getElementById('guest-access-screen'), true);
     setHidden(document.getElementById('client-dashboard-container'), true);
+    setHidden(document.getElementById('prebooking-screen'), true);
     setHidden(document.getElementById('client-login-error'), true);
     setHidden(document.getElementById('guest-login-error'), true);
 
@@ -267,6 +402,7 @@
   window.handleClientsSync = function (data) {
     if (data && data.clients && data.clients.length > 0) {
       clientDatabase = data.clients;
+      checkUrlAutoLogin();
     }
   };
 
@@ -277,6 +413,21 @@
     script.id = 'client-db-engine-script';
     script.src = `${API_URL}?action=getClients&callback=handleClientsSync&_t=${Date.now()}`;
     document.body.appendChild(script);
+  }
+
+  function checkUrlAutoLogin() {
+    const params = new URLSearchParams(window.location.search);
+    const urlPhone = cleanDigits(params.get('phone'));
+    const urlPin = cleanDigits(params.get('pin'));
+
+    if (urlPhone && urlPin) {
+      const match = clientDatabase.find(c => c.phone === urlPhone && c.pin === urlPin);
+      if (match) {
+        currentActiveClient = match;
+        isUserGuest = false;
+        showClientProperScreen();
+      }
+    }
   }
 
   function handleClientLogin() {
@@ -296,17 +447,33 @@
       currentActiveClient = match;
       isUserGuest = false;
       setHidden(errEl, true);
-      setHidden(document.getElementById('couple-login-screen'), true);
-      setHidden(document.getElementById('client-dashboard-container'), false);
-      setHidden(document.getElementById('selection-bar'), false);
-      setHidden(document.getElementById('submit-album-btn'), false);
-      setHidden(document.getElementById('save-selection-btn'), false);
-      setGalleryMode(true, false);
-      renderClientDashboard();
+      showClientProperScreen();
     } else {
       errEl.innerText = "Invalid Mobile Number or Wedding Date PIN. Please try again.";
       setHidden(errEl, false);
     }
+  }
+
+  function showClientProperScreen() {
+    setHidden(document.getElementById('portal-welcome-screen'), true);
+    setHidden(document.getElementById('couple-login-screen'), true);
+
+    const stage = (currentActiveClient.currentStage || currentActiveClient.stage || "").toLowerCase().trim();
+
+    if (stage === "pre-production & planning" || stage === "pre-production") {
+      setHidden(document.getElementById('prebooking-screen'), false);
+      document.getElementById('pre-couple-name').innerText = currentActiveClient.name || "Our Beautiful Couple";
+      setGalleryMode(false, false);
+      return;
+    }
+
+    setHidden(document.getElementById('prebooking-screen'), true);
+    setHidden(document.getElementById('client-dashboard-container'), false);
+    setHidden(document.getElementById('selection-bar'), false);
+    setHidden(document.getElementById('submit-album-btn'), false);
+    setHidden(document.getElementById('save-selection-btn'), false);
+    setGalleryMode(true, false);
+    renderClientDashboard();
   }
 
   function updateGuestSideLabel() {
@@ -371,34 +538,77 @@
   window.handleDrivePhotos = function (data) {
     if (data && data.photos) {
       allDrivePhotos = data.photos;
-      currentPhotoObjects = allDrivePhotos;
-      currentGalleryPhotos = allDrivePhotos.map(photo => `https://lh3.googleusercontent.com/d/${photo.id}=s800`);
+      renderEventTabs();
     }
     renderPhotoGrid();
   };
 
-  function escapeAttr(str) {
-    return String(str).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  function renderEventTabs() {
+    const tabsContainer = document.getElementById('event-tabs-bar');
+    if (!tabsContainer) return;
+
+    const categories = Array.from(new Set(allDrivePhotos.map(p => p.category || "Main")));
+    if (categories.length <= 1) {
+      tabsContainer.style.display = "none";
+      return;
+    }
+    tabsContainer.style.display = "flex";
+    
+    let html = `<button type="button" class="portal-chip ${activeCategoryFilter === 'ALL' ? 'is-active' : ''}" onclick="setCategoryFilter('ALL')">All Photos</button>`;
+    
+    categories.forEach(cat => {
+      let icon = "📸";
+      let lower = cat.toLowerCase();
+      if (lower.includes('wedding')) icon = "❤️";
+      else if (lower.includes('engagement')) icon = "💜";
+      else if (lower.includes('prewed') || lower.includes('pre-wed') || lower.includes('pre wedding')) icon = "🧡";
+      else if (lower.includes('pooja') || lower.includes('puja')) icon = "🪔";
+      else if (lower.includes('haldi')) icon = "💛";
+      else if (lower.includes('mehendi') || lower.includes('mehndi')) icon = "🤎";
+      else if (lower.includes('sangeet')) icon = "💙";
+      else if (lower.includes('reception')) icon = "💖";
+
+      html += `<button type="button" class="portal-chip ${activeCategoryFilter === cat ? 'is-active' : ''}" onclick="setCategoryFilter('${cat}')">${icon} ${cat}</button>`;
+    });
+
+    tabsContainer.innerHTML = html;
   }
 
+  function setCategoryFilter(cat) {
+    activeCategoryFilter = cat;
+    renderEventTabs();
+    renderPhotoGrid();
+  }
+
+ function escapeAttr(str) {
+    if (!str) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
   function renderPhotoGrid() {
     const grid = document.getElementById('client-photo-grid');
     if (!grid) return;
 
-    const photosToDisplay = viewOnlySelected
-      ? allDrivePhotos.filter(photo => selectedPhotoSet.has(photo.name))
-      : allDrivePhotos;
+    let filtered = allDrivePhotos;
+    if (activeCategoryFilter !== "ALL") {
+      filtered = filtered.filter(p => p.category === activeCategoryFilter);
+    }
+    if (viewOnlySelected) {
+      filtered = filtered.filter(photo => selectedPhotoSet.has(photo.name));
+    }
 
-    currentPhotoObjects = photosToDisplay;
-    currentGalleryPhotos = photosToDisplay.map(photo => `https://lh3.googleusercontent.com/d/${photo.id}=s800`);
+    currentPhotoObjects = filtered;
+    currentGalleryPhotos = filtered.map(photo => `https://lh3.googleusercontent.com/d/${photo.id}=s800`);
 
-    if (!photosToDisplay.length) {
-      grid.innerHTML = `<div class="portal-empty">${viewOnlySelected ? "No photos selected yet." : "No images found in this Google Drive folder."}</div>`;
+    if (!filtered.length) {
+      grid.innerHTML = `<div class="portal-empty">${viewOnlySelected ? "No photos selected yet." : "No photos in this category."}</div>`;
       return;
     }
 
     grid.innerHTML = '';
-    photosToDisplay.forEach((photo, idx) => {
+    filtered.forEach((photo, idx) => {
       const card = document.createElement('article');
       const isSelected = selectedPhotoSet.has(photo.name);
       const highResUrl = `https://lh3.googleusercontent.com/d/${photo.id}=s800`;
@@ -406,7 +616,7 @@
       card.className = `portal-photo-card${isSelected ? ' is-selected' : ''}`;
       card.innerHTML = `
         <img src="${photo.thumbnail}" alt="${escapeAttr(photo.name)}" loading="lazy" decoding="async" />
-        <div class="portal-photo-meta">${escapeAttr(photo.name)}</div>
+        <div class="portal-photo-meta">${escapeAttr(photo.name)} <span style="color:#c9a84c; font-size:10px;">[${photo.category || "Main"}]</span></div>
         ${isUserGuest ? '' : `
           <span class="portal-photo-check" aria-hidden="true"><i id="icon-${photo.id}" class="${isSelected ? 'fas' : 'far'} fa-heart"></i></span>
           <button type="button" class="portal-photo-preview" aria-label="Preview photo" data-idx="${idx}">
@@ -442,6 +652,19 @@
       ? "Guest Viewing Mode"
       : `Phone: ${currentActiveClient.phoneDisplay} • Max Selection: ${currentActiveClient.limit} Photos`;
     document.getElementById('client-drive-btn').href = currentActiveClient.driveLink || "#";
+
+    // MASTER VIDEO LINK (COL N)
+    const videoBox = document.getElementById('master-video-container');
+    const videoLink = document.getElementById('master-video-link');
+    if (currentActiveClient.videoDownloadLink && currentActiveClient.videoDownloadLink.trim().length > 5) {
+      videoLink.href = currentActiveClient.videoDownloadLink;
+      setHidden(videoBox, false);
+    } else {
+      setHidden(videoBox, true);
+    }
+
+    // REVIEW BANNER SHOW
+    setHidden(document.getElementById('review-prompt-card'), false);
 
     if (!isUserGuest) loadLocalSelections();
     updateSelectionCounter();
@@ -531,19 +754,63 @@
       return;
     }
 
-    const fileList = Array.from(selectedPhotoSet).join(', ');
+    let catMap = { 
+      prewed: [], 
+      engagement: [], 
+      pooja: [], 
+      haldi: [], 
+      mehendi: [], 
+      sangeet: [], 
+      wedding: [], 
+      reception: [], 
+      other: [] 
+    };
+
+    allDrivePhotos.forEach(p => {
+      if (selectedPhotoSet.has(p.name)) {
+        let lower = (p.category || "").toLowerCase();
+        if (lower.includes("prewed") || lower.includes("pre-wed") || lower.includes("pre wedding")) catMap.prewed.push(p.name);
+        else if (lower.includes("engagement")) catMap.engagement.push(p.name);
+        else if (lower.includes("pooja") || lower.includes("puja")) catMap.pooja.push(p.name);
+        else if (lower.includes("haldi")) catMap.haldi.push(p.name);
+        else if (lower.includes("mehendi") || lower.includes("mehndi")) catMap.mehendi.push(p.name);
+        else if (lower.includes("sangeet")) catMap.sangeet.push(p.name);
+        else if (lower.includes("wedding")) catMap.wedding.push(p.name);
+        else if (lower.includes("reception")) catMap.reception.push(p.name);
+        else catMap.other.push(p.name);
+      }
+    });
+
     const clientName = currentActiveClient.name;
     const clientPhone = currentActiveClient.phoneDisplay || "";
     const totalCount = selectedPhotoSet.size;
-    const saveUrl = `${API_URL}?action=saveSelection&name=${encodeURIComponent(clientName)}&phone=${encodeURIComponent(clientPhone)}&count=${totalCount}&photos=${encodeURIComponent(fileList)}&final=${isFinal}&_t=${Date.now()}`;
-    fetch(saveUrl, { mode: 'no-cors' }).catch(() => { });
+
+    const params = new URLSearchParams({
+      action: "saveSelection",
+      name: clientName,
+      phone: clientPhone,
+      count: totalCount,
+      prewed: catMap.prewed.join(", "),
+      engagement: catMap.engagement.join(", "),
+      pooja: catMap.pooja.join(", "),
+      haldi: catMap.haldi.join(", "),
+      mehendi: catMap.mehendi.join(", "),
+      sangeet: catMap.sangeet.join(", "),
+      wedding: catMap.wedding.join(", "),
+      reception: catMap.reception.join(", "),
+      other: catMap.other.join(", "),
+      final: isFinal,
+      _t: Date.now()
+    });
+
+    fetch(`${API_URL}?${params.toString()}`, { mode: 'no-cors' }).catch(() => { });
 
     if (isFinal) {
-      const msg = `Hi Shaadigraphs, I (${clientName}) have finalized ${totalCount} photos for our Album Printing. The complete file list has been automatically synced and locked!`;
+      const msg = `Hi Shaadigraphs, I (${clientName}) have finalized ${totalCount} photos across our events. The categorized list is synced and submitted!`;
       window.open(`https://wa.me/919123192566?text=${encodeURIComponent(msg)}`, '_blank');
       alert("Album selection submitted and locked successfully!");
     } else {
-      alert("Selection saved successfully! You can come back anytime to modify your choices.");
+      alert("Selection saved successfully! You can modify your choices anytime.");
     }
   }
 
@@ -637,7 +904,7 @@
     const currentPhoto = currentPhotoObjects[currentIndex];
     const clientName = currentActiveClient ? currentActiveClient.name : "Our Client";
     const photoUrl = `https://lh3.googleusercontent.com/d/${currentPhoto.id}=s800`;
-    const shareMessage = `Hi! Look at this gorgeous captured moment of ${clientName} by *Shaadigraphs* 📸✨\n\n👉 Download your full high-quality (HQ) picture directly from our portal here: https://shaadigraphs.com`;
+    const shareMessage = `Hi! Look at this gorgeous captured moment of ${clientName} by *Shaadigraphs* 📸✨\n\n👉 Download your full high-quality (HQ) picture directly from our portal here: https://shaadigraphs-ui.github.io/shaadigraphs/portal.html`;
 
     try {
       if (navigator.clipboard) await navigator.clipboard.writeText(shareMessage);
@@ -684,7 +951,6 @@
     toggleCommentInputBox();
   }
 
-  // GLOBAL ENTER KEY LISTENER
   document.addEventListener("DOMContentLoaded", () => {
     fetchClientDatabase();
 
@@ -699,16 +965,6 @@
 
     if (phoneInput) phoneInput.addEventListener('keydown', handleEnterPress);
     if (pinInput) pinInput.addEventListener('keydown', handleEnterPress);
-
-    const guestForm = document.getElementById('guest-login-form');
-    if (guestForm) {
-      guestForm.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') {
-          e.preventDefault();
-          handleGuestSubmit(e);
-        }
-      });
-    }
   });
 </script>
 </body>
