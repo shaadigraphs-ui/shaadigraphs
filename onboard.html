@@ -244,7 +244,18 @@
       const pinVal = document.getElementById('onb-pin').value.trim();
 
       const eventRows = document.querySelectorAll('#dynamic-events-container > div');
-      let eventMap = { prewed: "", engagement: "", pooja: "", haldi: "", mehendi: "", sangeet: "", reception: "", other: "" };
+      
+      let eventMap = { 
+        prewed: "", 
+        engagement: "", 
+        pooja: "", 
+        haldi: "", 
+        mehendi: "", 
+        sangeet: "", 
+        reception: "", 
+        birthday: "", 
+        other: "" 
+      };
       let customEventsList = [];
 
       eventRows.forEach(row => {
@@ -252,27 +263,42 @@
         const customInput = row.querySelector('.event-custom-input');
         const dateInput = row.querySelector('.event-date-input');
         if (!select || !dateInput) return;
-        let eventType = select.value;
+        
+        let eventType = select.value.trim();
         let eventDate = dateInput.value.trim();
         if (!eventType || !eventDate) return;
 
-        if (eventType === 'Other') {
+        let cleanType = eventType.toLowerCase();
+
+        if (cleanType === 'pre-wedding') {
+          eventMap.prewed = eventDate;
+        } else if (cleanType === 'engagement') {
+          eventMap.engagement = eventDate;
+        } else if (cleanType.includes('pooja')) {
+          eventMap.pooja = eventDate;
+        } else if (cleanType === 'haldi') {
+          eventMap.haldi = eventDate;
+        } else if (cleanType === 'mehendi') {
+          eventMap.mehendi = eventDate;
+        } else if (cleanType === 'sangeet') {
+          eventMap.sangeet = eventDate;
+        } else if (cleanType === 'reception') {
+          eventMap.reception = eventDate;
+        } else if (cleanType === 'birthday') {
+          eventMap.birthday = eventDate; // Guaranteed Birthday Event Column Map
+        } else if (cleanType === 'other') {
           let customName = customInput ? customInput.value.trim() : 'Custom Event';
           if (customName) customEventsList.push(`${customName}: ${eventDate}`);
-        } else if (eventType === 'Pre-Wedding') eventMap.prewed = eventDate;
-        else if (eventType === 'Engagement') eventMap.engagement = eventDate;
-        else if (eventType === 'Pooja & Rituals') eventMap.pooja = eventDate;
-        else if (eventType === 'Haldi') eventMap.haldi = eventDate;
-        else if (eventType === 'Mehendi') eventMap.mehendi = eventDate;
-        else if (eventType === 'Sangeet') eventMap.sangeet = eventDate;
-        else if (eventType === 'Reception') eventMap.reception = eventDate;
+        }
       });
 
-      if (customEventsList.length > 0) eventMap.other = customEventsList.join(', ');
+      if (customEventsList.length > 0) {
+        eventMap.other = customEventsList.join(', ');
+      }
 
       const displayName = `${groomVal} ❤️ ${brideVal}`;
 
-      const params = new URLSearchParams({
+      const postData = {
         action: "updateClientFull",
         phone: currentActiveClient.phone,
         pin: pinVal,
@@ -298,17 +324,30 @@
         dateMehendi: eventMap.mehendi,
         dateSangeet: eventMap.sangeet,
         dateReception: eventMap.reception,
-        dateOther: eventMap.other,
-        callback: "onOnboardSubmittedDone",
-        _t: Date.now()
-      });
+        dateBirthday: eventMap.birthday,
+        dateOther: eventMap.other
+      };
 
-      const script = document.createElement('script');
-      script.src = `${API_URL}?${params.toString()}`;
-      document.body.appendChild(script);
+      fetch(API_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(postData)
+      })
+      .then(() => {
+        onOnboardSubmittedDone();
+      })
+      .catch((error) => {
+        console.error("Error saving schedules:", error);
+        alert("Kuch error aa gaya hai. Kripya dobara try karein.");
+        btn.innerText = "Submit & Lock Details";
+        btn.disabled = false;
+      });
     }
 
-    window.onOnboardSubmittedDone = function(res) {
+    function onOnboardSubmittedDone() {
       const onboardBox = document.getElementById('onboard-screen-container');
       if (onboardBox) {
         onboardBox.innerHTML = `
@@ -328,7 +367,7 @@
           </div>
         `;
       }
-    };
+    }
 
     document.addEventListener("DOMContentLoaded", () => {
       initOnboarding();
