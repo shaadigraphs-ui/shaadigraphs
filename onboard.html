@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Client Onboarding | SHAADIGRAPHS</title>
+  <link rel="icon" type="image/png" href="images/chhotkadil.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="style.css" />
+
+  <style>
+    body { background-color: #0a0b0e; color: #f4efe6; font-family: 'Plus Jakarta Sans', sans-serif; }
+    .onboard-container { max-width: 650px; margin: 40px auto; padding: 20px; }
+    .portal-card {
+      background: linear-gradient(180deg, rgba(255, 45, 117, 0.08), transparent 28%), #12141a;
+      padding: 36px 26px;
+      border-radius: 18px;
+      border: 1px solid rgba(255, 45, 117, 0.3);
+      box-shadow: 0 24px 48px rgba(0, 0, 0, 0.6);
+    }
+    .portal-eyebrow { color: #ff2d75; font-size: 0.75rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; display: inline-block; margin-bottom: 8px; }
+    .portal-card-title { font-size: 1.8rem; font-family: 'Cinzel', serif; margin-bottom: 8px; color: #f4efe6; }
+    .portal-card-copy { font-size: 0.9rem; color: #a2aab8; margin-bottom: 24px; line-height: 1.5; }
+    .portal-form { display: flex; flex-direction: column; gap: 12px; text-align: left; }
+    .portal-label { font-size: 0.72rem; color: #ff6699; font-weight: 700; letter-spacing: 1.1px; margin-top: 8px; }
+    .portal-input { width: 100%; padding: 12px 14px; background: #0d0f14; border: 1px solid rgba(255, 45, 117, 0.25); border-radius: 10px; color: #f4efe6; font-size: 0.95rem; outline: none; box-sizing: border-box; }
+    .portal-input:focus { border-color: #ff2d75; box-shadow: 0 0 0 3px rgba(255, 45, 117, 0.2); }
+    .portal-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 14px 16px; border-radius: 12px; font-weight: 700; font-size: 0.95rem; cursor: pointer; border: none; transition: all 0.2s ease; }
+    .portal-btn-primary { background: linear-gradient(135deg, #ff2d75, #db296f); color: #ffffff; box-shadow: 0 8px 22px rgba(255, 45, 117, 0.35); }
+    .portal-btn-ghost { background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(244, 239, 230, 0.14); color: #f4efe6; }
+    .portal-btn-compact { width: auto; padding: 8px 14px; font-size: 0.8rem; }
+  </style>
+</head>
+<body class="portal-app">
+
+  <header class="header portal-header" style="background: rgba(13, 15, 18, 0.78); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 50px; margin: 14px 24px; padding: 8px 24px; backdrop-filter: blur(18px);">
+    <div class="container nav-wrap portal-nav" style="display: flex; justify-content: space-between; align-items: center;">
+      <a href="index.html" class="brand-logo-wrap">
+        <img src="images/Shaadigraphs-white-logo.png" alt="Shaadigraphs Logo" class="main-site-logo" style="height: 44px;" />
+      </a>
+      <a href="index.html" class="portal-back-link" style="color: #ff6699; text-decoration: none; font-size: 0.82rem; font-weight: 600;">
+        <i class="fas fa-arrow-left"></i> Back to Home
+      </a>
+    </div>
+  </header>
+
+  <main class="portal-main onboard-container">
+    <div id="onboard-loading" class="portal-card" style="text-align: center; padding: 50px 20px;">
+      <i class="fas fa-circle-notch fa-spin" style="font-size: 2rem; color: #ff2d75; margin-bottom: 12px;"></i>
+      <h3>Verifying Secure Onboarding Link...</h3>
+    </div>
+
+    <div id="onboard-screen-container" class="portal-card" style="display: none;"></div>
+  </main>
+
+  <footer class="site-footer portal-footer" style="text-align: center; padding: 20px 0; border-top: 1px solid rgba(255,255,255,0.06);">
+    <p>© 2026 Shaadigraphs. All Rights Reserved.</p>
+  </footer>
+
+  <script>
+    const API_URL = "https://script.google.com/macros/s/AKfycbxiicife5FUbMsQZqzio27S5_FOxf-b7D5dXFNLWs5g9ehpVcDs4Hif5X98pG9KDdFW/exec";
+    let currentActiveClient = null;
+
+    function cleanDigits(val) {
+      if (!val) return '';
+      return String(val).replace(/\D/g, '').trim();
+    }
+
+    function initOnboarding() {
+      const params = new URLSearchParams(window.location.search);
+      const urlPhone = cleanDigits(params.get('phone'));
+      const urlPin = cleanDigits(params.get('pin'));
+
+      if (!urlPhone || !urlPin) {
+        document.getElementById('onboard-loading').innerHTML = `<h3 style="color: #ff4d6d;">Invalid or Missing Onboarding Link</h3><p style="color: #a2aab8; margin-top: 10px;">Please check your WhatsApp link or contact the studio.</p>`;
+        return;
+      }
+
+      const script = document.createElement('script');
+      script.src = `${API_URL}?action=getClients&callback=handleOnboardClientData&_t=${Date.now()}`;
+      document.body.appendChild(script);
+    }
+
+    window.handleOnboardClientData = function(data) {
+      if (data && data.clients) {
+        const params = new URLSearchParams(window.location.search);
+        const urlPhone = cleanDigits(params.get('phone'));
+        const urlPin = cleanDigits(params.get('pin'));
+
+        const match = data.clients.find(c => c.phone === urlPhone && c.pin === urlPin);
+        if (match) {
+          currentActiveClient = match;
+          renderOnboardForm();
+        } else {
+          document.getElementById('onboard-loading').innerHTML = `<h3 style="color: #ff4d6d;">Client Record Not Found</h3><p style="color: #a2aab8; margin-top: 10px;">The details associated with this link could not be verified.</p>`;
+        }
+      }
+    };
+
+    function renderOnboardForm() {
+      document.getElementById('onboard-loading').style.display = 'none';
+      const onboardBox = document.getElementById('onboard-screen-container');
+      onboardBox.style.display = 'block';
+
+      const bookingTotal = currentActiveClient.totalAmount || currentActiveClient.total || 0;
+      const advancePaid = currentActiveClient.advancePaid || currentActiveClient.advance || 0;
+      const balanceDue = bookingTotal - advancePaid;
+
+      onboardBox.innerHTML = `
+        <div style="text-align: center; margin-bottom: 20px;">
+          <span class="eyebrow portal-eyebrow">SHAADIGRAPHS • CLIENT ONBOARDING</span>
+          <h2 class="portal-card-title">${currentActiveClient.name || 'Welcome Couple'}</h2>
+          <p class="portal-card-copy" style="margin-bottom: 10px;">Please verify your details and add your custom event dates below.</p>
+        </div>
+
+        <div style="background: rgba(201, 168, 76, 0.08); border: 1px solid rgba(201, 168, 76, 0.3); border-radius: 12px; padding: 16px; margin-bottom: 24px;">
+          <div style="font-size: 0.75rem; color: #c9a84c; font-weight: 700; text-transform: uppercase; margin-bottom: 8px;">
+            <i class="fas fa-file-invoice-dollar"></i> Booking Summary & Commercials
+          </div>
+          <div style="display: flex; justify-content: space-between; font-size: 0.88rem; margin-bottom: 6px; color: #f4efe6;">
+            <span>Total Booking Value:</span>
+            <strong>₹${Number(bookingTotal).toLocaleString('en-IN')}</strong>
+          </div>
+          <div style="display: flex; justify-content: space-between; font-size: 0.88rem; margin-bottom: 6px; color: #25d366;">
+            <span>Advance Paid:</span>
+            <strong>₹${Number(advancePaid).toLocaleString('en-IN')}</strong>
+          </div>
+          <div style="display: flex; justify-content: space-between; font-size: 0.88rem; border-top: 1px dashed rgba(255,255,255,0.15); padding-top: 6px; color: #ef4444;">
+            <span>Balance Due:</span>
+            <strong>₹${Number(balanceDue).toLocaleString('en-IN')}</strong>
+          </div>
+        </div>
+
+        <form id="client-onboard-form" class="portal-form" onsubmit="submitClientOnboardForm(event)">
+          <label class="portal-label">BRIDE'S FULL NAME *</label>
+          <input type="text" id="onb-bride" class="portal-input" value="${currentActiveClient.bride || ''}" required />
+
+          <label class="portal-label">GROOM'S FULL NAME *</label>
+          <input type="text" id="onb-groom" class="portal-input" value="${currentActiveClient.groom || ''}" required />
+
+          <label class="portal-label">EMAIL ADDRESS *</label>
+          <input type="email" id="onb-email" class="portal-input" value="${currentActiveClient.email || ''}" placeholder="e.g. couple@gmail.com" required />
+
+          <label class="portal-label">INSTAGRAM HANDLE</label>
+          <input type="text" id="onb-insta" class="portal-input" value="${currentActiveClient.instagram || ''}" placeholder="e.g. @couple_handle" />
+
+          <div style="margin-top: 8px;">
+            <label class="portal-label">BIRTHDAY (GROOM)</label>
+            <input type="date" id="onb-dob-groom" class="portal-input" style="color-scheme: dark;" />
+          </div>
+          <div style="margin-top: 8px;">
+            <label class="portal-label">BIRTHDAY (BRIDE)</label>
+            <input type="date" id="onb-dob-bride" class="portal-input" style="color-scheme: dark;" />
+          </div>
+
+          <label class="portal-label" style="margin-top: 20px; color: #c9a84c;"><i class="fas fa-calendar-alt"></i> ADD EVENT DATES & SCHEDULES</label>
+          <p style="font-size: 0.8rem; color: #8e95a5; margin-bottom: 12px;">Add your events dynamically using the button below:</p>
+
+          <div id="dynamic-events-container" style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 15px;"></div>
+
+          <button type="button" class="portal-btn portal-btn-ghost portal-btn-compact" onclick="addEventRow()" style="width: auto; margin-bottom: 20px;">
+            <i class="fas fa-plus"></i> Add Event
+          </button>
+
+          <label class="portal-label">WEDDING DATE / PIN * (DDMMYYYY)</label>
+          <input type="text" id="onb-pin" class="portal-input" value="${currentActiveClient.pin || ''}" placeholder="e.g. 28062026" required />
+
+          <div style="margin-top: 25px;">
+            <button type="submit" class="portal-btn portal-btn-primary" id="onb-submit-btn">
+              <i class="fas fa-check-circle"></i> Submit & Lock Details
+            </button>
+          </div>
+        </form>
+      `;
+      addEventRow();
+    }
+
+    function addEventRow(selectedEvent = "", customName = "", eventDate = "") {
+      const container = document.getElementById('dynamic-events-container');
+      if (!container) return;
+
+      const rowId = 'ev-row-' + Date.now() + Math.random().toString(36).substr(2, 4);
+      const rowDiv = document.createElement('div');
+      rowDiv.id = rowId;
+      rowDiv.style.cssText = "display: flex; gap: 10px; align-items: center; background: rgba(255,255,255,0.03); padding: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.08);";
+
+      rowDiv.innerHTML = `
+        <div style="flex: 1; display: flex; flex-direction: column; gap: 4px;">
+          <select class="portal-input event-select-dropdown" onchange="handleEventDropdownChange('${rowId}')" style="padding: 8px 10px; font-size: 0.85rem;">
+            <option value="">-- Select Event --</option>
+            <option value="Engagement" ${selectedEvent === 'Engagement' ? 'selected' : ''}>Engagement</option>
+            <option value="Pre-Wedding" ${selectedEvent === 'Pre-Wedding' ? 'selected' : ''}>Pre-Wedding</option>
+            <option value="Pooja & Rituals" ${selectedEvent === 'Pooja & Rituals' ? 'selected' : ''}>Pooja & Rituals</option>
+            <option value="Haldi" ${selectedEvent === 'Haldi' ? 'selected' : ''}>Haldi</option>
+            <option value="Mehendi" ${selectedEvent === 'Mehendi' ? 'selected' : ''}>Mehendi</option>
+            <option value="Sangeet" ${selectedEvent === 'Sangeet' ? 'selected' : ''}>Sangeet</option>
+            <option value="Reception" ${selectedEvent === 'Reception' ? 'selected' : ''}>Reception</option>
+            <option value="Birthday" ${selectedEvent === 'Birthday' ? 'selected' : ''}>Birthday</option>
+            <option value="Other" ${selectedEvent === 'Other' ? 'selected' : ''}>Other (Type Custom)</option>
+          </select>
+          <input type="text" class="portal-input event-custom-input" placeholder="Type event name..." value="${customName}" style="display: none; padding: 8px 10px; font-size: 0.85rem; margin-top: 4px;" />
+        </div>
+        <div style="flex: 1;">
+          <input type="date" class="portal-input event-date-input" value="${eventDate}" style="padding: 8px 10px; font-size: 0.85rem; color-scheme: dark;" />
+        </div>
+        <button type="button" onclick="document.getElementById('${rowId}').remove()" style="background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.3); color: #ef4444; width: 34px; height: 34px; border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center;">
+          <i class="fas fa-trash-alt" style="font-size: 0.8rem;"></i>
+        </button>
+      `;
+      container.appendChild(rowDiv);
+      handleEventDropdownChange(rowId);
+    }
+
+    function handleEventDropdownChange(rowId) {
+      const row = document.getElementById(rowId);
+      if (!row) return;
+      const select = row.querySelector('.event-select-dropdown');
+      const customInput = row.querySelector('.event-custom-input');
+      if (select.value === 'Other') {
+        customInput.style.display = 'block';
+        customInput.required = true;
+      } else {
+        customInput.style.display = 'none';
+        customInput.required = false;
+        customInput.value = '';
+      }
+    }
+
+    function submitClientOnboardForm(e) {
+      if (e && e.preventDefault) e.preventDefault();
+      const btn = document.getElementById('onb-submit-btn');
+      btn.innerText = "Saving Schedules...";
+      btn.disabled = true;
+
+      const brideVal = document.getElementById('onb-bride').value.trim();
+      const groomVal = document.getElementById('onb-groom').value.trim();
+      const emailVal = document.getElementById('onb-email').value.trim();
+      const instaVal = document.getElementById('onb-insta').value.trim();
+      const dobGroomVal = document.getElementById('onb-dob-groom').value.trim();
+      const dobBrideVal = document.getElementById('onb-dob-bride').value.trim();
+      const pinVal = document.getElementById('onb-pin').value.trim();
+
+      const eventRows = document.querySelectorAll('#dynamic-events-container > div');
+      let eventMap = { prewed: "", engagement: "", pooja: "", haldi: "", mehendi: "", sangeet: "", reception: "", other: "" };
+      let customEventsList = [];
+
+      eventRows.forEach(row => {
+        const select = row.querySelector('.event-select-dropdown');
+        const customInput = row.querySelector('.event-custom-input');
+        const dateInput = row.querySelector('.event-date-input');
+        if (!select || !dateInput) return;
+        let eventType = select.value;
+        let eventDate = dateInput.value.trim();
+        if (!eventType || !eventDate) return;
+
+        if (eventType === 'Other') {
+          let customName = customInput ? customInput.value.trim() : 'Custom Event';
+          if (customName) customEventsList.push(`${customName}: ${eventDate}`);
+        } else if (eventType === 'Pre-Wedding') eventMap.prewed = eventDate;
+        else if (eventType === 'Engagement') eventMap.engagement = eventDate;
+        else if (eventType === 'Pooja & Rituals') eventMap.pooja = eventDate;
+        else if (eventType === 'Haldi') eventMap.haldi = eventDate;
+        else if (eventType === 'Mehendi') eventMap.mehendi = eventDate;
+        else if (eventType === 'Sangeet') eventMap.sangeet = eventDate;
+        else if (eventType === 'Reception') eventMap.reception = eventDate;
+      });
+
+      if (customEventsList.length > 0) eventMap.other = customEventsList.join(', ');
+
+      const displayName = `${groomVal} ❤️ ${brideVal}`;
+
+      const params = new URLSearchParams({
+        action: "updateClientFull",
+        phone: currentActiveClient.phone,
+        pin: pinVal,
+        name: displayName,
+        bride: brideVal,
+        groom: groomVal,
+        driveLink: currentActiveClient.driveLink || "",
+        limit: currentActiveClient.limit || 100,
+        booking: currentActiveClient.bookingAmount || 0,
+        advance: currentActiveClient.advancePaid || 0,
+        total: currentActiveClient.totalAmount || 0,
+        delivery: currentActiveClient.deliveryDate || "",
+        stage: currentActiveClient.currentStage || "Pre-Production & Planning",
+        video: currentActiveClient.videoDownloadLink || "",
+        email: emailVal,
+        insta: instaVal,
+        dobGroom: dobGroomVal,
+        dobBride: dobBrideVal,
+        datePrewed: eventMap.prewed,
+        dateEngagement: eventMap.engagement,
+        datePooja: eventMap.pooja,
+        dateHaldi: eventMap.haldi,
+        dateMehendi: eventMap.mehendi,
+        dateSangeet: eventMap.sangeet,
+        dateReception: eventMap.reception,
+        dateOther: eventMap.other,
+        callback: "onOnboardSubmittedDone",
+        _t: Date.now()
+      });
+
+      const script = document.createElement('script');
+      script.src = `${API_URL}?${params.toString()}`;
+      document.body.appendChild(script);
+    }
+
+    window.onOnboardSubmittedDone = function(res) {
+      const onboardBox = document.getElementById('onboard-screen-container');
+      if (onboardBox) {
+        onboardBox.innerHTML = `
+          <div style="text-align: center; padding: 20px 0;">
+            <i class="fas fa-heart" style="font-size: 3rem; color: #c9a84c; margin-bottom: 16px;"></i>
+            <h2 class="portal-card-title">Details & Schedules Successfully Locked!</h2>
+            <p class="portal-card-copy" style="line-height: 1.8; margin-top: 14px;">
+              Thank you so much! Your event dates and metadata have been successfully registered with Shaadigraphs.<br/><br/>
+              <strong style="color: #c9a84c;">A Special Note for the Shoot:</strong><br/>
+              Please cooperate fully with our creative crew during the rituals and portraits. Trust our lens, let loose, and enjoy your special days—the more relaxed and joyous you are, the more magical and cinematic your final film & frames will turn out! ✨
+            </p>
+            <div style="margin-top: 25px;">
+              <a href="index.html" class="portal-btn portal-btn-ghost" style="display: inline-flex; width: auto; padding: 10px 24px; text-decoration: none;">
+                <i class="fas fa-home"></i> Back to Home
+              </a>
+            </div>
+          </div>
+        `;
+      }
+    };
+
+    document.addEventListener("DOMContentLoaded", () => {
+      initOnboarding();
+    });
+  </script>
+</body>
+</html>

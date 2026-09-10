@@ -144,49 +144,6 @@
     .btn-edit { background: rgba(59, 130, 246, 0.15); border: 1px solid rgba(59, 130, 246, 0.3); color: #60a5fa; }
     .btn-copy { background: rgba(201, 168, 76, 0.15); border: 1px solid rgba(201, 168, 76, 0.3); color: var(--accent-gold); }
 
-    /* EVENT SELECTOR PILLS STYLES */
-    .pkg-pills-wrap {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin: 10px 0 14px 0;
-    }
-    .pkg-pill-btn {
-      background: #07080a;
-      border: 1px solid var(--border);
-      color: var(--muted);
-      padding: 7px 14px;
-      border-radius: 20px;
-      font-size: 0.78rem;
-      font-weight: 600;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      user-select: none;
-      transition: all 0.2s ease;
-    }
-    .pkg-pill-btn:hover {
-      border-color: rgba(201, 168, 76, 0.5);
-      color: #fff;
-    }
-    .pkg-pill-btn.is-active {
-      background: rgba(201, 168, 76, 0.15);
-      border-color: var(--accent-gold);
-      color: var(--accent-gold);
-    }
-    .dynamic-event-box {
-      display: none;
-    }
-    .dynamic-event-box.is-visible {
-      display: block;
-      animation: fadeInField 0.25s ease;
-    }
-    @keyframes fadeInField {
-      from { opacity: 0; transform: translateY(-4px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
     /* MODAL OVERLAY */
     .modal-overlay {
       position: fixed;
@@ -313,70 +270,33 @@
           <form id="add-client-form" onsubmit="submitNewClient(event)">
             <div class="grid-3">
               <div class="field">
-                <label>Client Mobile Number (Col A)</label>
-                <input type="tel" id="c-phone" placeholder="e.g. 7909014192" required />
+                <label>Client Mobile Number (Col A) *</label>
+                <input type="tel" id="c-phone" placeholder="e.g. 9876543210" required />
               </div>
               <div class="field">
-                <label>Wedding Date / Main PIN (Col B)</label>
-                <input type="text" id="c-pin" placeholder="e.g. 28062026" required />
+                <label>Wedding Date / Main PIN (Col B) *</label>
+                <input type="text" id="c-pin" placeholder="e.g. 01012018" required />
               </div>
               <div class="field">
                 <label>Client Display Name (Col C)</label>
-                <input type="text" id="c-name" placeholder="e.g. Abhishek ❤️ Pooja" required />
+                <input type="text" id="c-name" placeholder="e.g. Family / Couple" />
               </div>
             </div>
 
-            <!-- SMART INTERACTIVE PACKAGE SELECTOR -->
+            <!-- DYNAMIC EVENT SELECTOR FOR ADMIN -->
             <div style="background: rgba(201, 168, 76, 0.05); border: 1px dashed rgba(201, 168, 76, 0.3); border-radius: 12px; padding: 16px; margin-bottom: 16px;">
-              <div style="display: flex; justify-content: space-between; align-items: center;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
                 <span style="font-size: 0.76rem; color: var(--accent-gold); font-weight: 700; text-transform: uppercase;">
-                  <i class="fas fa-tasks"></i> Select Booked Events (Shoot Package)
+                  <i class="fas fa-tasks"></i> Booked Events & Dates
                 </span>
-                <span style="font-size: 0.72rem; color: var(--muted);">Click to enable date box</span>
+                <span style="font-size: 0.72rem; color: var(--muted);">Click '+ Add Event' to add functions & dates</span>
               </div>
               
-              <!-- PILLS TOGGLE BUTTONS -->
-              <div class="pkg-pills-wrap">
-                <button type="button" class="pkg-pill-btn" onclick="toggleEventField('c', 'eng', this)">💍 Engagement</button>
-                <button type="button" class="pkg-pill-btn" onclick="toggleEventField('c', 'prewed', this)">📷 Pre-Wedding</button>
-                <button type="button" class="pkg-pill-btn" onclick="toggleEventField('c', 'pooja', this)">🪔 Pooja</button>
-                <button type="button" class="pkg-pill-btn" onclick="toggleEventField('c', 'haldi', this)">💛 Haldi</button>
-                <button type="button" class="pkg-pill-btn" onclick="toggleEventField('c', 'mehendi', this)">🤎 Mehendi</button>
-                <button type="button" class="pkg-pill-btn" onclick="toggleEventField('c', 'sangeet', this)">🎵 Sangeet</button>
-                <button type="button" class="pkg-pill-btn" onclick="toggleEventField('c', 'reception', this)">💖 Reception</button>
-              </div>
+              <div id="admin-dynamic-events-container" style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 12px;"></div>
 
-              <!-- DYNAMIC DATE INPUT BOXES (Appears only if clicked) -->
-              <div class="grid-3" style="margin-top: 8px;">
-                <div class="field dynamic-event-box" id="box-c-eng" style="margin-bottom: 0;">
-                  <label>💜 Engagement Date</label>
-                  <input type="text" id="c-date-eng" placeholder="DDMMYYYY" />
-                </div>
-                <div class="field dynamic-event-box" id="box-c-prewed" style="margin-bottom: 0;">
-                  <label>🧡 Pre-Wedding Date</label>
-                  <input type="text" id="c-date-prewed" placeholder="DDMMYYYY" />
-                </div>
-                <div class="field dynamic-event-box" id="box-c-pooja" style="margin-bottom: 0;">
-                  <label>🪔 Pooja Date</label>
-                  <input type="text" id="c-date-pooja" placeholder="DDMMYYYY" />
-                </div>
-                <div class="field dynamic-event-box" id="box-c-haldi" style="margin-bottom: 0;">
-                  <label>💛 Haldi Date</label>
-                  <input type="text" id="c-date-haldi" placeholder="DDMMYYYY" />
-                </div>
-                <div class="field dynamic-event-box" id="box-c-mehendi" style="margin-bottom: 0;">
-                  <label>🤎 Mehendi Date</label>
-                  <input type="text" id="c-date-mehendi" placeholder="DDMMYYYY" />
-                </div>
-                <div class="field dynamic-event-box" id="box-c-sangeet" style="margin-bottom: 0;">
-                  <label>💙 Sangeet Date</label>
-                  <input type="text" id="c-date-sangeet" placeholder="DDMMYYYY" />
-                </div>
-                <div class="field dynamic-event-box" id="box-c-reception" style="margin-bottom: 0;">
-                  <label>💖 Reception Date</label>
-                  <input type="text" id="c-date-reception" placeholder="DDMMYYYY" />
-                </div>
-              </div>
+              <button type="button" class="btn" onclick="addAdminEventRow()" style="width: auto; padding: 6px 14px; font-size: 0.8rem; background: rgba(201, 168, 76, 0.2); border: 1px solid var(--accent-gold); color: var(--accent-gold);">
+                <i class="fas fa-plus"></i> Add Event
+              </button>
             </div>
 
             <div class="grid-2">
@@ -393,7 +313,7 @@
             <div class="grid-2">
               <div class="field">
                 <label>Drive Original Folder Link (Col F)</label>
-                <input type="url" id="c-drive" placeholder="Google Drive Link" required />
+                <input type="url" id="c-drive" placeholder="Google Drive Link" />
               </div>
               <div class="field">
                 <label>Max Selection Limit (Col G)</label>
@@ -408,18 +328,18 @@
               </div>
               <div class="field">
                 <label>Initial Advance Paid (Col J)</label>
-                <input type="number" id="c-advance" placeholder="25000" required />
+                <input type="number" id="c-advance" placeholder="25000" />
               </div>
               <div class="field">
                 <label>Final Deal / Total Amount (Col K)</label>
-                <input type="number" id="c-total" placeholder="120000" required />
+                <input type="number" id="c-total" placeholder="120000" />
               </div>
             </div>
 
             <div class="grid-2">
               <div class="field">
                 <label>Committed Delivery Date (Col L)</label>
-                <input type="date" id="c-delivery" required />
+                <input type="date" id="c-delivery" style="color-scheme: dark;" />
               </div>
               <div class="field">
                 <label>Current Production Stage (Col M)</label>
@@ -602,50 +522,20 @@
           </div>
         </div>
 
-        <!-- SMART PACKAGE SELECTOR IN EDIT MODAL -->
-        <div style="background: rgba(201, 168, 76, 0.05); border: 1px dashed rgba(201, 168, 76, 0.3); border-radius: 12px; padding: 14px; margin-bottom: 16px;">
-          <span style="font-size: 0.74rem; color: var(--accent-gold); font-weight: 700; text-transform: uppercase;">
-            <i class="fas fa-tasks"></i> Multi-Event Shoot Package Dates
-          </span>
-          <div class="pkg-pills-wrap">
-            <button type="button" class="pkg-pill-btn" onclick="toggleEventField('e', 'eng', this)">💍 Engagement</button>
-            <button type="button" class="pkg-pill-btn" onclick="toggleEventField('e', 'prewed', this)">📷 Pre-Wedding</button>
-            <button type="button" class="pkg-pill-btn" onclick="toggleEventField('e', 'pooja', this)">🪔 Pooja</button>
-            <button type="button" class="pkg-pill-btn" onclick="toggleEventField('e', 'haldi', this)">💛 Haldi</button>
-            <button type="button" class="pkg-pill-btn" onclick="toggleEventField('e', 'mehendi', this)">🤎 Mehendi</button>
-            <button type="button" class="pkg-pill-btn" onclick="toggleEventField('e', 'sangeet', this)">🎵 Sangeet</button>
-            <button type="button" class="pkg-pill-btn" onclick="toggleEventField('e', 'reception', this)">💖 Reception</button>
+        <!-- DYNAMIC EVENT SELECTOR FOR EDIT MODAL -->
+        <div style="background: rgba(201, 168, 76, 0.05); border: 1px dashed rgba(201, 168, 76, 0.3); border-radius: 12px; padding: 16px; margin-bottom: 16px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <span style="font-size: 0.76rem; color: var(--accent-gold); font-weight: 700; text-transform: uppercase;">
+              <i class="fas fa-tasks"></i> Booked Events & Dates
+            </span>
+            <span style="font-size: 0.72rem; color: var(--muted);">Manage events dynamically</span>
           </div>
-          <div class="grid-3" style="margin-top: 6px;">
-            <div class="field dynamic-event-box" id="box-e-eng" style="margin-bottom: 0;">
-              <label>💜 Engagement Date</label>
-              <input type="text" id="e-date-eng" placeholder="DDMMYYYY" />
-            </div>
-            <div class="field dynamic-event-box" id="box-e-prewed" style="margin-bottom: 0;">
-              <label>🧡 Pre-Wedding Date</label>
-              <input type="text" id="e-date-prewed" placeholder="DDMMYYYY" />
-            </div>
-            <div class="field dynamic-event-box" id="box-e-pooja" style="margin-bottom: 0;">
-              <label>🪔 Pooja Date</label>
-              <input type="text" id="e-date-pooja" placeholder="DDMMYYYY" />
-            </div>
-            <div class="field dynamic-event-box" id="box-e-haldi" style="margin-bottom: 0;">
-              <label>💛 Haldi Date</label>
-              <input type="text" id="e-date-haldi" placeholder="DDMMYYYY" />
-            </div>
-            <div class="field dynamic-event-box" id="box-e-mehendi" style="margin-bottom: 0;">
-              <label>🤎 Mehendi Date</label>
-              <input type="text" id="e-date-mehendi" placeholder="DDMMYYYY" />
-            </div>
-            <div class="field dynamic-event-box" id="box-e-sangeet" style="margin-bottom: 0;">
-              <label>💙 Sangeet Date</label>
-              <input type="text" id="e-date-sangeet" placeholder="DDMMYYYY" />
-            </div>
-            <div class="field dynamic-event-box" id="box-e-reception" style="margin-bottom: 0;">
-              <label>💖 Reception Date</label>
-              <input type="text" id="e-date-reception" placeholder="DDMMYYYY" />
-            </div>
-          </div>
+          
+          <div id="edit-dynamic-events-container" style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 12px;"></div>
+
+          <button type="button" class="btn" onclick="addEditEventRow()" style="width: auto; padding: 6px 14px; font-size: 0.8rem; background: rgba(201, 168, 76, 0.2); border: 1px solid var(--accent-gold); color: var(--accent-gold);">
+            <i class="fas fa-plus"></i> Add Event
+          </button>
         </div>
 
         <div class="grid-2">
@@ -662,7 +552,7 @@
         <div class="grid-2">
           <div class="field">
             <label>Drive Original Folder Link (Selection)</label>
-            <input type="url" id="e-drive" required />
+            <input type="url" id="e-drive" />
           </div>
           <div class="field">
             <label>Selection Limit</label>
@@ -684,12 +574,12 @@
           <div class="grid-3">
             <div class="field">
               <label>1. Booking Deal Total (Col K)</label>
-              <input type="number" id="e-total" oninput="calculateRemainingBalance()" placeholder="120000" required />
+              <input type="number" id="e-total" oninput="calculateRemainingBalance()" placeholder="120000" />
             </div>
             <div class="field">
               <label>2. Total Advance Paid (Col J)</label>
               <div style="display: flex; gap: 6px;">
-                <input type="number" id="e-advance" oninput="calculateRemainingBalance()" required />
+                <input type="number" id="e-advance" oninput="calculateRemainingBalance()" />
                 <button type="button" onclick="showAddInstallmentBox()" title="Add Installment" style="background: rgba(37, 211, 102, 0.2); border: 1px solid rgba(37, 211, 102, 0.5); color: var(--green); padding: 0 10px; border-radius: 8px; cursor: pointer; font-size: 0.85rem; font-weight: bold; white-space: nowrap;">
                   + Add
                 </button>
@@ -734,7 +624,7 @@
         <div class="grid-2">
           <div class="field">
             <label>Committed Delivery Date</label>
-            <input type="date" id="e-delivery" />
+            <input type="date" id="e-delivery" style="color-scheme: dark;" />
           </div>
           <div class="field">
             <label>Current Stage</label>
@@ -807,21 +697,115 @@
     let globalClientsData = [];
     let currentEditPhone = "";
 
-    // DYNAMIC PILLS TOGGLE LOGIC
-    function toggleEventField(prefix, evName, btnEl) {
-      const box = document.getElementById(`box-${prefix}-${evName}`);
-      const input = document.getElementById(`${prefix}-date-${evName}`);
-      if (!box) return;
+    // DYNAMIC EVENT ROW ADDER FOR ADMIN NEW CLIENT
+    function addAdminEventRow(selectedEvent = "", customName = "", eventDate = "") {
+      const container = document.getElementById('admin-dynamic-events-container');
+      if (!container) return;
 
-      const isNowActive = !box.classList.contains("is-visible");
-      if (isNowActive) {
-        box.classList.add("is-visible");
-        btnEl.classList.add("is-active");
-        if (input) input.focus();
+      const rowId = 'adm-ev-' + Date.now() + Math.random().toString(36).substr(2, 4);
+      const rowDiv = document.createElement('div');
+      rowDiv.id = rowId;
+      rowDiv.style.cssText = "display: flex; gap: 10px; align-items: center; background: rgba(255,255,255,0.03); padding: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.08);";
+
+      rowDiv.innerHTML = `
+        <div style="flex: 1; display: flex; flex-direction: column; gap: 4px;">
+          <select class="field select admin-event-dropdown" onchange="handleAdminEventChange('${rowId}')" style="padding: 8px 10px; font-size: 0.85rem; background: #07080a; color: #fff; border: 1px solid rgba(255,255,255,0.08); border-radius: 6px;">
+            <option value="">-- Select Event --</option>
+            <option value="Engagement" ${selectedEvent === 'Engagement' ? 'selected' : ''}>Engagement</option>
+            <option value="Pre-Wedding" ${selectedEvent === 'Pre-Wedding' ? 'selected' : ''}>Pre-Wedding</option>
+            <option value="Pooja & Rituals" ${selectedEvent === 'Pooja & Rituals' ? 'selected' : ''}>Pooja & Rituals</option>
+            <option value="Haldi" ${selectedEvent === 'Haldi' ? 'selected' : ''}>Haldi</option>
+            <option value="Mehendi" ${selectedEvent === 'Mehendi' ? 'selected' : ''}>Mehendi</option>
+            <option value="Sangeet" ${selectedEvent === 'Sangeet' ? 'selected' : ''}>Sangeet</option>
+            <option value="Reception" ${selectedEvent === 'Reception' ? 'selected' : ''}>Reception</option>
+            <option value="Birthday" ${selectedEvent === 'Birthday' ? 'selected' : ''}>Birthday</option>
+            <option value="Other" ${selectedEvent === 'Other' || (selectedEvent && !['Engagement','Pre-Wedding','Pooja & Rituals','Haldi','Mehendi','Sangeet','Reception','Birthday'].includes(selectedEvent)) ? 'selected' : ''}>Other (Type Custom)</option>
+          </select>
+          <input type="text" class="field input admin-custom-input" placeholder="Type event name..." value="${customName}" style="display: none; padding: 8px 10px; font-size: 0.85rem; background: #07080a; color: #fff; border: 1px solid rgba(255,255,255,0.08); border-radius: 6px; margin-top: 4px;" />
+        </div>
+
+        <div style="flex: 1;">
+          <input type="date" class="field input admin-date-input" value="${eventDate}" style="padding: 8px 10px; font-size: 0.85rem; background: #07080a; color: #fff; border: 1px solid rgba(255,255,255,0.08); border-radius: 6px; color-scheme: dark;" />
+        </div>
+
+        <button type="button" onclick="document.getElementById('${rowId}').remove()" style="background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.3); color: #ef4444; width: 34px; height: 34px; border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center;" title="Remove Row">
+          <i class="fas fa-trash-alt" style="font-size: 0.8rem;"></i>
+        </button>
+      `;
+
+      container.appendChild(rowDiv);
+      handleAdminEventChange(rowId);
+    }
+
+    function handleAdminEventChange(rowId) {
+      const row = document.getElementById(rowId);
+      if (!row) return;
+      const select = row.querySelector('.admin-event-dropdown');
+      const customInput = row.querySelector('.admin-custom-input');
+
+      if (select.value === 'Other') {
+        customInput.style.display = 'block';
+        customInput.required = true;
       } else {
-        box.classList.remove("is-visible");
-        btnEl.classList.remove("is-active");
-        if (input) input.value = "";
+        customInput.style.display = 'none';
+        customInput.required = false;
+        customInput.value = '';
+      }
+    }
+
+    // DYNAMIC EVENT ROW ADDER FOR EDIT MODAL
+    function addEditEventRow(selectedEvent = "", customName = "", eventDate = "") {
+      const container = document.getElementById('edit-dynamic-events-container');
+      if (!container) return;
+
+      const rowId = 'edit-ev-' + Date.now() + Math.random().toString(36).substr(2, 4);
+      const rowDiv = document.createElement('div');
+      rowDiv.id = rowId;
+      rowDiv.style.cssText = "display: flex; gap: 10px; align-items: center; background: rgba(255,255,255,0.03); padding: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.08);";
+
+      rowDiv.innerHTML = `
+        <div style="flex: 1; display: flex; flex-direction: column; gap: 4px;">
+          <select class="field select edit-event-dropdown" onchange="handleEditEventChange('${rowId}')" style="padding: 8px 10px; font-size: 0.85rem; background: #07080a; color: #fff; border: 1px solid rgba(255,255,255,0.08); border-radius: 6px;">
+            <option value="">-- Select Event --</option>
+            <option value="Engagement" ${selectedEvent === 'Engagement' ? 'selected' : ''}>Engagement</option>
+            <option value="Pre-Wedding" ${selectedEvent === 'Pre-Wedding' ? 'selected' : ''}>Pre-Wedding</option>
+            <option value="Pooja & Rituals" ${selectedEvent === 'Pooja & Rituals' ? 'selected' : ''}>Pooja & Rituals</option>
+            <option value="Haldi" ${selectedEvent === 'Haldi' ? 'selected' : ''}>Haldi</option>
+            <option value="Mehendi" ${selectedEvent === 'Mehendi' ? 'selected' : ''}>Mehendi</option>
+            <option value="Sangeet" ${selectedEvent === 'Sangeet' ? 'selected' : ''}>Sangeet</option>
+            <option value="Reception" ${selectedEvent === 'Reception' ? 'selected' : ''}>Reception</option>
+            <option value="Birthday" ${selectedEvent === 'Birthday' ? 'selected' : ''}>Birthday</option>
+            <option value="Other" ${selectedEvent === 'Other' || (selectedEvent && !['Engagement','Pre-Wedding','Pooja & Rituals','Haldi','Mehendi','Sangeet','Reception','Birthday'].includes(selectedEvent)) ? 'selected' : ''}>Other (Type Custom)</option>
+          </select>
+          <input type="text" class="field input edit-custom-input" placeholder="Type event name..." value="${customName}" style="display: none; padding: 8px 10px; font-size: 0.85rem; background: #07080a; color: #fff; border: 1px solid rgba(255,255,255,0.08); border-radius: 6px; margin-top: 4px;" />
+        </div>
+
+        <div style="flex: 1;">
+          <input type="date" class="field input edit-date-input" value="${eventDate}" style="padding: 8px 10px; font-size: 0.85rem; background: #07080a; color: #fff; border: 1px solid rgba(255,255,255,0.08); border-radius: 6px; color-scheme: dark;" />
+        </div>
+
+        <button type="button" onclick="document.getElementById('${rowId}').remove()" style="background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.3); color: #ef4444; width: 34px; height: 34px; border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center;" title="Remove Row">
+          <i class="fas fa-trash-alt" style="font-size: 0.8rem;"></i>
+        </button>
+      `;
+
+      container.appendChild(rowDiv);
+      handleEditEventChange(rowId);
+    }
+
+    function handleEditEventChange(rowId) {
+      const row = document.getElementById(rowId);
+      if (!row) return;
+      const select = row.querySelector('.edit-event-dropdown');
+      const customInput = row.querySelector('.edit-custom-input');
+
+      if (select.value === 'Other') {
+        customInput.style.display = 'block';
+        customInput.required = true;
+      } else {
+        customInput.style.display = 'none';
+        customInput.required = false;
+        customInput.value = '';
       }
     }
 
@@ -845,15 +829,6 @@
         alert("Incorrect PIN or Phone Number!");
       }
     };
-
-    function loadAdminData() {
-      const phone = document.getElementById("adm-phone").value.replace(/\D/g, '').trim();
-      const pin = document.getElementById("adm-pin").value.trim();
-
-      const script = document.createElement("script");
-      script.src = `${API_URL}?action=getAdminOverview&phone=${phone}&pin=${pin}&callback=renderOverviewTables&_t=${Date.now()}`;
-      document.body.appendChild(script);
-    }
 
     window.renderOverviewTables = function(res) {
       if (!res || !res.success) return;
@@ -916,25 +891,13 @@
                   <button class="action-btn btn-copy" onclick="copyVipLink('${c.phone}', '${c.pin}')" title="VIP Gallery Link">
                     <i class="fas fa-copy"></i> VIP
                   </button>
-                  <button class="action-btn" onclick="copyOnboardLink('${c.phone}', '${c.pin}')" style="background: rgba(219, 41, 111, 0.15); border: 1px solid rgba(219, 41, 111, 0.4); color: var(--accent);" title="Client Details Form Link">
+                  <button class="action-btn" onclick="copyOnboardLink('${c.phone}', '${c.pin}', '${c.name || 'Client'}')" style="background: rgba(219, 41, 111, 0.15); border: 1px solid rgba(219, 41, 111, 0.4); color: var(--accent);" title="Client Details Form Link">
                     <i class="fas fa-file-alt"></i> Onboard
                   </button>
                 </div>
               </td>
             </tr>
           `;
-          function copyOnboardLink(phone, pin) {
-      const cleanPhone = String(phone).replace(/\D/g, '');
-      const cleanPin = String(pin).trim();
-      const basePortal = window.location.origin + window.location.pathname.replace(/\/manage\/.*$/, '/portal.html');
-      const onboardUrl = `${basePortal}?onboard=true&phone=${cleanPhone}&pin=${cleanPin}`;
-
-      navigator.clipboard.writeText(onboardUrl).then(() => {
-        showToast("📋 Client Onboarding Form Link Copied!");
-      }).catch(() => {
-        prompt("Copy this Onboard Link:", onboardUrl);
-      });
-    }
       });
 
       const pendingDue = totalVal - totalRecv;
@@ -1010,7 +973,15 @@
       });
     };
 
-    // OPEN EDIT MODAL
+    function loadAdminData() {
+      const phone = document.getElementById("adm-phone").value.replace(/\D/g, '').trim();
+      const pin = document.getElementById("adm-pin").value.trim();
+
+      const script = document.createElement("script");
+      script.src = `${API_URL}?action=getAdminOverview&phone=${phone}&pin=${pin}&callback=renderOverviewTables&_t=${Date.now()}`;
+      document.body.appendChild(script);
+    }
+
     function openEditModal(phone) {
       const c = globalClientsData.find(item => String(item.phone) === String(phone));
       if (!c) return alert("Client details not found!");
@@ -1035,6 +1006,22 @@
       document.getElementById("e-email").value = c.email || "";
       document.getElementById("e-insta").value = c.instagram || "";
       document.getElementById("e-dob").value = c.dob || "";
+
+      // Populate edit dynamic events container if available
+      const editContainer = document.getElementById('edit-dynamic-events-container');
+      if (editContainer) {
+        editContainer.innerHTML = "";
+        if (c.evPrewed) addEditEventRow("Pre-Wedding", "", c.evPrewed);
+        if (c.evEngagement) addEditEventRow("Engagement", "", c.evEngagement);
+        if (c.evPooja) addEditEventRow("Pooja & Rituals", "", c.evPooja);
+        if (c.evHaldi) addEditEventRow("Haldi", "", c.evHaldi);
+        if (c.evMehendi) addEditEventRow("Mehendi", "", c.evMehendi);
+        if (c.evSangeet) addEditEventRow("Sangeet", "", c.evSangeet);
+        if (c.evReception) addEditEventRow("Reception", "", c.evReception);
+        if (editContainer.children.length === 0) {
+          addEditEventRow();
+        }
+      }
 
       document.getElementById("quick-add-installment-box").classList.add("hidden");
       document.getElementById("edit-modal").classList.remove("hidden");
@@ -1128,17 +1115,62 @@
       btn.innerText = "Updating Sheet1...";
       btn.disabled = true;
 
+      const eventRows = document.querySelectorAll('#edit-dynamic-events-container > div');
+      let eventMap = {
+        prewed: "",
+        engagement: "",
+        pooja: "",
+        haldi: "",
+        mehendi: "",
+        sangeet: "",
+        reception: "",
+        other: ""
+      };
+
+      let customEventsList = [];
+
+      eventRows.forEach(row => {
+        const select = row.querySelector('.edit-event-dropdown');
+        const customInput = row.querySelector('.edit-custom-input');
+        const dateInput = row.querySelector('.edit-date-input');
+
+        if (!select || !dateInput) return;
+
+        let eventType = select.value;
+        let eventDate = dateInput.value.trim();
+
+        if (!eventType || !eventDate) return;
+
+        if (eventType === 'Other') {
+          let customName = customInput ? customInput.value.trim() : 'Custom Event';
+          if (customName) {
+            customEventsList.push(`${customName}: ${eventDate}`);
+          }
+        } else if (eventType === 'Pre-Wedding') {
+          eventMap.prewed = eventDate;
+        } else if (eventType === 'Engagement') {
+          eventMap.engagement = eventDate;
+        } else if (eventType === 'Pooja & Rituals') {
+          eventMap.pooja = eventDate;
+        } else if (eventType === 'Haldi') {
+          eventMap.haldi = eventDate;
+        } else if (eventType === 'Mehendi') {
+          eventMap.mehendi = eventDate;
+        } else if (eventType === 'Sangeet') {
+          eventMap.sangeet = eventDate;
+        } else if (eventType === 'Reception') {
+          eventMap.reception = eventDate;
+        }
+      });
+
+      if (customEventsList.length > 0) {
+        eventMap.other = customEventsList.join(', ');
+      }
+
       const params = new URLSearchParams({
         action: "updateClientFull",
         phone: document.getElementById("e-phone").value.trim(),
         pin: document.getElementById("e-pin").value.trim(),
-        dateEngagement: document.getElementById("e-date-eng") ? document.getElementById("e-date-eng").value.trim() : "",
-        datePreWed:     document.getElementById("e-date-prewed") ? document.getElementById("e-date-prewed").value.trim() : "",
-        datePooja:      document.getElementById("e-date-pooja") ? document.getElementById("e-date-pooja").value.trim() : "",
-        dateHaldi:      document.getElementById("e-date-haldi") ? document.getElementById("e-date-haldi").value.trim() : "",
-        dateMehendi:    document.getElementById("e-date-mehendi") ? document.getElementById("e-date-mehendi").value.trim() : "",
-        dateSangeet:    document.getElementById("e-date-sangeet") ? document.getElementById("e-date-sangeet").value.trim() : "",
-        dateReception:  document.getElementById("e-date-reception") ? document.getElementById("e-date-reception").value.trim() : "",
         name: document.getElementById("e-name").value.trim(),
         bride: document.getElementById("e-bride").value.trim(),
         groom: document.getElementById("e-groom").value.trim(),
@@ -1153,6 +1185,14 @@
         email: document.getElementById("e-email").value.trim(),
         insta: document.getElementById("e-insta").value.trim(),
         dob: document.getElementById("e-dob").value.trim(),
+        datePrewed: eventMap.prewed,
+        dateEngagement: eventMap.engagement,
+        datePooja: eventMap.pooja,
+        dateHaldi: eventMap.haldi,
+        dateMehendi: eventMap.mehendi,
+        dateSangeet: eventMap.sangeet,
+        dateReception: eventMap.reception,
+        dateOther: eventMap.other,
         callback: "onClientUpdateDone",
         _t: Date.now()
       });
@@ -1211,6 +1251,18 @@
       });
     }
 
+    function copyOnboardLink(phone, pin, clientName = "Client") {
+      const cleanPhone = String(phone).replace(/\D/g, '');
+      const cleanPin = String(pin).trim();
+      const basePortal = window.location.origin + window.location.pathname.replace(/\/manage\/.*$/, '/onboard.html');
+      const onboardUrl = `${basePortal}?onboard=true&phone=${cleanPhone}&pin=${cleanPin}`;
+
+      const messageText = `Hello ${clientName} ji! ✨\n\nWedding events aur dates ki information update karne ke liye yeh secure link open karein:\n\n${onboardUrl}\n\n- Team Shaadigraphs 📸`;
+
+      const waUrl = `https://wa.me/91${cleanPhone}?text=${encodeURIComponent(messageText)}`;
+      window.open(waUrl, '_blank');
+    }
+
     function switchTab(tabId) {
       document.querySelectorAll(".tab-pane").forEach(el => el.classList.add("hidden"));
       document.querySelectorAll(".tab-btn").forEach(el => el.classList.remove("active"));
@@ -1224,22 +1276,74 @@
       btn.innerText = "Syncing to Sheet1 & Calendar...";
       btn.disabled = true;
 
+      const phoneVal = document.getElementById("c-phone").value.trim();
+      const pinVal = document.getElementById("c-pin").value.trim();
+      let nameVal = document.getElementById("c-name").value.trim();
+      if (!nameVal) nameVal = `Client ${phoneVal}`;
+
+      const eventRows = document.querySelectorAll('#admin-dynamic-events-container > div');
+      let eventMap = {
+        prewed: "",
+        engagement: "",
+        pooja: "",
+        haldi: "",
+        mehendi: "",
+        sangeet: "",
+        reception: "",
+        other: ""
+      };
+
+      let customEventsList = [];
+
+      eventRows.forEach(row => {
+        const select = row.querySelector('.admin-event-dropdown');
+        const customInput = row.querySelector('.admin-custom-input');
+        const dateInput = row.querySelector('.admin-date-input');
+
+        if (!select || !dateInput) return;
+
+        let eventType = select.value;
+        let eventDate = dateInput.value.trim();
+
+        if (!eventType || !eventDate) return;
+
+        if (eventType === 'Other') {
+          let customName = customInput ? customInput.value.trim() : 'Custom Event';
+          if (customName) {
+            customEventsList.push(`${customName}: ${eventDate}`);
+          }
+        } else if (eventType === 'Pre-Wedding') {
+          eventMap.prewed = eventDate;
+        } else if (eventType === 'Engagement') {
+          eventMap.engagement = eventDate;
+        } else if (eventType === 'Pooja & Rituals') {
+          eventMap.pooja = eventDate;
+        } else if (eventType === 'Haldi') {
+          eventMap.haldi = eventDate;
+        } else if (eventType === 'Mehendi') {
+          eventMap.mehendi = eventDate;
+        } else if (eventType === 'New Event' || eventType === 'Birthday') {
+          if (eventType === 'Birthday') customEventsList.push(`Birthday: ${eventDate}`);
+        } else if (eventType === 'Sangeet') {
+          eventMap.sangeet = eventDate;
+        } else if (eventType === 'Reception') {
+          eventMap.reception = eventDate;
+        }
+      });
+
+      if (customEventsList.length > 0) {
+        eventMap.other = customEventsList.join(', ');
+      }
+
       const params = new URLSearchParams({
         action: "addClient",
-        phone: document.getElementById("c-phone").value.trim(),
-        pin: document.getElementById("c-pin").value.trim(),
-        dateEngagement: document.getElementById("c-date-eng") ? document.getElementById("c-date-eng").value.trim() : "",
-        datePreWed:     document.getElementById("c-date-prewed") ? document.getElementById("c-date-prewed").value.trim() : "",
-        datePooja:      document.getElementById("c-date-pooja") ? document.getElementById("c-date-pooja").value.trim() : "",
-        dateHaldi:      document.getElementById("c-date-haldi") ? document.getElementById("c-date-haldi").value.trim() : "",
-        dateMehendi:    document.getElementById("c-date-mehendi") ? document.getElementById("c-date-mehendi").value.trim() : "",
-        dateSangeet:    document.getElementById("c-date-sangeet") ? document.getElementById("c-date-sangeet").value.trim() : "",
-        dateReception:  document.getElementById("c-date-reception") ? document.getElementById("c-date-reception").value.trim() : "",
-        name: document.getElementById("c-name").value.trim(),
+        phone: phoneVal,
+        pin: pinVal,
+        name: nameVal,
         bride: document.getElementById("c-bride").value.trim(),
         groom: document.getElementById("c-groom").value.trim(),
         driveLink: document.getElementById("c-drive").value.trim(),
-        limit: document.getElementById("c-limit").value,
+        limit: document.getElementById("c-limit").value || 100,
         bookingAmount: document.getElementById("c-booking").value || 0,
         advancePaid: document.getElementById("c-advance").value || 0,
         totalAmount: document.getElementById("c-total").value || 0,
@@ -1249,6 +1353,15 @@
         email: document.getElementById("c-email").value.trim(),
         instagram: document.getElementById("c-insta").value.trim(),
         dob: document.getElementById("c-dob").value.trim(),
+        evPrewed: eventMap.prewed,
+        evEngagement: eventMap.engagement,
+        evPooja: eventMap.pooja,
+        evHaldi: eventMap.haldi,
+        evMehendi: eventMap.mehendi,
+        evSangeet: eventMap.sangeet,
+        evWedding: pinVal,
+        evReception: eventMap.reception,
+        evOther: eventMap.other,
         callback: "onClientSaveDone",
         _t: Date.now()
       });
@@ -1265,8 +1378,8 @@
       if (res && res.success) {
         showToast("✨ Client successfully added to Sheet1 & Calendar!");
         document.getElementById("add-client-form").reset();
-        document.querySelectorAll(".pkg-pill-btn").forEach(p => p.classList.remove("is-active"));
-        document.querySelectorAll(".dynamic-event-box").forEach(b => b.classList.remove("is-visible"));
+        document.getElementById("admin-dynamic-events-container").innerHTML = "";
+        addAdminEventRow();
         loadAdminData();
       } else {
         showToast("⚠️ Error saving client. Please try again.");
@@ -1314,6 +1427,10 @@
       document.body.appendChild(toast);
       setTimeout(() => { toast.remove(); }, 2500);
     }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      addAdminEventRow();
+    });
   </script>
 </body>
 </html>
