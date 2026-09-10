@@ -247,9 +247,10 @@
                   <th>Client / Couple</th>
                   <th>Mobile Number</th>
                   <th>Wedding PIN</th>
+                  <th>Booked Events & Dates</th>
                   <th>Total / Advance</th>
                   <th>Balance Due</th>
-                  <th>Current Production Stage (Col M)</th>
+                  <th>Stage</th>
                   <th>VIP Direct Access</th>
                 </tr>
               </thead>
@@ -264,7 +265,7 @@
         <div class="panel-card">
           <div class="card-head">
             <h3>Add New Client to Sheet1</h3>
-            <span style="font-size: 0.8rem; color: var(--muted);">Auto-maps Col A to Q</span>
+            <span style="font-size: 0.8rem; color: var(--muted);">Auto-maps Col A to AA</span>
           </div>
 
           <form id="add-client-form" onsubmit="submitNewClient(event)">
@@ -370,9 +371,16 @@
               </div>
             </div>
 
-            <div class="field">
-              <label>Groom / Bride Birthdays (Col Q)</label>
-              <input type="text" id="c-dob" placeholder="e.g. Groom: 14 Aug / Bride: 20 Dec" />
+            <!-- DEDICATED BIRTHDAYS COLUMNS (Q & R) -->
+            <div class="grid-2">
+              <div class="field">
+                <label>Groom Birthday (Col Q)</label>
+                <input type="date" id="c-dob-groom" style="color-scheme: dark;" />
+              </div>
+              <div class="field">
+                <label>Bride Birthday (Col R)</label>
+                <input type="date" id="c-dob-bride" style="color-scheme: dark;" />
+              </div>
             </div>
 
             <button type="submit" class="btn" id="btn-save"><i class="fas fa-cloud-upload-alt"></i> Save to Sheet1</button>
@@ -645,7 +653,7 @@
           <input type="url" id="e-video" placeholder="Final Master Video Drive link" />
         </div>
 
-        <div class="grid-3">
+        <div class="grid-2">
           <div class="field">
             <label>Client Email</label>
             <input type="email" id="e-email" />
@@ -654,9 +662,16 @@
             <label>Instagram Handle</label>
             <input type="text" id="e-insta" />
           </div>
+        </div>
+
+        <div class="grid-2">
           <div class="field">
-            <label>Birthdays</label>
-            <input type="text" id="e-dob" />
+            <label>Groom Birthday (Col Q)</label>
+            <input type="date" id="e-dob-groom" style="color-scheme: dark;" />
+          </div>
+          <div class="field">
+            <label>Bride Birthday (Col R)</label>
+            <input type="date" id="e-dob-bride" style="color-scheme: dark;" />
           </div>
         </div>
 
@@ -697,7 +712,6 @@
     let globalClientsData = [];
     let currentEditPhone = "";
 
-    // DYNAMIC EVENT ROW ADDER FOR ADMIN NEW CLIENT
     function addAdminEventRow(selectedEvent = "", customName = "", eventDate = "") {
       const container = document.getElementById('admin-dynamic-events-container');
       if (!container) return;
@@ -753,7 +767,6 @@
       }
     }
 
-    // DYNAMIC EVENT ROW ADDER FOR EDIT MODAL
     function addEditEventRow(selectedEvent = "", customName = "", eventDate = "") {
       const container = document.getElementById('edit-dynamic-events-container');
       if (!container) return;
@@ -866,6 +879,23 @@
           `<option value="${stg}" ${stg.toLowerCase() === currentStage.toLowerCase() ? 'selected' : ''}>${stg}</option>`
         ).join('');
 
+        // Badges for Client Events
+        let eventBadges = [];
+        if (c.datePrewed) eventBadges.push(`<span class="badge" style="background: rgba(255,165,0,0.15); color: #ffa500;">Pre-Wed: ${c.datePrewed}</span>`);
+        if (c.dateEngagement) eventBadges.push(`<span class="badge" style="background: rgba(147,51,234,0.15); color: #c084fc;">Eng: ${c.dateEngagement}</span>`);
+        if (c.dateHaldi) eventBadges.push(`<span class="badge" style="background: rgba(234,179,8,0.15); color: #facc15;">Haldi: ${c.dateHaldi}</span>`);
+        if (c.dateMehendi) eventBadges.push(`<span class="badge" style="background: rgba(168,85,247,0.15); color: #a855f7;">Mehendi: ${c.dateMehendi}</span>`);
+        if (c.dateSangeet) eventBadges.push(`<span class="badge" style="background: rgba(59,130,246,0.15); color: #60a5fa;">Sangeet: ${c.dateSangeet}</span>`);
+        if (c.dateReception) eventBadges.push(`<span class="badge" style="background: rgba(236,72,153,0.15); color: #f472b6;">Reception: ${c.dateReception}</span>`);
+        if (c.dateBirthday) eventBadges.push(`<span class="badge" style="background: rgba(239,68,68,0.15); color: #f87171;">🎉 Party: ${c.dateBirthday}</span>`);
+        if (c.dobGroom) eventBadges.push(`<span class="badge badge-gold">🎂 Groom: ${c.dobGroom}</span>`);
+        if (c.dobBride) eventBadges.push(`<span class="badge badge-pink">🎂 Bride: ${c.dobBride}</span>`);
+        if (c.dateOther) eventBadges.push(`<span class="badge" style="background: rgba(255,255,255,0.08); color: #fff;">${c.dateOther}</span>`);
+
+        const eventsHtml = eventBadges.length > 0 
+          ? `<div style="display: flex; flex-direction: column; gap: 4px; max-width: 200px;">${eventBadges.join('')}</div>`
+          : `<span style="color: var(--muted); font-size: 0.75rem;">No extra events</span>`;
+
         clientsBody.innerHTML += `
             <tr>
               <td>
@@ -879,6 +909,7 @@
               </td>
               <td>${c.phone}</td>
               <td><span class="badge badge-pink">${c.pin}</span></td>
+              <td>${eventsHtml}</td>
               <td>₹${tVal.toLocaleString('en-IN')} <span style="color: var(--green); font-size: 0.75rem;">(Paid: ₹${aVal.toLocaleString('en-IN')})</span></td>
               <td><strong style="color: ${bal > 0 ? '#ef4444' : 'var(--green)'};">₹${bal.toLocaleString('en-IN')}</strong></td>
               <td>
@@ -906,7 +937,6 @@
       document.getElementById("statPending").innerText = "₹" + pendingDue.toLocaleString('en-IN');
       document.getElementById("statActiveCount").innerText = activeBookings + " Events";
 
-      // LEADS TABLE
       const leadsBody = document.querySelector("#leads-table tbody");
       leadsBody.innerHTML = "";
       document.getElementById("leads-count").innerText = `${res.leads.length} Leads`;
@@ -939,7 +969,6 @@
         `;
       });
 
-      // SELECTIONS TABLE
       const selBody = document.querySelector("#selections-table tbody");
       selBody.innerHTML = "";
       document.getElementById("selections-count").innerText = `${res.selections.length} Submissions`;
@@ -956,7 +985,6 @@
         `;
       });
 
-      // COMMENTS TABLE
       const comBody = document.querySelector("#comments-table tbody");
       comBody.innerHTML = "";
       document.getElementById("comments-count").innerText = `${res.comments.length} Notes`;
@@ -1005,19 +1033,49 @@
       document.getElementById("e-video").value = c.videoDownloadLink || "";
       document.getElementById("e-email").value = c.email || "";
       document.getElementById("e-insta").value = c.instagram || "";
-      document.getElementById("e-dob").value = c.dob || "";
+      
+      document.getElementById("e-dob-groom").value = c.dobGroom || "";
+      document.getElementById("e-dob-bride").value = c.dobBride || "";
 
-      // Populate edit dynamic events container if available
+      // Dynamic events load karna
       const editContainer = document.getElementById('edit-dynamic-events-container');
       if (editContainer) {
         editContainer.innerHTML = "";
-        if (c.evPrewed) addEditEventRow("Pre-Wedding", "", c.evPrewed);
-        if (c.evEngagement) addEditEventRow("Engagement", "", c.evEngagement);
-        if (c.evPooja) addEditEventRow("Pooja & Rituals", "", c.evPooja);
-        if (c.evHaldi) addEditEventRow("Haldi", "", c.evHaldi);
-        if (c.evMehendi) addEditEventRow("Mehendi", "", c.evMehendi);
-        if (c.evSangeet) addEditEventRow("Sangeet", "", c.evSangeet);
-        if (c.evReception) addEditEventRow("Reception", "", c.evReception);
+        
+        // Dono naming formats handle kiye taaki purana ya naya koi data miss na ho
+        const prewed = c.datePrewed || c.evPrewed;
+        const eng = c.dateEngagement || c.evEngagement;
+        const pooja = c.datePooja || c.evPooja;
+        const haldi = c.dateHaldi || c.evHaldi;
+        const mehendi = c.dateMehendi || c.evMehendi;
+        const sangeet = c.dateSangeet || c.evSangeet;
+        const reception = c.dateReception || c.evReception;
+        const birthday = c.dateBirthday || c.evBirthday;
+        const other = c.dateOther || c.evOther;
+
+        if (prewed) addEditEventRow("Pre-Wedding", "", prewed);
+        if (eng) addEditEventRow("Engagement", "", eng);
+        if (pooja) addEditEventRow("Pooja & Rituals", "", pooja);
+        if (haldi) addEditEventRow("Haldi", "", haldi);
+        if (mehendi) addEditEventRow("Mehendi", "", mehendi);
+        if (sangeet) addEditEventRow("Sangeet", "", sangeet);
+        if (reception) addEditEventRow("Reception", "", reception);
+        if (birthday) addEditEventRow("Birthday", "", birthday);
+        
+        // Agar Other column mein custom events hain
+        if (other) {
+          const items = other.split(",");
+          items.forEach(it => {
+            const parts = it.split(":");
+            if (parts.length === 2) {
+              addEditEventRow("Other", parts[0].trim(), parts[1].trim());
+            } else {
+              addEditEventRow("Other", it.trim(), "");
+            }
+          });
+        }
+
+        // Agar client ka koi event save nahi hai toh default 1 blank row de do
         if (editContainer.children.length === 0) {
           addEditEventRow();
         }
@@ -1124,6 +1182,7 @@
         mehendi: "",
         sangeet: "",
         reception: "",
+        birthday: "",
         other: ""
       };
 
@@ -1136,30 +1195,30 @@
 
         if (!select || !dateInput) return;
 
-        let eventType = select.value;
+        let eventType = select.value.trim().toLowerCase();
         let eventDate = dateInput.value.trim();
 
         if (!eventType || !eventDate) return;
 
-        if (eventType === 'Other') {
+        if (eventType === 'other') {
           let customName = customInput ? customInput.value.trim() : 'Custom Event';
-          if (customName) {
-            customEventsList.push(`${customName}: ${eventDate}`);
-          }
-        } else if (eventType === 'Pre-Wedding') {
+          if (customName) customEventsList.push(`${customName}: ${eventDate}`);
+        } else if (eventType === 'pre-wedding') {
           eventMap.prewed = eventDate;
-        } else if (eventType === 'Engagement') {
+        } else if (eventType === 'engagement') {
           eventMap.engagement = eventDate;
-        } else if (eventType === 'Pooja & Rituals') {
+        } else if (eventType.includes('pooja')) {
           eventMap.pooja = eventDate;
-        } else if (eventType === 'Haldi') {
+        } else if (eventType === 'haldi') {
           eventMap.haldi = eventDate;
-        } else if (eventType === 'Mehendi') {
+        } else if (eventType === 'mehendi') {
           eventMap.mehendi = eventDate;
-        } else if (eventType === 'Sangeet') {
+        } else if (eventType === 'sangeet') {
           eventMap.sangeet = eventDate;
-        } else if (eventType === 'Reception') {
+        } else if (eventType === 'reception') {
           eventMap.reception = eventDate;
+        } else if (eventType === 'birthday') {
+          eventMap.birthday = eventDate;
         }
       });
 
@@ -1167,7 +1226,7 @@
         eventMap.other = customEventsList.join(', ');
       }
 
-      const params = new URLSearchParams({
+      const postData = {
         action: "updateClientFull",
         phone: document.getElementById("e-phone").value.trim(),
         pin: document.getElementById("e-pin").value.trim(),
@@ -1184,7 +1243,8 @@
         video: document.getElementById("e-video").value.trim(),
         email: document.getElementById("e-email").value.trim(),
         insta: document.getElementById("e-insta").value.trim(),
-        dob: document.getElementById("e-dob").value.trim(),
+        dobGroom: document.getElementById("e-dob-groom").value.trim(),
+        dobBride: document.getElementById("e-dob-bride").value.trim(),
         datePrewed: eventMap.prewed,
         dateEngagement: eventMap.engagement,
         datePooja: eventMap.pooja,
@@ -1192,28 +1252,29 @@
         dateMehendi: eventMap.mehendi,
         dateSangeet: eventMap.sangeet,
         dateReception: eventMap.reception,
-        dateOther: eventMap.other,
-        callback: "onClientUpdateDone",
-        _t: Date.now()
-      });
+        dateBirthday: eventMap.birthday,
+        dateOther: eventMap.other
+      };
 
-      const script = document.createElement("script");
-      script.src = `${API_URL}?${params.toString()}`;
-      document.body.appendChild(script);
-    }
-
-    window.onClientUpdateDone = function(res) {
-      const btn = document.getElementById("btn-update-client");
-      btn.innerHTML = `<i class="fas fa-save"></i> Save Changes to Sheet1`;
-      btn.disabled = false;
-      if (res && res.success) {
+      fetch(API_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(postData)
+      })
+      .then(() => {
+        btn.innerHTML = `<i class="fas fa-save"></i> Save Changes to Sheet1`;
+        btn.disabled = false;
         showToast("✨ Client record updated successfully in Sheet1 & Calendar!");
         closeEditModal();
         loadAdminData();
-      } else {
+      })
+      .catch(() => {
+        btn.innerHTML = `<i class="fas fa-save"></i> Save Changes to Sheet1`;
+        btn.disabled = false;
         showToast("⚠️ Error updating client record.");
-      }
-    };
+      });
+    }
 
     function filterAllTables() {
       const query = document.getElementById("globalSearchInput").value.toLowerCase();
@@ -1290,6 +1351,7 @@
         mehendi: "",
         sangeet: "",
         reception: "",
+        birthday: "",
         other: ""
       };
 
@@ -1302,32 +1364,30 @@
 
         if (!select || !dateInput) return;
 
-        let eventType = select.value;
+        let eventType = select.value.trim().toLowerCase();
         let eventDate = dateInput.value.trim();
 
         if (!eventType || !eventDate) return;
 
-        if (eventType === 'Other') {
+        if (eventType === 'other') {
           let customName = customInput ? customInput.value.trim() : 'Custom Event';
-          if (customName) {
-            customEventsList.push(`${customName}: ${eventDate}`);
-          }
-        } else if (eventType === 'Pre-Wedding') {
+          if (customName) customEventsList.push(`${customName}: ${eventDate}`);
+        } else if (eventType === 'pre-wedding') {
           eventMap.prewed = eventDate;
-        } else if (eventType === 'Engagement') {
+        } else if (eventType === 'engagement') {
           eventMap.engagement = eventDate;
-        } else if (eventType === 'Pooja & Rituals') {
+        } else if (eventType.includes('pooja')) {
           eventMap.pooja = eventDate;
-        } else if (eventType === 'Haldi') {
+        } else if (eventType === 'haldi') {
           eventMap.haldi = eventDate;
-        } else if (eventType === 'Mehendi') {
+        } else if (eventType === 'mehendi') {
           eventMap.mehendi = eventDate;
-        } else if (eventType === 'New Event' || eventType === 'Birthday') {
-          if (eventType === 'Birthday') customEventsList.push(`Birthday: ${eventDate}`);
-        } else if (eventType === 'Sangeet') {
+        } else if (eventType === 'sangeet') {
           eventMap.sangeet = eventDate;
-        } else if (eventType === 'Reception') {
+        } else if (eventType === 'reception') {
           eventMap.reception = eventDate;
+        } else if (eventType === 'birthday') {
+          eventMap.birthday = eventDate;
         }
       });
 
@@ -1335,7 +1395,7 @@
         eventMap.other = customEventsList.join(', ');
       }
 
-      const params = new URLSearchParams({
+      const postData = {
         action: "addClient",
         phone: phoneVal,
         pin: pinVal,
@@ -1352,39 +1412,40 @@
         videoDownloadLink: document.getElementById("c-video").value.trim(),
         email: document.getElementById("c-email").value.trim(),
         instagram: document.getElementById("c-insta").value.trim(),
-        dob: document.getElementById("c-dob").value.trim(),
-        evPrewed: eventMap.prewed,
-        evEngagement: eventMap.engagement,
-        evPooja: eventMap.pooja,
-        evHaldi: eventMap.haldi,
-        evMehendi: eventMap.mehendi,
-        evSangeet: eventMap.sangeet,
-        evWedding: pinVal,
-        evReception: eventMap.reception,
-        evOther: eventMap.other,
-        callback: "onClientSaveDone",
-        _t: Date.now()
-      });
+        dobGroom: document.getElementById("c-dob-groom").value.trim(),
+        dobBride: document.getElementById("c-dob-bride").value.trim(),
+        datePrewed: eventMap.prewed,
+        dateEngagement: eventMap.engagement,
+        datePooja: eventMap.pooja,
+        dateHaldi: eventMap.haldi,
+        dateMehendi: eventMap.mehendi,
+        dateSangeet: eventMap.sangeet,
+        dateReception: eventMap.reception,
+        dateBirthday: eventMap.birthday,
+        dateOther: eventMap.other
+      };
 
-      const script = document.createElement("script");
-      script.src = `${API_URL}?${params.toString()}`;
-      document.body.appendChild(script);
-    }
-
-    window.onClientSaveDone = function(res) {
-      const btn = document.getElementById("btn-save");
-      btn.innerText = "Save to Sheet1";
-      btn.disabled = false;
-      if (res && res.success) {
+      fetch(API_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(postData)
+      })
+      .then(() => {
+        btn.innerText = "Save to Sheet1";
+        btn.disabled = false;
         showToast("✨ Client successfully added to Sheet1 & Calendar!");
         document.getElementById("add-client-form").reset();
         document.getElementById("admin-dynamic-events-container").innerHTML = "";
         addAdminEventRow();
         loadAdminData();
-      } else {
+      })
+      .catch(() => {
+        btn.innerText = "Save to Sheet1";
+        btn.disabled = false;
         showToast("⚠️ Error saving client. Please try again.");
-      }
-    };
+      });
+    }
 
     function submitManualLead(e) {
       e.preventDefault();
