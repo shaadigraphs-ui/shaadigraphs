@@ -660,31 +660,6 @@
        SECTION 14: JAVASCRIPT ENGINE (FILMS, GALLERY & LIVE CALENDAR)
        ========================================== -->
   <script>
-    /* --- 14.1 FILM CONTROLLERS --- */
-    function playMithilaVideo() {
-      const poster = document.getElementById('mithila-poster');
-      const playBtn = document.getElementById('mithila-play-btn');
-      const video = document.getElementById('mithila-video');
-      if (poster && playBtn && video) {
-        poster.style.display = 'none';
-        playBtn.style.display = 'none';
-        video.style.display = 'block';
-        video.play().catch(err => console.log("Autoplay issue:", err));
-      }
-    }
-
-    function playPreweddingVideo() {
-      const poster = document.getElementById('prewedding-poster');
-      const playBtn = document.getElementById('prewedding-play-btn');
-      const video = document.getElementById('prewedding-video');
-      if (poster && playBtn && video) {
-        poster.style.display = 'none';
-        playBtn.style.display = 'none';
-        video.style.display = 'block';
-        video.play().catch(err => console.log("Autoplay issue:", err));
-      }
-    }
-
     /* --- 14.2 DYNAMIC GOOGLE DRIVE GALLERY, LATEST COVER FETCH & LIGHTBOX ENGINE --- */
     const CATEGORY_FOLDERS = {
       'wedding': '1ITKzHODJieK37FRsgVBLO6Un5A_7t3JV',
@@ -715,137 +690,132 @@
     }
 
     /* ==========================================
-   GALLERY CONTROLLER: LIVE DRIVE & EDITORIAL ARCHIVE
-   ========================================== */
-async function loadCategoryGallery(categoryKey, categoryTitle) {
-  const grid = document.getElementById('portfolio-gallery');
-  const sectionTitle = document.getElementById('gallery-heading');
-  const sectionSub = document.getElementById('gallery-subheading');
-  if (!grid) return;
+       GALLERY CONTROLLER: LIVE DRIVE & EDITORIAL ARCHIVE
+       ========================================== */
+    async function loadCategoryGallery(categoryKey, categoryTitle) {
+      const grid = document.getElementById('portfolio-gallery');
+      const sectionTitle = document.getElementById('gallery-heading');
+      const sectionSub = document.getElementById('gallery-subheading');
+      if (!grid) return;
 
-  const folderId = CATEGORY_FOLDERS[categoryKey];
-  if (!folderId) return;
+      const folderId = CATEGORY_FOLDERS[categoryKey];
+      if (!folderId) return;
 
-  // Title aur Back Button switch
-  if (sectionTitle) {
-    sectionTitle.innerHTML = `${categoryTitle} <button class="back-collection-btn" onclick="resetGalleryToDefault()"><i class="fas fa-arrow-left"></i> Back to Collections</button>`;
-  }
-  if (sectionSub) {
-    sectionSub.textContent = `Curated archival frames fetched directly from our vault. Tap any photograph for high-resolution view.`;
-  }
+      if (sectionTitle) {
+        sectionTitle.innerHTML = `${categoryTitle} <button class="back-collection-btn" onclick="resetGalleryToDefault()"><i class="fas fa-arrow-left"></i> Back to Collections</button>`;
+      }
+      if (sectionSub) {
+        sectionSub.textContent = `Curated archival frames fetched directly from our vault. Tap any photograph for high-resolution view.`;
+      }
 
-  // Elegant Loading State
-  grid.innerHTML = `
-    <div style="color: rgba(255,255,255,0.7); text-align: center; grid-column: 1 / -1; padding: 80px 0;">
-      <i class="fas fa-circle-notch fa-spin" style="font-size: 2.4rem; color: #db296f; margin-bottom: 16px; display: block;"></i> 
-      Unfolding ${categoryTitle} collection...
-    </div>
-  `;
+      grid.innerHTML = `
+        <div style="color: rgba(255,255,255,0.7); text-align: center; grid-column: 1 / -1; padding: 80px 0;">
+          <i class="fas fa-circle-notch fa-spin" style="font-size: 2.4rem; color: #db296f; margin-bottom: 16px; display: block;"></i> 
+          Unfolding ${categoryTitle} collection...
+        </div>
+      `;
 
-  try {
-    const response = await fetch(`${API_URL}?folderId=${folderId}&_t=${Date.now()}`);
-    const data = await response.json();
+      try {
+        const response = await fetch(`${API_URL}?folderId=${folderId}&_t=${Date.now()}`);
+        const data = await response.json();
 
-    if (data && data.photos && data.photos.length > 0) {
-      grid.innerHTML = '';
-      data.photos.forEach(photo => {
-        const item = document.createElement('div');
-        item.className = 'gallery-item';
-        
-        // High-res zoom preview link
-        const highResUrl = photo.thumbnail.replace('=s400', '=s1600').replace('=s220', '=s1600');
-        item.setAttribute('data-src', highResUrl);
-        
-        item.innerHTML = `
-          <img src="${photo.thumbnail}" alt="${categoryTitle}" loading="lazy" />
-          <div class="item-overlay">
-            <span class="collection-tag">${categoryTitle}</span>
-            <span class="explore-hint"><i class="fas fa-search-plus"></i> View High-Res</span>
-          </div>
-        `;
+        if (data && data.photos && data.photos.length > 0) {
+          grid.innerHTML = '';
+          data.photos.forEach(photo => {
+            const item = document.createElement('div');
+            item.className = 'gallery-item';
+            
+            const highResUrl = photo.thumbnail.replace('=s400', '=s1600').replace('=s220', '=s1600');
+            item.setAttribute('data-src', highResUrl);
+            
+            item.innerHTML = `
+              <img src="${photo.thumbnail}" alt="${categoryTitle}" loading="lazy" />
+              <div class="item-overlay">
+                <span class="collection-tag">${categoryTitle}</span>
+                <span class="explore-hint"><i class="fas fa-search-plus"></i> View High-Res</span>
+              </div>
+            `;
 
-        item.addEventListener('click', function() {
-          openLightbox(this.getAttribute('data-src'));
-        });
+            item.addEventListener('click', function() {
+              openLightbox(this.getAttribute('data-src'));
+            });
 
-        grid.appendChild(item);
-      });
-    } else {
-      grid.innerHTML = `<div style="color: #ff4d6d; text-align: center; grid-column: 1 / -1; padding: 60px 0;">No photographs found in this collection yet.</div>`;
+            grid.appendChild(item);
+          });
+        } else {
+          grid.innerHTML = `<div style="color: #ff4d6d; text-align: center; grid-column: 1 / -1; padding: 60px 0;">No photographs found in this collection yet.</div>`;
+        }
+      } catch (err) {
+        console.error("Error loading drive photos:", err);
+        grid.innerHTML = `<div style="color: #ff4d6d; text-align: center; grid-column: 1 / -1; padding: 60px 0;">Failed to load photos from Google Drive. Please check connection.</div>`;
+      }
     }
-  } catch (err) {
-    console.error("Error loading drive photos:", err);
-    grid.innerHTML = `<div style="color: #ff4d6d; text-align: center; grid-column: 1 / -1; padding: 60px 0;">Failed to load photos from Google Drive. Please check connection.</div>`;
-  }
-}
 
-function resetGalleryToDefault() {
-  const sectionTitle = document.getElementById('gallery-heading');
-  const sectionSub = document.getElementById('gallery-subheading');
+    function resetGalleryToDefault() {
+      const sectionTitle = document.getElementById('gallery-heading');
+      const sectionSub = document.getElementById('gallery-subheading');
 
-  // Subtext wapas editorial ho jayega
-  if (sectionTitle) sectionTitle.innerHTML = "Moments Frozen in Gold";
-  if (sectionSub) sectionSub.textContent = "Every celebration is a chapter of raw devotion and timeless heritage. Step inside a collection to relive the memories.";
+      if (sectionTitle) sectionTitle.innerHTML = "Moments Frozen in Gold";
+      if (sectionSub) sectionSub.textContent = "Every celebration is a chapter of raw devotion and timeless heritage. Step inside a collection to relive the memories.";
 
-  const grid = document.getElementById('portfolio-gallery');
-  if (!grid) return;
+      const grid = document.getElementById('portfolio-gallery');
+      if (!grid) return;
 
-  // 6 Main Collections with clean mobile-friendly markup
-  grid.innerHTML = `
-    <div class="gallery-item item-cat wedding" onclick="loadCategoryGallery('wedding', 'The Royal Wedding')">
-      <img id="cover-wedding" src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=800&q=80" alt="Weddings" />
-      <div class="item-overlay">
-        <span class="collection-tag">Collection</span>
-        <h3>THE ROYAL WEDDING</h3>
-        <span class="explore-hint">Step Inside <i class="fas fa-arrow-right"></i></span>
-      </div>
-    </div>
-    <div class="gallery-item item-cat bridal" onclick="loadCategoryGallery('bridal', 'Bridal Elegance')">
-      <img id="cover-bridal" src="https://images.unsplash.com/photo-1594552072238-b8a3da72ae9a?auto=format&fit=crop&w=800&q=80" alt="Bridal Elegance" />
-      <div class="item-overlay">
-        <span class="collection-tag">Collection</span>
-        <h3>BRIDAL ELEGANCE</h3>
-        <span class="explore-hint">Step Inside <i class="fas fa-arrow-right"></i></span>
-      </div>
-    </div>
-    <div class="gallery-item item-cat engagement" onclick="loadCategoryGallery('engagement', 'Engagement Tales')">
-      <img id="cover-engagement" src="https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&w=800&q=80" alt="Engagement" />
-      <div class="item-overlay">
-        <span class="collection-tag">Collection</span>
-        <h3>ENGAGEMENT TALES</h3>
-        <span class="explore-hint">Step Inside <i class="fas fa-arrow-right"></i></span>
-      </div>
-    </div>
-    <div class="gallery-item item-cat birthday" onclick="loadCategoryGallery('birthday', 'Family Feasts & Milestones')">
-      <img id="cover-birthday" src="https://images.unsplash.com/photo-1530103862676-de8c9debad1d?auto=format&fit=crop&w=800&q=80" alt="Family Feasts" />
-      <div class="item-overlay">
-        <span class="collection-tag">Collection</span>
-        <h3>FAMILY FEASTS & MILESTONES</h3>
-        <span class="explore-hint">Step Inside <i class="fas fa-arrow-right"></i></span>
-      </div>
-    </div>
-    <div class="gallery-item item-cat prewedding" onclick="loadCategoryGallery('prewedding', 'Pre-Wedding Chronicles')">
-      <img id="cover-prewedding" src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=80" alt="Pre-Wedding" />
-      <div class="item-overlay">
-        <span class="collection-tag">Collection</span>
-        <h3>PRE-WEDDING CHRONICLES</h3>
-        <span class="explore-hint">Step Inside <i class="fas fa-arrow-right"></i></span>
-      </div>
-    </div>
-    <div class="gallery-item item-cat special" onclick="loadCategoryGallery('special', 'Bihar Rituals & Emotions')">
-      <img id="cover-special" src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=800&q=80" alt="Bihar Rituals" />
-      <div class="item-overlay">
-        <span class="collection-tag">Collection</span>
-        <h3>BIHAR RITUALS & EMOTIONS</h3>
-        <span class="explore-hint">Step Inside <i class="fas fa-arrow-right"></i></span>
-      </div>
-    </div>
-  `;
+      grid.innerHTML = `
+        <div class="gallery-item item-cat wedding" onclick="loadCategoryGallery('wedding', 'The Royal Wedding')">
+          <img id="cover-wedding" src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=800&q=80" alt="Weddings" />
+          <div class="item-overlay">
+            <span class="collection-tag">Collection</span>
+            <h3>THE ROYAL WEDDING</h3>
+            <span class="explore-hint">Step Inside <i class="fas fa-arrow-right"></i></span>
+          </div>
+        </div>
+        <div class="gallery-item item-cat bridal" onclick="loadCategoryGallery('bridal', 'Bridal Elegance')">
+          <img id="cover-bridal" src="https://images.unsplash.com/photo-1594552072238-b8a3da72ae9a?auto=format&fit=crop&w=800&q=80" alt="Bridal Elegance" />
+          <div class="item-overlay">
+            <span class="collection-tag">Collection</span>
+            <h3>BRIDAL ELEGANCE</h3>
+            <span class="explore-hint">Step Inside <i class="fas fa-arrow-right"></i></span>
+          </div>
+        </div>
+        <div class="gallery-item item-cat engagement" onclick="loadCategoryGallery('engagement', 'Engagement Tales')">
+          <img id="cover-engagement" src="https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&w=800&q=80" alt="Engagement" />
+          <div class="item-overlay">
+            <span class="collection-tag">Collection</span>
+            <h3>ENGAGEMENT TALES</h3>
+            <span class="explore-hint">Step Inside <i class="fas fa-arrow-right"></i></span>
+          </div>
+        </div>
+        <div class="gallery-item item-cat birthday" onclick="loadCategoryGallery('birthday', 'Family Feasts & Milestones')">
+          <img id="cover-birthday" src="https://images.unsplash.com/photo-1530103862676-de8c9debad1d?auto=format&fit=crop&w=800&q=80" alt="Family Feasts" />
+          <div class="item-overlay">
+            <span class="collection-tag">Collection</span>
+            <h3>FAMILY FEASTS & MILESTONES</h3>
+            <span class="explore-hint">Step Inside <i class="fas fa-arrow-right"></i></span>
+          </div>
+        </div>
+        <div class="gallery-item item-cat prewedding" onclick="loadCategoryGallery('prewedding', 'Pre-Wedding Chronicles')">
+          <img id="cover-prewedding" src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=80" alt="Pre-Wedding" />
+          <div class="item-overlay">
+            <span class="collection-tag">Collection</span>
+            <h3>PRE-WEDDING CHRONICLES</h3>
+            <span class="explore-hint">Step Inside <i class="fas fa-arrow-right"></i></span>
+          </div>
+        </div>
+        <div class="gallery-item item-cat special" onclick="loadCategoryGallery('special', 'Bihar Rituals & Emotions')">
+          <img id="cover-special" src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=800&q=80" alt="Bihar Rituals" />
+          <div class="item-overlay">
+            <span class="collection-tag">Collection</span>
+            <h3>BIHAR RITUALS & EMOTIONS</h3>
+            <span class="explore-hint">Step Inside <i class="fas fa-arrow-right"></i></span>
+          </div>
+        </div>
+      `;
 
-  if (typeof loadLatestCovers === "function") {
-    loadLatestCovers();
-  }
-}
+      if (typeof loadLatestCovers === "function") {
+        loadLatestCovers();
+      }
+    }
 
     /* --- Lightbox Modal Controllers --- */
     let currentGalleryPhotos = [];
@@ -1021,7 +991,6 @@ function resetGalleryToDefault() {
       }
     }
       
-    // Google Calendar API response handler
     window.handleCalendarAvailability = function(response) {
       try {
         if (response && response.success && response.data) {
@@ -1035,7 +1004,6 @@ function resetGalleryToDefault() {
       }
     };
 
-    // Live Calendar fetch call via Google Apps Script
     function fetchBookings() {
       const oldScript = document.getElementById('booking-calendar-engine');
       if (oldScript) oldScript.remove();
@@ -1045,50 +1013,47 @@ function resetGalleryToDefault() {
       document.body.appendChild(script);
     }
 
-    /* --- AUTO-FETCH INITIALIZER --- */
     window.addEventListener("DOMContentLoaded", () => {
       fetchBookings();
       loadLatestCovers();
     });
   </script>
   <script>
-  function openFilmModal(playlistId) {
-    const modal = document.getElementById('videoModal');
-    const iframe = document.getElementById('modalIframe');
-    iframe.src = `https://www.youtube-nocookie.com/embed/videoseries?list=${playlistId}&autoplay=1`;
-    modal.classList.add('active');
-  }
-
-  function closeFilmModal(e) {
-    if (e.target.id === 'videoModal' || e.target.classList.contains('video-modal-close')) {
+    function openFilmModal(playlistId) {
       const modal = document.getElementById('videoModal');
       const iframe = document.getElementById('modalIframe');
-      iframe.src = ''; // Stops audio/video immediately
-      modal.classList.remove('active');
+      iframe.src = `https://www.youtube-nocookie.com/embed/videoseries?list=${playlistId}&autoplay=1`;
+      modal.classList.add('active');
     }
-  }
-</script>
-<!-- Mobile Drawer Toggle Script -->
-<script>
-  const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-  const drawerCloseBtn = document.getElementById('drawerCloseBtn');
-  const mobileDrawer = document.getElementById('mobileDrawer');
 
-  function openDrawer() {
-    if (mobileDrawer) mobileDrawer.classList.add('active');
-  }
+    function closeFilmModal(e) {
+      if (e.target.id === 'videoModal' || e.target.classList.contains('video-modal-close')) {
+        const modal = document.getElementById('videoModal');
+        const iframe = document.getElementById('modalIframe');
+        iframe.src = ''; 
+        modal.classList.remove('active');
+      }
+    }
+  </script>
+  <script>
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const drawerCloseBtn = document.getElementById('drawerCloseBtn');
+    const mobileDrawer = document.getElementById('mobileDrawer');
 
-  function closeDrawer() {
-    if (mobileDrawer) mobileDrawer.classList.remove('active');
-  }
+    function openDrawer() {
+      if (mobileDrawer) mobileDrawer.classList.add('active');
+    }
 
-  if (mobileMenuBtn) mobileMenuBtn.addEventListener('click', openDrawer);
-  if (drawerCloseBtn) drawerCloseBtn.addEventListener('click', closeDrawer);
+    function closeDrawer() {
+      if (mobileDrawer) mobileDrawer.classList.remove('active');
+    }
 
-  // Link click hone par drawer auto-close ho jaye
-  document.querySelectorAll('.drawer-link, .drawer-portal-link, .drawer-cta').forEach(link => {
-    link.addEventListener('click', closeDrawer);
-  });
-</script>
+    if (mobileMenuBtn) mobileMenuBtn.addEventListener('click', openDrawer);
+    if (drawerCloseBtn) drawerCloseBtn.addEventListener('click', closeDrawer);
+
+    document.querySelectorAll('.drawer-link, .drawer-portal-link, .drawer-cta').forEach(link => {
+      link.addEventListener('click', closeDrawer);
+    });
+  </script>
 </body>
 </html>
