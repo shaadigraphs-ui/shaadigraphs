@@ -1119,6 +1119,7 @@
       document.body.appendChild(script);
     }
 
+    JavaScript
     function sendQuickOnboardWhatsApp(e) {
       e.preventDefault();
       const name = document.getElementById("q-name").value.trim();
@@ -1127,7 +1128,7 @@
       const advance = document.getElementById("q-advance").value.trim();
 
       if (!name || phone.length !== 10 || !total || !advance) {
-        alert("Kripya sabhi fields (Name, 10-digit Phone, Total, Advance) sahi se bharein.");
+        alert("Please fill all fields (Name, 10-digit Phone, Total, Advance) correctly.");
         return;
       }
 
@@ -1155,12 +1156,12 @@
       const basePortal = window.location.origin + window.location.pathname.replace(/\/manage\/.*$/, '/onboard.html');
       const onboardUrl = `${basePortal}?onboard=true&phone=${phone}&pin=${tempPin}`;
 
-      const messageText = `Hello ${name} ji! ✨\n\nWarm congratulations from *Shaadigraphs*! 📸\nAapki wedding bookings aur commercial details register ho chuki hain (Total: ₹${Number(total).toLocaleString('en-IN')} | Paid: ₹${Number(advance).toLocaleString('en-IN')}).\n\nAapke events, dates aur baki ki details secure tarike se fill karne ke liye niche diye gaye link par click karein:\n\n${onboardUrl}\n\nWarm Regards,\nTeam Shaadigraphs`;
+      const messageText = `Hello ${name} ji! ✨\n\nHeartiest congratulations on your upcoming wedding days! 🎉\n\nPlease open this secure link to update your wedding events and dates:\n\n${onboardUrl}\n\n- Team Shaadigraphs 📸`;
 
       const waUrl = `https://wa.me/91${phone}?text=${encodeURIComponent(messageText)}`;
       window.open(waUrl, '_blank');
       
-      showToast("✨ Fresh Onboard Link WhatsApp par bhej diya gaya hai!");
+      showToast("✨ Fresh Onboard Link sent via WhatsApp!");
       document.getElementById("quick-onboard-form").reset();
       loadAdminData();
     }
@@ -1474,7 +1475,7 @@
       const basePortal = window.location.origin + window.location.pathname.replace(/\/manage\/.*$/, '/onboard.html');
       const onboardUrl = `${basePortal}?onboard=true&phone=${cleanPhone}&pin=${cleanPin}`;
 
-      const messageText = `Hello ${clientName} ji! ✨\n\nWedding events aur dates ki information update karne ke liye yeh secure link open karein:\n\n${onboardUrl}\n\n- Team Shaadigraphs 📸`;
+      const messageText = `Hello ${clientName} ji! ✨\n\nAapko aane wale shubh dinon ke liye dher saari congratulations! 🎉\n\nApne wedding events aur dates update karne ke liye yeh secure link open karein:\n\n${onboardUrl}\n\n- Team Shaadigraphs 📸`;
 
       const waUrl = `https://wa.me/91${cleanPhone}?text=${encodeURIComponent(messageText)}`;
       window.open(waUrl, '_blank');
