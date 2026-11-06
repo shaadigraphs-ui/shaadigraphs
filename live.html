@@ -4,11 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Live Wedding Gallery | Shaadigraphs</title>
-  
+  <link rel="icon" type="image/png" href="images/chhotkadil.png">
   <!-- Premium Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,400&family=Great+Vibes&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <style>
@@ -25,7 +25,6 @@
       --gold-gradient: linear-gradient(135deg, #fff3d1 0%, #dfba6c 55%, #a67c1e 100%);
       --text-pure: #ffffff;
       --text-sub: #b3b8c4;
-      --font-script: 'Great Vibes', cursive;
       --font-serif: 'Cormorant Garamond', serif;
       --font-sans: 'Plus Jakarta Sans', sans-serif;
     }
@@ -40,7 +39,7 @@
       flex-direction: column;
       background-image: 
         radial-gradient(circle at 50% 15%, rgba(223, 186, 108, 0.12), transparent 60%),
-        radial-gradient(circle at 50% 90%, rgba(255, 45, 117, 0.08), transparent 60%);
+        radial-gradient(circle at 50% 90%, rgba(40, 167, 69, 0.08), transparent 60%);
     }
 
     /* Minimalist Floating Header */
@@ -71,11 +70,11 @@
       gap: 7px;
       padding: 4px 10px;
       border-radius: 999px;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(40, 167, 69, 0.15);
+      border: 1px solid rgba(40, 167, 69, 0.4);
       font-size: 0.65rem;
       letter-spacing: 1.5px;
-      color: #ff4d88;
+      color: #2ecc71;
       text-transform: uppercase;
       font-weight: 600;
     }
@@ -83,7 +82,7 @@
     .live-indicator .dot {
       width: 5px;
       height: 5px;
-      background: #ff3377;
+      background: #e71616;
       border-radius: 50%;
       box-shadow: 0 0 8px #ff3377;
       animation: blink 1.5s infinite;
@@ -104,9 +103,7 @@
       width: 100%;
     }
 
-    /* ------------------------------------------ */
-    /* SCREEN 1: BREATHE & OPEN WELCOME VIEW      */
-    /* ------------------------------------------ */
+    /* SCREEN 1: WELCOME VIEW */
     .open-welcome-view {
       width: 100%;
       max-width: 380px;
@@ -132,15 +129,35 @@
       margin-bottom: 8px;
     }
 
-    .fluid-couple-name {
-      font-family: var(--font-script);
-      font-size: 3.4rem;
-      line-height: 1.15;
+    .fluid-couple-name, .gallery-hero-name {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      width: 100%;
+      margin-bottom: 12px;
+    }
+
+    .name-groom, .name-bride {
+      font-family: var(--font-serif);
+      font-size: 2.3rem;
+      font-weight: 600;
+      letter-spacing: 2px;
       background: var(--gold-gradient);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      margin-bottom: 12px;
-      filter: drop-shadow(0 2px 14px rgba(223, 186, 108, 0.2));
+      line-height: 1.2;
+    }
+
+    .name-connector {
+      font-family: var(--font-sans);
+      font-size: 0.85rem;
+      letter-spacing: 3px;
+      color: var(--text-sub);
+      text-transform: lowercase;
+      opacity: 0.8;
+      font-style: italic;
+      margin: 1px 0;
     }
 
     .romantic-quote {
@@ -153,7 +170,6 @@
       max-width: 320px;
     }
 
-    /* Seamless Airy Form */
     .free-form {
       width: 100%;
       text-align: left;
@@ -236,15 +252,14 @@
       color: var(--gold-main);
     }
 
-    /* ------------------------------------------ */
-    /* SCREEN 2: GALLERY VIEW                     */
-    /* ------------------------------------------ */
+    /* SCREEN 2: GALLERY VIEW */
     .gallery-wrapper {
       width: 100%;
       max-width: 1200px;
       display: none;
       flex-direction: column;
       animation: softFade 0.5s ease;
+      padding-bottom: 110px;
     }
 
     .gallery-hero-banner {
@@ -254,21 +269,12 @@
       border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     }
 
-    .gallery-hero-name {
-      font-family: var(--font-script);
-      font-size: 3.2rem;
-      line-height: 1.1;
-      background: var(--gold-gradient);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      margin-bottom: 4px;
-    }
-
     .gallery-hero-note {
       font-family: var(--font-serif);
       font-size: 0.95rem;
       font-style: italic;
       color: var(--text-sub);
+      margin-top: 8px;
     }
 
     .photo-masonry {
@@ -312,60 +318,60 @@
       transform: scale(0.98);
     }
 
-    /* Floating Sticky Inquiry Bar at Bottom */
-    .studio-booking-banner {
+    /* Floating Selection Cart Tray at Bottom with Animation */
+    .selection-cart-tray {
       position: fixed;
       bottom: 16px;
       left: 50%;
-      transform: translateX(-50%);
+      transform: translateX(-50%) translateY(100px);
       width: calc(100% - 32px);
-      max-width: 440px;
-      padding: 10px 14px;
-      background: rgba(14, 16, 22, 0.88);
+      max-width: 480px;
+      padding: 12px 18px;
+      background: rgba(18, 20, 28, 0.95);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(223, 186, 108, 0.35);
+      border: 1px solid rgba(223, 186, 108, 0.4);
       border-radius: 999px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), 0 0 20px rgba(223, 186, 108, 0.15);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.9), 0 0 20px rgba(223, 186, 108, 0.2);
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 12px;
       z-index: 1000;
-      animation: floatUp 0.6s ease;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
 
-    @keyframes floatUp {
-      from { transform: translate(-50%, 40px); opacity: 0; }
-      to { transform: translate(-50%, 0); opacity: 1; }
+    .selection-cart-tray.active {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+      visibility: visible;
     }
 
-    .sticky-inquiry-text {
+    .cart-info {
       display: flex;
       flex-direction: column;
-      text-align: left;
-      padding-left: 8px;
+      padding-left: 6px;
     }
 
-    .sticky-inquiry-text .studio-label {
-      font-size: 0.65rem;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      color: var(--gold-main);
+    .cart-count {
+      font-size: 0.85rem;
       font-weight: 700;
+      color: var(--gold-main);
+      letter-spacing: 0.5px;
     }
 
-    .sticky-inquiry-text .studio-sub {
-      font-size: 0.78rem;
-      color: #fff;
-      font-weight: 500;
+    .cart-sub {
+      font-size: 0.68rem;
+      color: var(--text-sub);
     }
 
-    .btn-wa-sticky {
+    .btn-cart-whatsapp {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      padding: 8px 16px;
+      gap: 8px;
+      padding: 10px 18px;
       background: linear-gradient(135deg, #25d366, #1ebe57);
       color: #fff;
       font-weight: 700;
@@ -373,41 +379,57 @@
       text-decoration: none;
       font-size: 0.78rem;
       white-space: nowrap;
-      box-shadow: 0 4px 12px rgba(37, 211, 102, 0.35);
+      box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
+      border: none;
+      cursor: pointer;
       transition: transform 0.2s ease;
     }
 
-    .btn-wa-sticky:active {
+    .btn-cart-whatsapp:active {
       transform: scale(0.96);
     }
 
-    .gallery-wrapper {
-      padding-bottom: 90px;
-    }
-
-    /* Lightbox Modal */
+    /* Lightbox Modal with Smooth Cinematic Zoom Animation */
     .lightbox {
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(5, 6, 8, 0.98);
+      background: rgba(5, 6, 8, 0.96);
       backdrop-filter: blur(14px);
       z-index: 9999;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       padding: 16px;
+      opacity: 0;
+      transition: opacity 0.3s ease;
     }
 
     .lightbox.active {
       display: flex;
+      opacity: 1;
+    }
+
+    .lightbox-content-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transform: scale(0.75);
+      opacity: 0;
+      transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .lightbox.active .lightbox-content-wrap {
+      transform: scale(1);
+      opacity: 1;
     }
 
     .lightbox-img {
       max-width: 94vw;
-      max-height: 80vh;
+      max-height: 70vh;
       object-fit: contain;
       border-radius: 8px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.7);
     }
 
     .lightbox-close {
@@ -419,6 +441,7 @@
       background: none;
       border: none;
       cursor: pointer;
+      z-index: 10;
     }
 
     .lightbox-nav-btn {
@@ -436,29 +459,67 @@
       justify-content: center;
       font-size: 1.1rem;
       cursor: pointer;
+      z-index: 10;
+      transition: background 0.2s;
+    }
+
+    .lightbox-nav-btn:hover {
+      background: rgba(255, 255, 255, 0.2);
     }
 
     .lightbox-prev { left: 14px; }
     .lightbox-next { right: 14px; }
 
+    /* Lightbox Actions Container */
     .lightbox-actions {
       display: flex;
       gap: 12px;
-      margin-top: 14px;
+      margin-top: 16px;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
     }
 
     .lightbox-action-btn {
-      padding: 8px 18px;
+      padding: 10px 22px;
       background: rgba(255, 255, 255, 0.08);
       border: 1px solid rgba(223, 186, 108, 0.3);
       border-radius: 999px;
       color: #fff;
-      font-size: 0.8rem;
+      font-size: 0.85rem;
       text-decoration: none;
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
       cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .lightbox-action-btn.added {
+      background: var(--gold-gradient);
+      color: #111216;
+      border-color: var(--gold-main);
+      font-weight: 700;
+    }
+
+    /* WhatsApp Button - Always visible side-by-side, but initially Ungraded / Disabled */
+    .lightbox-action-btn.whatsapp-direct {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: rgba(255, 255, 255, 0.12);
+      color: rgba(255, 255, 255, 0.35);
+      cursor: not-allowed;
+      box-shadow: none;
+      transition: all 0.3s ease;
+    }
+
+    /* When Active (Graded / Enabled) */
+    .lightbox-action-btn.whatsapp-direct.active {
+      background: linear-gradient(135deg, #25d366, #1ebe57);
+      border-color: #25d366;
+      color: #fff;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
     }
 
     .loading-pulse {
@@ -491,7 +552,9 @@
     <div class="open-welcome-view" id="authBox">
       
       <div class="sub-invite">The Wedding Of</div>
-      <h1 class="fluid-couple-name" id="coupleTitle">Loading...</h1>
+      <h1 class="fluid-couple-name" id="coupleTitle">
+        <span class="name-groom">Loading Gallery...</span>
+      </h1>
       <p class="romantic-quote">
         Two souls, one heart, endless memories. Welcome to our live wedding gallery.
       </p>
@@ -522,8 +585,12 @@
     <!-- 2. GALLERY VIEW -->
     <div class="gallery-wrapper" id="galleryBox">
       <div class="gallery-hero-banner">
-        <h1 class="gallery-hero-name" id="heroCoupleTitle">Wedding Moments</h1>
-        <div class="gallery-hero-note">Live moments uploaded directly from the venue</div>
+        <h1 class="gallery-hero-name" id="heroCoupleTitle">
+          <span class="name-groom">Wedding</span>
+          <span class="name-connector">&</span>
+          <span class="name-bride">Moments</span>
+        </h1>
+        <div class="gallery-hero-note">Tap any photo to select and request original copy</div>
       </div>
 
       <div class="photo-masonry" id="photoGrid">
@@ -533,30 +600,38 @@
         </div>
       </div>
 
-      <div class="studio-booking-banner">
-        <div class="sticky-inquiry-text">
-          <span class="studio-label">Shaadigraphs Studio</span>
-          <span class="studio-sub">Book for your big day</span>
+      <!-- Floating Selection Cart Tray -->
+      <div class="selection-cart-tray" id="selectionTray">
+        <div class="cart-info">
+          <span class="cart-count" id="cartCount">0 Photos Selected</span>
+          <span class="cart-sub">Ready to request on WhatsApp</span>
         </div>
-        <a href="https://wa.me/919123192566?text=Hi%20Shaadigraphs,%20I%20saw%20your%20live%20wedding%20gallery%20and%20want%20to%20inquire%20for%20an%20event." target="_blank" class="btn-wa-sticky">
-          <i class="fab fa-whatsapp"></i> Inquire
-        </a>
+        <button class="btn-cart-whatsapp" onclick="sendSelectedToWhatsApp()">
+          <i class="fab fa-whatsapp"></i> Get on WhatsApp
+        </button>
       </div>
+
+    </div>
   </main>
 
-  <!-- Lightbox Modal -->
+  <!-- Lightbox Modal with Smooth Zoom Animation -->
   <div class="lightbox" id="lightboxModal">
     <button class="lightbox-close" onclick="closeLightbox()">&times;</button>
     <button class="lightbox-nav-btn lightbox-prev" onclick="prevPhoto()"><i class="fas fa-chevron-left"></i></button>
     <button class="lightbox-nav-btn lightbox-next" onclick="nextPhoto()"><i class="fas fa-chevron-right"></i></button>
-    <img src="" id="lightboxImg" class="lightbox-img" alt="Wedding Memory">
-    <div class="lightbox-actions">
-      <a href="#" id="downloadBtn" download class="lightbox-action-btn" target="_blank">
-        <i class="fas fa-download"></i> Save Photo
-      </a>
-      <button class="lightbox-action-btn" onclick="shareCurrentPhoto()">
-        <i class="fas fa-share-alt"></i> Share
-      </button>
+    
+    <div class="lightbox-content-wrap">
+      <img src="" id="lightboxImg" class="lightbox-img" alt="Wedding Memory">
+      <div class="lightbox-actions">
+        <!-- First Button: Add / Added -->
+        <button class="lightbox-action-btn" id="lightboxAddBtn" onclick="toggleSelectCurrentPhoto()">
+          <i class="fas fa-plus" id="lightboxBtnIcon"></i> <span id="lightboxAddText">Add</span>
+        </button>
+        <!-- Second Button: Get on WhatsApp (Visible side-by-side, initially ungraded) -->
+        <button class="lightbox-action-btn whatsapp-direct" id="lightboxWhatsAppBtn" onclick="handleWhatsAppClick()">
+          <i class="fab fa-whatsapp"></i> Get on WhatsApp
+        </button>
+      </div>
     </div>
   </div>
 
@@ -566,15 +641,16 @@
 
     let livePhotos = [];
     let currentPhotoIdx = 0;
-    let activeEvent = { name: "Wedding Celebration" };
+    let activeEvent = { name: "Rishu & Ruhi's Gallery" };
+    let selectedPhotoUrls = new Set();
+    let currentGuestName = "";
 
     window.addEventListener('DOMContentLoaded', async () => {
+      localStorage.removeItem('shaadi_live_guest_verified');
+      localStorage.removeItem('shaadi_live_guest_name');
+      localStorage.removeItem('shaadi_live_guest_phone');
+      
       await fetchActiveEventInfo();
-
-      const isVerified = localStorage.getItem('shaadi_live_guest_verified');
-      if (isVerified === 'true') {
-        showGalleryView();
-      }
     });
 
     // 1. Fetch Dynamic Active Event from Google Sheet
@@ -583,17 +659,37 @@
         const res = await fetch(`${API_URL}?action=getLiveEventConfig`);
         const data = await res.json();
         if (data && data.coupleName) {
-          activeEvent.name = data.coupleName;
-          document.getElementById('coupleTitle').textContent = activeEvent.name;
-          document.getElementById('heroCoupleTitle').textContent = activeEvent.name;
+          let cleanName = data.coupleName.replace(/❤️|♥|&amp;/g, '&');
+          if (!cleanName.includes("'s Gallery") && !cleanName.includes("Gallery")) {
+            cleanName += "'s Gallery";
+          }
+          activeEvent.name = cleanName;
+          
+          let parts = cleanName.split(/&/i);
+          let groom = parts[0] ? parts[0].trim() : "Groom";
+          let bridePart = parts[1] ? parts[1].trim() : "Bride";
+          let bride = bridePart.replace(/'s Gallery/g, "").trim();
+
+          let formattedHTML = `
+            <span class="name-groom">${groom}</span>
+            <span class="name-connector">&</span>
+            <span class="name-bride">${bride}</span>
+          `;
+          document.getElementById('coupleTitle').innerHTML = formattedHTML;
+          document.getElementById('heroCoupleTitle').innerHTML = formattedHTML;
         }
       } catch (err) {
-        document.getElementById('coupleTitle').textContent = "Wedding Celebration";
-        document.getElementById('heroCoupleTitle').textContent = "Wedding Celebration";
+        let defaultHTML = `
+          <span class="name-groom">Rishu</span>
+          <span class="name-connector">&</span>
+          <span class="name-bride">Ruhi</span>
+        `;
+        document.getElementById('coupleTitle').innerHTML = defaultHTML;
+        document.getElementById('heroCoupleTitle').innerHTML = defaultHTML;
       }
     }
 
-    // 2. Guest Form Submission
+    // 2. Guest Form Submission with Duplicate Number Check
     async function handleGuestEntry(e) {
       e.preventDefault();
       const name = document.getElementById('guestName').value.trim();
@@ -606,21 +702,28 @@
       }
 
       btn.disabled = true;
-      btn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Opening Gallery...';
+      btn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Checking...';
 
       try {
-        fetch(`${API_URL}?action=addLiveGuestLead&name=${encodeURIComponent(name)}&phone=${encodeURIComponent(phone)}&event=${encodeURIComponent(activeEvent.name)}`, {
+        const checkRes = await fetch(`${API_URL}?action=checkGuestDuplicate&phone=${encodeURIComponent(phone)}`);
+        const checkData = await checkRes.json();
+
+        if (checkData && checkData.isDuplicate) {
+          alert("This WhatsApp number is already registered.");
+          btn.disabled = false;
+          btn.innerHTML = '<span>View Live Photos</span><i class="fas fa-arrow-right"></i>';
+          return;
+        }
+
+        await fetch(`${API_URL}?action=addLiveGuestLead&name=${encodeURIComponent(name)}&phone=${encodeURIComponent(phone)}&event=${encodeURIComponent(activeEvent.name)}`, {
           method: 'GET',
           mode: 'no-cors'
         });
 
-        localStorage.setItem('shaadi_live_guest_verified', 'true');
-        localStorage.setItem('shaadi_live_guest_phone', phone);
-        localStorage.setItem('shaadi_live_guest_name', name);
-
+        currentGuestName = name;
         showGalleryView();
       } catch (err) {
-        localStorage.setItem('shaadi_live_guest_verified', 'true');
+        currentGuestName = name;
         showGalleryView();
       }
     }
@@ -646,8 +749,13 @@
           livePhotos.forEach((photo, idx) => {
             const card = document.createElement('div');
             card.className = 'photo-card';
+            card.dataset.idx = idx;
+            
+            card.innerHTML = `
+              <img src="${photo.thumbnail || photo.url}" loading="lazy" alt="Wedding Moment">
+            `;
+            
             card.onclick = () => openLightbox(idx);
-            card.innerHTML = `<img src="${photo.thumbnail || photo.url}" loading="lazy" alt="Wedding Moment">`;
             grid.appendChild(card);
           });
         } else {
@@ -658,16 +766,120 @@
       }
     }
 
-    // 5. Lightbox Functionality
+    // Helper to extract clean file name
+    function getFileNameFromUrl(url, index) {
+      try {
+        if (url.includes('id=')) {
+          const match = url.match(/id=([^&]+)/);
+          if (match && match[1]) return `Photo_${match[1].substring(0, 10)}`;
+        }
+        const parts = url.split('/');
+        let lastPart = parts[parts.length - 1].split('?')[0];
+        if (lastPart && lastPart.length > 3) return lastPart;
+      } catch (e) {}
+      return `Wedding_Photo_${index + 1}`;
+    }
+
+    // 5. Selection Logic inside Lightbox
+    function toggleSelectPhoto(idx) {
+      const photo = livePhotos[idx];
+
+      if (selectedPhotoUrls.has(photo.url)) {
+        selectedPhotoUrls.delete(photo.url);
+      } else {
+        selectedPhotoUrls.add(photo.url);
+      }
+
+      updateCartTray();
+      updateLightboxSelectState();
+    }
+
+    function toggleSelectCurrentPhoto() {
+      toggleSelectPhoto(currentPhotoIdx);
+    }
+
+    function updateCartTray() {
+      const tray = document.getElementById('selectionTray');
+      const countEl = document.getElementById('cartCount');
+      const count = selectedPhotoUrls.size;
+
+      if (count > 0) {
+        countEl.textContent = `${count} Photo${count > 1 ? 's' : ''} Selected`;
+        tray.classList.add('active');
+      } else {
+        tray.classList.remove('active');
+      }
+    }
+
+    function updateLightboxSelectState() {
+      const photo = livePhotos[currentPhotoIdx];
+      const addBtn = document.getElementById('lightboxAddBtn');
+      const addText = document.getElementById('lightboxAddText');
+      const btnIcon = document.getElementById('lightboxBtnIcon');
+      const whatsappBtn = document.getElementById('lightboxWhatsAppBtn');
+
+      if (selectedPhotoUrls.has(photo.url)) {
+        addBtn.classList.add('added');
+        addText.textContent = 'Added';
+        btnIcon.className = 'fas fa-check';
+      } else {
+        addBtn.classList.remove('added');
+        addText.textContent = 'Add';
+        btnIcon.className = 'fas fa-plus';
+      }
+
+      if (selectedPhotoUrls.size > 0) {
+        whatsappBtn.classList.add('active');
+      } else {
+        whatsappBtn.classList.remove('active');
+      }
+    }
+
+    // 6. WhatsApp Click Handler (Shows English alert if no photo selected)
+    function handleWhatsAppClick() {
+      if (selectedPhotoUrls.size === 0) {
+        alert("Please select at least 1 photo.");
+        return;
+      }
+      sendSelectedToWhatsApp();
+    }
+
+    // 7. Send Selected Photos to WhatsApp
+    function sendSelectedToWhatsApp() {
+      if (selectedPhotoUrls.size === 0) return;
+
+      const guestName = currentGuestName || 'Guest';
+      const count = selectedPhotoUrls.size;
+      const photoText = count === 1 ? "this photo" : "these photos";
+      
+      let message = `Hi Shaadigraphs, I am *${guestName}*.\nI want original copies of ${photoText} from *Rishu & Ruhi's Gallery*:\n\n`;
+      
+      let i = 1;
+      selectedPhotoUrls.forEach(url => {
+        let photoObj = livePhotos.find(p => p.url === url);
+        let photoIndex = livePhotos.findIndex(p => p.url === url);
+        let fileName = photoObj && photoObj.name ? photoObj.name : getFileNameFromUrl(url, photoIndex);
+        
+        message += `${i}. ${fileName}\n`;
+        i++;
+      });
+
+      message += `\nPlease share them. Thank you!`;
+
+      const whatsappUrl = `https://wa.me/919123192566?text=${encodeURIComponent(message)}`;
+      window.open(whatsappUrl, '_blank');
+    }
+
+    // 8. Lightbox Functionality with Smooth Zoom Animation
     function openLightbox(idx) {
       currentPhotoIdx = idx;
       const modal = document.getElementById('lightboxModal');
       const img = document.getElementById('lightboxImg');
-      const dBtn = document.getElementById('downloadBtn');
 
       const photo = livePhotos[currentPhotoIdx];
       img.src = photo.url;
-      dBtn.href = photo.downloadUrl || photo.url;
+      
+      updateLightboxSelectState();
       modal.classList.add('active');
       document.body.style.overflow = 'hidden';
     }
@@ -687,22 +899,6 @@
       if (livePhotos.length === 0) return;
       currentPhotoIdx = (currentPhotoIdx + 1) % livePhotos.length;
       openLightbox(currentPhotoIdx);
-    }
-
-    async function shareCurrentPhoto() {
-      const photo = livePhotos[currentPhotoIdx];
-      if (navigator.share) {
-        try {
-          await navigator.share({
-            title: activeEvent.name,
-            text: `Look at this beautiful memory from ${activeEvent.name}! Captured by Shaadigraphs.`,
-            url: photo.url
-          });
-        } catch (e) {}
-      } else {
-        navigator.clipboard.writeText(photo.url);
-        alert('Photo link copied to clipboard!');
-      }
     }
   </script>
 </body>
