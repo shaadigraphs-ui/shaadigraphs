@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Live Wedding Gallery | Shaadigraphs</title>
+  
+  <!-- Premium Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,400&family=Great+Vibes&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    :root {
+      --bg: #0b0c10;
+      --gold-main: #dfba6c;
+      --gold-gradient: linear-gradient(135deg, #fff3d1 0%, #dfba6c 55%, #a67c1e 100%);
+      --text-pure: #ffffff;
+      --text-sub: #b3b8c4;
+      --font-script: 'Great Vibes', cursive;
+      --font-serif: 'Cormorant Garamond', serif;
+      --font-sans: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      min-height: 100dvh;
+      background-color: var(--bg);
+      color: var(--text-pure);
+      font-family: var(--font-sans);
+      display: flex;
+      flex-direction: column;
+      background-image: 
+        radial-gradient(circle at 50% 15%, rgba(223, 186, 108, 0.12), transparent 60%),
+        radial-gradient(circle at 50% 90%, rgba(255, 45, 117, 0.08), transparent 60%);
+    }
+
+    /* Minimalist Floating Header */
+    header {
+      padding: 18px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: transparent;
+    }
+
+    .brand-logo {
+      font-family: var(--font-serif);
+      font-size: 1.15rem;
+      letter-spacing: 3px;
+      color: #fff;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    .brand-logo span {
+      color: #ff3377;
+    }
+
+    .live-indicator {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      font-size: 0.65rem;
+      letter-spacing: 1.5px;
+      color: #ff4d88;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    .live-indicator .dot {
+      width: 5px;
+      height: 5px;
+      background: #ff3377;
+      border-radius: 50%;
+      box-shadow: 0 0 8px #ff3377;
+      animation: blink 1.5s infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.3; transform: scale(0.8); }
+    }
+
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 24px 30px;
+      width: 100%;
+    }
+
+    /* ------------------------------------------ */
+    /* SCREEN 1: BREATHE & OPEN WELCOME VIEW      */
+    /* ------------------------------------------ */
+    .open-welcome-view {
+      width: 100%;
+      max-width: 380px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      animation: softFade 0.6s ease;
+    }
+
+    @keyframes softFade {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .sub-invite {
+      font-family: var(--font-serif);
+      font-size: 0.9rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--gold-main);
+      opacity: 0.9;
+      margin-bottom: 8px;
+    }
+
+    .fluid-couple-name {
+      font-family: var(--font-script);
+      font-size: 3.4rem;
+      line-height: 1.15;
+      background: var(--gold-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 12px;
+      filter: drop-shadow(0 2px 14px rgba(223, 186, 108, 0.2));
+    }
+
+    .romantic-quote {
+      font-family: var(--font-serif);
+      font-size: 1.05rem;
+      font-style: italic;
+      color: var(--text-sub);
+      line-height: 1.5;
+      margin-bottom: 34px;
+      max-width: 320px;
+    }
+
+    /* Seamless Airy Form */
+    .free-form {
+      width: 100%;
+      text-align: left;
+    }
+
+    .floating-field {
+      margin-bottom: 22px;
+      position: relative;
+    }
+
+    .floating-field label {
+      display: block;
+      font-size: 0.7rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--gold-main);
+      font-weight: 500;
+      margin-bottom: 8px;
+      opacity: 0.95;
+    }
+
+    .floating-field input {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(223, 186, 108, 0.25);
+      border-radius: 12px;
+      padding: 14px 16px;
+      color: #fff;
+      font-size: 0.95rem;
+      font-family: inherit;
+      outline: none;
+      transition: all 0.3s ease;
+    }
+
+    .floating-field input:focus {
+      background: rgba(255, 255, 255, 0.07);
+      border-color: var(--gold-main);
+      box-shadow: 0 0 16px rgba(223, 186, 108, 0.18);
+    }
+
+    .floating-field input::placeholder {
+      color: rgba(255, 255, 255, 0.25);
+    }
+
+    .btn-luxe-open {
+      width: 100%;
+      padding: 15px;
+      margin-top: 10px;
+      background: var(--gold-gradient);
+      border: none;
+      border-radius: 12px;
+      color: #111216;
+      font-family: var(--font-sans);
+      font-size: 0.9rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      box-shadow: 0 12px 28px rgba(223, 186, 108, 0.28);
+      transition: all 0.2s ease;
+    }
+
+    .btn-luxe-open:active {
+      transform: scale(0.98);
+    }
+
+    .clean-studio-tag {
+      margin-top: 26px;
+      font-size: 0.72rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.35);
+    }
+
+    .clean-studio-tag strong {
+      color: var(--gold-main);
+    }
+
+    /* ------------------------------------------ */
+    /* SCREEN 2: GALLERY VIEW                     */
+    /* ------------------------------------------ */
+    .gallery-wrapper {
+      width: 100%;
+      max-width: 1200px;
+      display: none;
+      flex-direction: column;
+      animation: softFade 0.5s ease;
+    }
+
+    .gallery-hero-banner {
+      text-align: center;
+      padding: 12px 0 20px;
+      margin-bottom: 14px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .gallery-hero-name {
+      font-family: var(--font-script);
+      font-size: 3.2rem;
+      line-height: 1.1;
+      background: var(--gold-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 4px;
+    }
+
+    .gallery-hero-note {
+      font-family: var(--font-serif);
+      font-size: 0.95rem;
+      font-style: italic;
+      color: var(--text-sub);
+    }
+
+    .photo-masonry {
+      column-count: 2;
+      column-gap: 8px;
+      width: 100%;
+    }
+
+    @media (min-width: 768px) {
+      .photo-masonry {
+        column-count: 3;
+        column-gap: 12px;
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .photo-masonry {
+        column-count: 4;
+        column-gap: 14px;
+      }
+    }
+
+    .photo-card {
+      break-inside: avoid;
+      margin-bottom: 8px;
+      border-radius: 10px;
+      overflow: hidden;
+      background: #14161d;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .photo-card img {
+      width: 100%;
+      height: auto;
+      display: block;
+      transition: transform 0.3s ease;
+    }
+
+    .photo-card:active img {
+      transform: scale(0.98);
+    }
+
+    /* Floating Sticky Inquiry Bar at Bottom */
+    .studio-booking-banner {
+      position: fixed;
+      bottom: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: calc(100% - 32px);
+      max-width: 440px;
+      padding: 10px 14px;
+      background: rgba(14, 16, 22, 0.88);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(223, 186, 108, 0.35);
+      border-radius: 999px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), 0 0 20px rgba(223, 186, 108, 0.15);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      z-index: 1000;
+      animation: floatUp 0.6s ease;
+    }
+
+    @keyframes floatUp {
+      from { transform: translate(-50%, 40px); opacity: 0; }
+      to { transform: translate(-50%, 0); opacity: 1; }
+    }
+
+    .sticky-inquiry-text {
+      display: flex;
+      flex-direction: column;
+      text-align: left;
+      padding-left: 8px;
+    }
+
+    .sticky-inquiry-text .studio-label {
+      font-size: 0.65rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--gold-main);
+      font-weight: 700;
+    }
+
+    .sticky-inquiry-text .studio-sub {
+      font-size: 0.78rem;
+      color: #fff;
+      font-weight: 500;
+    }
+
+    .btn-wa-sticky {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      background: linear-gradient(135deg, #25d366, #1ebe57);
+      color: #fff;
+      font-weight: 700;
+      border-radius: 999px;
+      text-decoration: none;
+      font-size: 0.78rem;
+      white-space: nowrap;
+      box-shadow: 0 4px 12px rgba(37, 211, 102, 0.35);
+      transition: transform 0.2s ease;
+    }
+
+    .btn-wa-sticky:active {
+      transform: scale(0.96);
+    }
+
+    .gallery-wrapper {
+      padding-bottom: 90px;
+    }
+
+    /* Lightbox Modal */
+    .lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(5, 6, 8, 0.98);
+      backdrop-filter: blur(14px);
+      z-index: 9999;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .lightbox.active {
+      display: flex;
+    }
+
+    .lightbox-img {
+      max-width: 94vw;
+      max-height: 80vh;
+      object-fit: contain;
+      border-radius: 8px;
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: 18px;
+      right: 20px;
+      font-size: 2rem;
+      color: #fff;
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+
+    .lightbox-nav-btn {
+      position: fixed;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255, 255, 255, 0.08);
+      border: none;
+      color: #fff;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      cursor: pointer;
+    }
+
+    .lightbox-prev { left: 14px; }
+    .lightbox-next { right: 14px; }
+
+    .lightbox-actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .lightbox-action-btn {
+      padding: 8px 18px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(223, 186, 108, 0.3);
+      border-radius: 999px;
+      color: #fff;
+      font-size: 0.8rem;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+    }
+
+    .loading-pulse {
+      text-align: center;
+      padding: 50px 20px;
+      color: var(--text-sub);
+    }
+
+    .loading-pulse i {
+      font-size: 1.8rem;
+      color: var(--gold-main);
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Floating Header -->
+  <header>
+    <div class="brand-logo">
+      Shaadi<span>graphs</span>
+    </div>
+    <div class="live-indicator">
+      <div class="dot"></div> Live
+    </div>
+  </header>
+
+  <main>
+    <!-- 1. OPEN & AIRY INVITATION VIEW -->
+    <div class="open-welcome-view" id="authBox">
+      
+      <div class="sub-invite">The Wedding Of</div>
+      <h1 class="fluid-couple-name" id="coupleTitle">Loading...</h1>
+      <p class="romantic-quote">
+        Two souls, one heart, endless memories. Welcome to our live wedding gallery.
+      </p>
+
+      <!-- Seamless Inputs -->
+      <form class="free-form" id="liveLoginForm" onsubmit="handleGuestEntry(event)">
+        <div class="floating-field">
+          <label><i class="far fa-user"></i> Your Name</label>
+          <input type="text" id="guestName" placeholder="Enter your name" required>
+        </div>
+
+        <div class="floating-field">
+          <label><i class="fab fa-whatsapp"></i> WhatsApp Number</label>
+          <input type="tel" id="guestPhone" placeholder="Enter 10-digit number" maxlength="10" pattern="[0-9]{10}" required>
+        </div>
+
+        <button type="submit" class="btn-luxe-open" id="submitBtn">
+          <span>View Live Photos</span>
+          <i class="fas fa-arrow-right"></i>
+        </button>
+      </form>
+
+      <div class="clean-studio-tag">
+        Cinematic Photography by <strong>Shaadigraphs</strong>
+      </div>
+    </div>
+
+    <!-- 2. GALLERY VIEW -->
+    <div class="gallery-wrapper" id="galleryBox">
+      <div class="gallery-hero-banner">
+        <h1 class="gallery-hero-name" id="heroCoupleTitle">Wedding Moments</h1>
+        <div class="gallery-hero-note">Live moments uploaded directly from the venue</div>
+      </div>
+
+      <div class="photo-masonry" id="photoGrid">
+        <div class="loading-pulse">
+          <i class="fas fa-circle-notch fa-spin"></i>
+          <div>Loading wedding moments...</div>
+        </div>
+      </div>
+
+      <div class="studio-booking-banner">
+        <div class="sticky-inquiry-text">
+          <span class="studio-label">Shaadigraphs Studio</span>
+          <span class="studio-sub">Book for your big day</span>
+        </div>
+        <a href="https://wa.me/919123192566?text=Hi%20Shaadigraphs,%20I%20saw%20your%20live%20wedding%20gallery%20and%20want%20to%20inquire%20for%20an%20event." target="_blank" class="btn-wa-sticky">
+          <i class="fab fa-whatsapp"></i> Inquire
+        </a>
+      </div>
+  </main>
+
+  <!-- Lightbox Modal -->
+  <div class="lightbox" id="lightboxModal">
+    <button class="lightbox-close" onclick="closeLightbox()">&times;</button>
+    <button class="lightbox-nav-btn lightbox-prev" onclick="prevPhoto()"><i class="fas fa-chevron-left"></i></button>
+    <button class="lightbox-nav-btn lightbox-next" onclick="nextPhoto()"><i class="fas fa-chevron-right"></i></button>
+    <img src="" id="lightboxImg" class="lightbox-img" alt="Wedding Memory">
+    <div class="lightbox-actions">
+      <a href="#" id="downloadBtn" download class="lightbox-action-btn" target="_blank">
+        <i class="fas fa-download"></i> Save Photo
+      </a>
+      <button class="lightbox-action-btn" onclick="shareCurrentPhoto()">
+        <i class="fas fa-share-alt"></i> Share
+      </button>
+    </div>
+  </div>
+
+  <script>
+    // --- APPS SCRIPT URL ---
+    const API_URL = "https://script.google.com/macros/s/AKfycbxiicife5FUbMsQZqzio27S5_FOxf-b7D5dXFNLWs5g9ehpVcDs4Hif5X98pG9KDdFW/exec";
+
+    let livePhotos = [];
+    let currentPhotoIdx = 0;
+    let activeEvent = { name: "Wedding Celebration" };
+
+    window.addEventListener('DOMContentLoaded', async () => {
+      await fetchActiveEventInfo();
+
+      const isVerified = localStorage.getItem('shaadi_live_guest_verified');
+      if (isVerified === 'true') {
+        showGalleryView();
+      }
+    });
+
+    // 1. Fetch Dynamic Active Event from Google Sheet
+    async function fetchActiveEventInfo() {
+      try {
+        const res = await fetch(`${API_URL}?action=getLiveEventConfig`);
+        const data = await res.json();
+        if (data && data.coupleName) {
+          activeEvent.name = data.coupleName;
+          document.getElementById('coupleTitle').textContent = activeEvent.name;
+          document.getElementById('heroCoupleTitle').textContent = activeEvent.name;
+        }
+      } catch (err) {
+        document.getElementById('coupleTitle').textContent = "Wedding Celebration";
+        document.getElementById('heroCoupleTitle').textContent = "Wedding Celebration";
+      }
+    }
+
+    // 2. Guest Form Submission
+    async function handleGuestEntry(e) {
+      e.preventDefault();
+      const name = document.getElementById('guestName').value.trim();
+      const phone = document.getElementById('guestPhone').value.trim();
+      const btn = document.getElementById('submitBtn');
+
+      if (!name || phone.length !== 10) {
+        alert("Please enter a valid 10-digit WhatsApp number.");
+        return;
+      }
+
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Opening Gallery...';
+
+      try {
+        fetch(`${API_URL}?action=addLiveGuestLead&name=${encodeURIComponent(name)}&phone=${encodeURIComponent(phone)}&event=${encodeURIComponent(activeEvent.name)}`, {
+          method: 'GET',
+          mode: 'no-cors'
+        });
+
+        localStorage.setItem('shaadi_live_guest_verified', 'true');
+        localStorage.setItem('shaadi_live_guest_phone', phone);
+        localStorage.setItem('shaadi_live_guest_name', name);
+
+        showGalleryView();
+      } catch (err) {
+        localStorage.setItem('shaadi_live_guest_verified', 'true');
+        showGalleryView();
+      }
+    }
+
+    // 3. Switch to Gallery View
+    function showGalleryView() {
+      document.getElementById('authBox').style.display = 'none';
+      const gallery = document.getElementById('galleryBox');
+      gallery.style.display = 'flex';
+      loadLiveDrivePhotos();
+    }
+
+    // 4. Fetch Photos from Live Share Folder
+    async function loadLiveDrivePhotos() {
+      const grid = document.getElementById('photoGrid');
+      try {
+        const res = await fetch(`${API_URL}?action=getLiveFolderPhotos`);
+        const data = await res.json();
+        
+        if (data.photos && data.photos.length > 0) {
+          livePhotos = data.photos;
+          grid.innerHTML = '';
+          livePhotos.forEach((photo, idx) => {
+            const card = document.createElement('div');
+            card.className = 'photo-card';
+            card.onclick = () => openLightbox(idx);
+            card.innerHTML = `<img src="${photo.thumbnail || photo.url}" loading="lazy" alt="Wedding Moment">`;
+            grid.appendChild(card);
+          });
+        } else {
+          grid.innerHTML = '<div class="loading-pulse"><p>Photos are being uploaded live from the venue. Please refresh shortly!</p></div>';
+        }
+      } catch (err) {
+        grid.innerHTML = '<div class="loading-pulse"><p>Unable to connect right now. Please reload.</p></div>';
+      }
+    }
+
+    // 5. Lightbox Functionality
+    function openLightbox(idx) {
+      currentPhotoIdx = idx;
+      const modal = document.getElementById('lightboxModal');
+      const img = document.getElementById('lightboxImg');
+      const dBtn = document.getElementById('downloadBtn');
+
+      const photo = livePhotos[currentPhotoIdx];
+      img.src = photo.url;
+      dBtn.href = photo.downloadUrl || photo.url;
+      modal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox() {
+      document.getElementById('lightboxModal').classList.remove('active');
+      document.body.style.overflow = 'auto';
+    }
+
+    function prevPhoto() {
+      if (livePhotos.length === 0) return;
+      currentPhotoIdx = (currentPhotoIdx - 1 + livePhotos.length) % livePhotos.length;
+      openLightbox(currentPhotoIdx);
+    }
+
+    function nextPhoto() {
+      if (livePhotos.length === 0) return;
+      currentPhotoIdx = (currentPhotoIdx + 1) % livePhotos.length;
+      openLightbox(currentPhotoIdx);
+    }
+
+    async function shareCurrentPhoto() {
+      const photo = livePhotos[currentPhotoIdx];
+      if (navigator.share) {
+        try {
+          await navigator.share({
+            title: activeEvent.name,
+            text: `Look at this beautiful memory from ${activeEvent.name}! Captured by Shaadigraphs.`,
+            url: photo.url
+          });
+        } catch (e) {}
+      } else {
+        navigator.clipboard.writeText(photo.url);
+        alert('Photo link copied to clipboard!');
+      }
+    }
+  </script>
+</body>
+</html>

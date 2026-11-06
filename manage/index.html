@@ -144,6 +144,61 @@
     .btn-edit { background: rgba(59, 130, 246, 0.15); border: 1px solid rgba(59, 130, 246, 0.3); color: #60a5fa; }
     .btn-copy { background: rgba(201, 168, 76, 0.15); border: 1px solid rgba(201, 168, 76, 0.3); color: var(--accent-gold); }
 
+    /* ==========================================================================
+       OPTION C: EVENT BADGES & COLLAPSIBLE POPOVER STYLES
+       ========================================================================== */
+    .event-badges-container {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      max-width: 210px;
+    }
+
+    .more-events-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px dashed rgba(255, 255, 255, 0.3);
+      color: var(--muted);
+      padding: 3px 7px;
+      border-radius: 4px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      cursor: pointer;
+      position: relative;
+      width: fit-content;
+      user-select: none;
+      transition: all 0.2s ease;
+    }
+
+    .more-events-badge:hover {
+      background: rgba(255, 255, 255, 0.15);
+      color: #fff;
+      border-color: rgba(255, 255, 255, 0.5);
+    }
+
+    .events-popover {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      margin-top: 5px;
+      background: #181b24;
+      border: 1px solid var(--border);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.85);
+      border-radius: 8px;
+      padding: 8px;
+      z-index: 150;
+      flex-direction: column;
+      gap: 5px;
+      min-width: 175px;
+    }
+
+    .more-events-badge:hover .events-popover {
+      display: flex;
+    }
+
     /* MODAL OVERLAY */
     .modal-overlay {
       position: fixed;
@@ -712,6 +767,32 @@
     let globalClientsData = [];
     let currentEditPhone = "";
 
+    // ============================================================================
+    // DATE FORMATTER UTILITY: YYYY-MM-DD -> DD-MM-YY (e.g. 2026-09-11 -> 11-09-26)
+    // ============================================================================
+    function formatDateShort(dStr) {
+      if (!dStr) return "";
+      dStr = String(dStr).trim();
+
+      if (/^\d{4}-\d{2}-\d{2}$/.test(dStr)) {
+        var parts = dStr.split("-");
+        var yy = parts[0].slice(-2);
+        var mm = parts[1];
+        var dd = parts[2];
+        return dd + "-" + mm + "-" + yy;
+      }
+
+      var d = new Date(dStr);
+      if (!isNaN(d.getTime())) {
+        var dd = String(d.getDate()).padStart(2, '0');
+        var mm = String(d.getMonth() + 1).padStart(2, '0');
+        var yy = String(d.getFullYear()).slice(-2);
+        return dd + "-" + mm + "-" + yy;
+      }
+
+      return dStr;
+    }
+
     function addAdminEventRow(selectedEvent = "", customName = "", eventDate = "") {
       const container = document.getElementById('admin-dynamic-events-container');
       if (!container) return;
@@ -879,22 +960,64 @@
           `<option value="${stg}" ${stg.toLowerCase() === currentStage.toLowerCase() ? 'selected' : ''}>${stg}</option>`
         ).join('');
 
-        // Badges for Client Events
-        let eventBadges = [];
-        if (c.datePrewed) eventBadges.push(`<span class="badge" style="background: rgba(255,165,0,0.15); color: #ffa500;">Pre-Wed: ${c.datePrewed}</span>`);
-        if (c.dateEngagement) eventBadges.push(`<span class="badge" style="background: rgba(147,51,234,0.15); color: #c084fc;">Eng: ${c.dateEngagement}</span>`);
-        if (c.dateHaldi) eventBadges.push(`<span class="badge" style="background: rgba(234,179,8,0.15); color: #facc15;">Haldi: ${c.dateHaldi}</span>`);
-        if (c.dateMehendi) eventBadges.push(`<span class="badge" style="background: rgba(168,85,247,0.15); color: #a855f7;">Mehendi: ${c.dateMehendi}</span>`);
-        if (c.dateSangeet) eventBadges.push(`<span class="badge" style="background: rgba(59,130,246,0.15); color: #60a5fa;">Sangeet: ${c.dateSangeet}</span>`);
-        if (c.dateReception) eventBadges.push(`<span class="badge" style="background: rgba(236,72,153,0.15); color: #f472b6;">Reception: ${c.dateReception}</span>`);
-        if (c.dateBirthday) eventBadges.push(`<span class="badge" style="background: rgba(239,68,68,0.15); color: #f87171;">🎉 Party: ${c.dateBirthday}</span>`);
-        if (c.dobGroom) eventBadges.push(`<span class="badge badge-gold">🎂 Groom: ${c.dobGroom}</span>`);
-        if (c.dobBride) eventBadges.push(`<span class="badge badge-pink">🎂 Bride: ${c.dobBride}</span>`);
-        if (c.dateOther) eventBadges.push(`<span class="badge" style="background: rgba(255,255,255,0.08); color: #fff;">${c.dateOther}</span>`);
+        // ----------------------------------------------------
+        // 1. COLLECT FORMATTED EVENT BADGES (DD-MM-YY)
+        // ----------------------------------------------------
+        let rawEventBadges = [];
+        if (c.datePrewed) rawEventBadges.push(`<span class="badge" style="background: rgba(255,165,0,0.15); color: #ffa500;">Pre-Wed: ${formatDateShort(c.datePrewed)}</span>`);
+        if (c.dateEngagement) rawEventBadges.push(`<span class="badge" style="background: rgba(147,51,234,0.15); color: #c084fc;">Eng: ${formatDateShort(c.dateEngagement)}</span>`);
+        if (c.datePooja) rawEventBadges.push(`<span class="badge" style="background: rgba(234,88,12,0.15); color: #fb923c;">Pooja: ${formatDateShort(c.datePooja)}</span>`);
+        if (c.dateHaldi) rawEventBadges.push(`<span class="badge" style="background: rgba(234,179,8,0.15); color: #facc15;">Haldi: ${formatDateShort(c.dateHaldi)}</span>`);
+        if (c.dateMehendi) rawEventBadges.push(`<span class="badge" style="background: rgba(168,85,247,0.15); color: #a855f7;">Mehendi: ${formatDateShort(c.dateMehendi)}</span>`);
+        if (c.dateSangeet) rawEventBadges.push(`<span class="badge" style="background: rgba(59,130,246,0.15); color: #60a5fa;">Sangeet: ${formatDateShort(c.dateSangeet)}</span>`);
+        if (c.dateReception) rawEventBadges.push(`<span class="badge" style="background: rgba(236,72,153,0.15); color: #f472b6;">Reception: ${formatDateShort(c.dateReception)}</span>`);
+        if (c.dateBirthday) rawEventBadges.push(`<span class="badge" style="background: rgba(239,68,68,0.15); color: #f87171;">🎉 Party: ${formatDateShort(c.dateBirthday)}</span>`);
+        if (c.dobGroom) rawEventBadges.push(`<span class="badge badge-gold">🎂 Groom: ${formatDateShort(c.dobGroom)}</span>`);
+        if (c.dobBride) rawEventBadges.push(`<span class="badge badge-pink">🎂 Bride: ${formatDateShort(c.dobBride)}</span>`);
+        
+        // Custom 'Other' Events Parsed safely with DD-MM-YY
+        if (c.dateOther && c.dateOther.trim() !== "") {
+          const rawOtherList = c.dateOther.split(",");
+          rawOtherList.forEach(item => {
+            const trimmedItem = item.trim();
+            if (trimmedItem) {
+              const sepIndex = trimmedItem.lastIndexOf(":");
+              if (sepIndex !== -1) {
+                const eName = trimmedItem.substring(0, sepIndex).trim();
+                const eDate = formatDateShort(trimmedItem.substring(sepIndex + 1).trim());
+                rawEventBadges.push(`<span class="badge" style="background: rgba(14,165,233,0.15); color: #38bdf8; border: 1px solid rgba(14,165,233,0.3);"><i class="fas fa-star" style="font-size:0.65rem;"></i> ${eName}: ${eDate}</span>`);
+              } else {
+                rawEventBadges.push(`<span class="badge" style="background: rgba(14,165,233,0.15); color: #38bdf8;"><i class="fas fa-star" style="font-size:0.65rem;"></i> ${trimmedItem}</span>`);
+              }
+            }
+          });
+        }
 
-        const eventsHtml = eventBadges.length > 0 
-          ? `<div style="display: flex; flex-direction: column; gap: 4px; max-width: 200px;">${eventBadges.join('')}</div>`
-          : `<span style="color: var(--muted); font-size: 0.75rem;">No extra events</span>`;
+        // ----------------------------------------------------
+        // 2. OPTION C: TOP 2 VISIBLE + COLLAPSIBLE POPOVER
+        // ----------------------------------------------------
+        let eventsHtml = `<span style="color: var(--muted); font-size: 0.75rem;">No extra events</span>`;
+        if (rawEventBadges.length > 0) {
+          if (rawEventBadges.length <= 2) {
+            eventsHtml = `<div class="event-badges-container">${rawEventBadges.join('')}</div>`;
+          } else {
+            const visibleBadges = rawEventBadges.slice(0, 2).join('');
+            const hiddenBadges = rawEventBadges.slice(2).join('');
+            const hiddenCount = rawEventBadges.length - 2;
+
+            eventsHtml = `
+              <div class="event-badges-container">
+                ${visibleBadges}
+                <div class="more-events-badge">
+                  <span>+${hiddenCount} more</span> <i class="fas fa-chevron-down" style="font-size: 0.6rem;"></i>
+                  <div class="events-popover">
+                    ${hiddenBadges}
+                  </div>
+                </div>
+              </div>
+            `;
+          }
+        }
 
         clientsBody.innerHTML += `
             <tr>
@@ -1037,12 +1160,10 @@
       document.getElementById("e-dob-groom").value = c.dobGroom || "";
       document.getElementById("e-dob-bride").value = c.dobBride || "";
 
-      // Dynamic events load karna
       const editContainer = document.getElementById('edit-dynamic-events-container');
       if (editContainer) {
         editContainer.innerHTML = "";
         
-        // Dono naming formats handle kiye taaki purana ya naya koi data miss na ho
         const prewed = c.datePrewed || c.evPrewed;
         const eng = c.dateEngagement || c.evEngagement;
         const pooja = c.datePooja || c.evPooja;
@@ -1062,20 +1183,23 @@
         if (reception) addEditEventRow("Reception", "", reception);
         if (birthday) addEditEventRow("Birthday", "", birthday);
         
-        // Agar Other column mein custom events hain
-        if (other) {
+        if (other && other.trim() !== "") {
           const items = other.split(",");
           items.forEach(it => {
-            const parts = it.split(":");
-            if (parts.length === 2) {
-              addEditEventRow("Other", parts[0].trim(), parts[1].trim());
+            const trimmed = it.trim();
+            if (!trimmed) return;
+            
+            const separatorIndex = trimmed.lastIndexOf(":");
+            if (separatorIndex !== -1) {
+              const namePart = trimmed.substring(0, separatorIndex).trim();
+              const datePart = trimmed.substring(separatorIndex + 1).trim();
+              addEditEventRow("Other", namePart, datePart);
             } else {
-              addEditEventRow("Other", it.trim(), "");
+              addEditEventRow("Other", trimmed, "");
             }
           });
         }
 
-        // Agar client ka koi event save nahi hai toh default 1 blank row de do
         if (editContainer.children.length === 0) {
           addEditEventRow();
         }
