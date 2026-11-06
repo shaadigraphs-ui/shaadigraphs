@@ -71,6 +71,7 @@
       transition: border 0.3s;
     }
     .field input:focus, .field select:focus { border-color: var(--accent); }
+    .field input:disabled { opacity: 0.4; cursor: not-allowed; background: #040506; }
 
     .btn {
       width: 100%;
@@ -123,9 +124,10 @@
 
     .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
     .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
 
     @media (max-width: 768px) {
-      .grid-2, .grid-3 { grid-template-columns: 1fr; }
+      .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
     }
 
     .data-table-wrap { overflow-x: auto; }
@@ -144,62 +146,6 @@
     .btn-edit { background: rgba(59, 130, 246, 0.15); border: 1px solid rgba(59, 130, 246, 0.3); color: #60a5fa; }
     .btn-copy { background: rgba(201, 168, 76, 0.15); border: 1px solid rgba(201, 168, 76, 0.3); color: var(--accent-gold); }
 
-    /* ==========================================================================
-       OPTION C: EVENT BADGES & COLLAPSIBLE POPOVER STYLES
-       ========================================================================== */
-    .event-badges-container {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      max-width: 210px;
-    }
-
-    .more-events-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px dashed rgba(255, 255, 255, 0.3);
-      color: var(--muted);
-      padding: 3px 7px;
-      border-radius: 4px;
-      font-size: 0.72rem;
-      font-weight: 600;
-      cursor: pointer;
-      position: relative;
-      width: fit-content;
-      user-select: none;
-      transition: all 0.2s ease;
-    }
-
-    .more-events-badge:hover {
-      background: rgba(255, 255, 255, 0.15);
-      color: #fff;
-      border-color: rgba(255, 255, 255, 0.5);
-    }
-
-    .events-popover {
-      display: none;
-      position: absolute;
-      top: 100%;
-      left: 0;
-      margin-top: 5px;
-      background: #181b24;
-      border: 1px solid var(--border);
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.85);
-      border-radius: 8px;
-      padding: 8px;
-      z-index: 150;
-      flex-direction: column;
-      gap: 5px;
-      min-width: 175px;
-    }
-
-    .more-events-badge:hover .events-popover {
-      display: flex;
-    }
-
-    /* MODAL OVERLAY */
     .modal-overlay {
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
@@ -301,8 +247,7 @@
                   <th>Actions</th>
                   <th>Client / Couple</th>
                   <th>Mobile Number</th>
-                  <th>Wedding PIN</th>
-                  <th>Booked Events & Dates</th>
+                  <th>Delivery Deadline (45 Days)</th>
                   <th>Total / Advance</th>
                   <th>Balance Due</th>
                   <th>Stage</th>
@@ -315,12 +260,50 @@
         </div>
       </div>
 
-      <!-- TAB 1: NEW CLIENT ONBOARDING -->
+      <!-- TAB 1: NEW CLIENT ONBOARDING & FRESH LINK SENDER -->
       <div id="tab-new-client" class="tab-pane hidden">
+        
+        <!-- QUICK FRESH ONBOARD LINK GENERATOR -->
+        <div class="panel-card" style="border-color: rgba(37, 211, 102, 0.4); margin-bottom: 24px; background: linear-gradient(145deg, #13151c, #0e1219);">
+          <div class="card-head">
+            <h3><i class="fab fa-whatsapp" style="color: var(--green);"></i> Quick Fresh Onboard Link Generator</h3>
+            <span class="badge badge-green">Instant WhatsApp Share</span>
+          </div>
+          <p style="font-size: 0.85rem; color: var(--muted); margin-bottom: 16px;">
+            Sirf naam, phone number aur financial details daal kar turant fresh onboarding link WhatsApp par bhejein. Baaki ki sari details client khud bhar lenge!
+          </p>
+          <form id="quick-onboard-form" onsubmit="sendQuickOnboardWhatsApp(event)">
+            <div class="grid-4">
+              <div class="field">
+                <label>Client Name / Couple *</label>
+                <input type="text" id="q-name" placeholder="e.g. Abhishek & Pooja" required />
+              </div>
+              <div class="field">
+                <label>Mobile Number *</label>
+                <input type="tel" id="q-phone" placeholder="9876543210" maxlength="10" required />
+              </div>
+              <div class="field">
+                <label>Total Deal Amount (₹)</label>
+                <input type="number" id="q-total" placeholder="120000" required />
+              </div>
+              <div class="field">
+                <label>Advance Paid (₹)</label>
+                <input type="number" id="q-advance" placeholder="25000" required />
+              </div>
+            </div>
+            <div style="display: flex; gap: 10px; margin-top: 10px;">
+              <button type="submit" class="btn" style="background: linear-gradient(135deg, #25d366, #119942); width: auto; padding: 12px 24px;">
+                <i class="fab fa-whatsapp"></i> Save & Send Fresh Onboard Link
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- FULL CLIENT ENTRY FORM (SHEET1) -->
         <div class="panel-card">
           <div class="card-head">
-            <h3>Add New Client to Sheet1</h3>
-            <span style="font-size: 0.8rem; color: var(--muted);">Auto-maps Col A to AA</span>
+            <h3>Add Complete Client Profile (Manual)</h3>
+            <span style="font-size: 0.8rem; color: var(--muted);">Auto-maps Col A to AG</span>
           </div>
 
           <form id="add-client-form" onsubmit="submitNewClient(event)">
@@ -399,7 +382,7 @@
               </div>
               <div class="field">
                 <label>Current Production Stage (Col M)</label>
-                <select id="c-stage">
+                <select id="c-stage" onchange="updateFieldPermissions('c-stage', 'c-drive', 'c-limit', 'c-video')">
                   <option value="Pre-Production & Planning">Pre-Production & Planning</option>
                   <option value="Ingesting Footage">Ingesting Footage</option>
                   <option value="Photo Selection Active">Photo Selection Active</option>
@@ -426,7 +409,6 @@
               </div>
             </div>
 
-            <!-- DEDICATED BIRTHDAYS COLUMNS (Q & R) -->
             <div class="grid-2">
               <div class="field">
                 <label>Groom Birthday (Col Q)</label>
@@ -659,7 +641,11 @@
           <!-- QUICK ADD INSTALLMENT DRAWER -->
           <div id="quick-add-installment-box" class="hidden" style="background: #131620; border: 1px dashed var(--green); border-radius: 8px; padding: 12px; margin-top: 10px;">
             <div style="font-size: 0.75rem; color: var(--green); font-weight: 700; margin-bottom: 8px;">Record New Installment</div>
-            <div class="grid-3">
+            <div class="grid-4">
+              <div class="field" style="margin-bottom: 0;">
+                <label>Payment Date</label>
+                <input type="date" id="inst-date" style="color-scheme: dark; padding: 10px;" />
+              </div>
               <div class="field" style="margin-bottom: 0;">
                 <label>Amount (₹)</label>
                 <input type="number" id="inst-amount" placeholder="e.g. 20000" />
@@ -691,7 +677,7 @@
           </div>
           <div class="field">
             <label>Current Stage</label>
-            <select id="e-stage">
+            <select id="e-stage" onchange="updateFieldPermissions('e-stage', 'e-drive', 'e-limit', 'e-video')">
               <option value="Pre-Production & Planning">Pre-Production & Planning</option>
               <option value="Ingesting Footage">Ingesting Footage</option>
               <option value="Photo Selection Active">Photo Selection Active</option>
@@ -767,9 +753,6 @@
     let globalClientsData = [];
     let currentEditPhone = "";
 
-    // ============================================================================
-    // DATE FORMATTER UTILITY: YYYY-MM-DD -> DD-MM-YY (e.g. 2026-09-11 -> 11-09-26)
-    // ============================================================================
     function formatDateShort(dStr) {
       if (!dStr) return "";
       dStr = String(dStr).trim();
@@ -793,6 +776,121 @@
       return dStr;
     }
 
+    // Calculate 45-day deadline countdown with green "Upcoming" badge
+    // Calculate countdown: Event date tak "Upcoming", event ke baad 45-day delivery deadline
+    function calculateDeliveryDeadline(c, currentStage) {
+      if (currentStage === "Delivered") {
+        return `<span class="badge badge-green"><i class="fas fa-check-circle"></i> Delivered</span>`;
+      }
+
+      let dateFields = [
+        c.dateWedding, c.dateEngagement, c.dateHaldi, c.dateMehandi, 
+        c.dateSangeet, c.datePrewed, c.datePooja, c.dateMatkor, 
+        c.dateTilak, c.dateRoka, c.dateReception, c.dateVidai, 
+        c.dateAnniversary, c.dateBirthday, c.dateGrihaPravesh
+      ];
+
+      let validDates = [];
+      dateFields.forEach(dStr => {
+        if (dStr && String(dStr).trim() !== "") {
+          let parsedDate = new Date(dStr);
+          if (!isNaN(parsedDate.getTime())) {
+            validDates.push(parsedDate.getTime());
+          }
+        }
+      });
+
+      if (validDates.length === 0) {
+        return `<span style="color: var(--muted); font-size: 0.75rem;">No event dates set</span>`;
+      }
+
+      let maxEventTime = Math.max(...validDates);
+      let latestEventDate = new Date(maxEventTime);
+
+      let today = new Date();
+      today.setHours(0,0,0,0);
+      latestEventDate.setHours(0,0,0,0);
+
+      let timeToEvent = latestEventDate.getTime() - today.getTime();
+      let daysToEvent = Math.ceil(timeToEvent / (1000 * 60 * 60 * 24));
+
+      // CASE 1: Event aane wala hai (Future) -> Show days left for event
+      if (daysToEvent > 0) {
+        return `<span class="badge" style="background: rgba(37, 211, 102, 0.15); color: #25d366; font-weight: 700;"><i class="fas fa-calendar-alt"></i> Upcoming (${daysToEvent}d to Wedding)</span>`;
+      }
+
+      // CASE 2: Event ho chuka hai -> Start 45 days delivery deadline countdown
+      let deadlineDate = new Date(latestEventDate);
+      deadlineDate.setDate(deadlineDate.getDate() + 45);
+
+      let timeToDeadline = deadlineDate.getTime() - today.getTime();
+      let diffDays = Math.ceil(timeToDeadline / (1000 * 60 * 60 * 24));
+
+      if (diffDays > 0) {
+        return `<span class="badge" style="background: rgba(245,158,11,0.15); color: #f59e0b; font-weight: 700;"><i class="fas fa-clock"></i> Delivery Due (${diffDays}d Left)</span>`;
+      } else if (diffDays === 0) {
+        return `<span class="badge" style="background: rgba(239,68,68,0.2); color: #ef4444; font-weight: 700;"><i class="fas fa-exclamation-triangle"></i> Delivery Due Today!</span>`;
+      } else {
+        let overdueDays = Math.abs(diffDays);
+        return `<span class="badge" style="background: rgba(239,68,68,0.15); color: #ef4444; font-weight: 700;"><i class="fas fa-exclamation-circle"></i> Delivery Overdue by ${overdueDays}d</span>`;
+      }
+    }
+
+    function updateFieldPermissions(stageSelectId, driveInputId, limitInputId, videoInputId) {
+      const stageEl = document.getElementById(stageSelectId);
+      const driveEl = document.getElementById(driveInputId);
+      const limitEl = document.getElementById(limitInputId);
+      const videoEl = document.getElementById(videoInputId);
+
+      if (!stageEl) return;
+      const currentStage = stageEl.value;
+
+      const stagesOrder = [
+        "Pre-Production & Planning",
+        "Ingesting Footage",
+        "Photo Selection Active",
+        "Trailer Editing",
+        "Color Grading & Master",
+        "Ready for Download",
+        "Delivered"
+      ];
+
+      const currentIndex = stagesOrder.indexOf(currentStage);
+      const photoSelectionIndex = stagesOrder.indexOf("Photo Selection Active");
+      const readyForDownloadIndex = stagesOrder.indexOf("Ready for Download");
+
+      const allowSelection = currentIndex >= photoSelectionIndex;
+      if (driveEl) {
+        driveEl.disabled = !allowSelection;
+        if (!allowSelection) driveEl.value = "";
+      }
+      if (limitEl) {
+        limitEl.disabled = !allowSelection;
+      }
+
+      const allowVideo = currentIndex >= readyForDownloadIndex;
+      if (videoEl) {
+        videoEl.disabled = !allowVideo;
+        if (!allowVideo) videoEl.value = "";
+      }
+    }
+
+    function getEventDropdownOptions(selectedVal) {
+      const events = [
+        "Wedding", "Engagement", "Haldi Ceremony", "Mehandi Ceremony", 
+        "Sangeet & Cocktail Night", "Pre-Wedding", "Pooja & Hawan", 
+        "Matkor", "Tilak", "Roka", "Reception", "Vidai", 
+        "Anniversary", "Birthday", "Griha Pravesh"
+      ];
+
+      let opts = `<option value="">-- Select Event --</option>`;
+      events.forEach(ev => {
+        const isSel = (selectedVal === ev) ? 'selected' : '';
+        opts += `<option value="${ev}" ${isSel}>${ev}</option>`;
+      });
+      return opts;
+    }
+
     function addAdminEventRow(selectedEvent = "", customName = "", eventDate = "") {
       const container = document.getElementById('admin-dynamic-events-container');
       if (!container) return;
@@ -804,19 +902,9 @@
 
       rowDiv.innerHTML = `
         <div style="flex: 1; display: flex; flex-direction: column; gap: 4px;">
-          <select class="field select admin-event-dropdown" onchange="handleAdminEventChange('${rowId}')" style="padding: 8px 10px; font-size: 0.85rem; background: #07080a; color: #fff; border: 1px solid rgba(255,255,255,0.08); border-radius: 6px;">
-            <option value="">-- Select Event --</option>
-            <option value="Engagement" ${selectedEvent === 'Engagement' ? 'selected' : ''}>Engagement</option>
-            <option value="Pre-Wedding" ${selectedEvent === 'Pre-Wedding' ? 'selected' : ''}>Pre-Wedding</option>
-            <option value="Pooja & Rituals" ${selectedEvent === 'Pooja & Rituals' ? 'selected' : ''}>Pooja & Rituals</option>
-            <option value="Haldi" ${selectedEvent === 'Haldi' ? 'selected' : ''}>Haldi</option>
-            <option value="Mehendi" ${selectedEvent === 'Mehendi' ? 'selected' : ''}>Mehendi</option>
-            <option value="Sangeet" ${selectedEvent === 'Sangeet' ? 'selected' : ''}>Sangeet</option>
-            <option value="Reception" ${selectedEvent === 'Reception' ? 'selected' : ''}>Reception</option>
-            <option value="Birthday" ${selectedEvent === 'Birthday' ? 'selected' : ''}>Birthday</option>
-            <option value="Other" ${selectedEvent === 'Other' || (selectedEvent && !['Engagement','Pre-Wedding','Pooja & Rituals','Haldi','Mehendi','Sangeet','Reception','Birthday'].includes(selectedEvent)) ? 'selected' : ''}>Other (Type Custom)</option>
+          <select class="field select admin-event-dropdown" style="padding: 8px 10px; font-size: 0.85rem; background: #07080a; color: #fff; border: 1px solid rgba(255,255,255,0.08); border-radius: 6px;">
+            ${getEventDropdownOptions(selectedEvent)}
           </select>
-          <input type="text" class="field input admin-custom-input" placeholder="Type event name..." value="${customName}" style="display: none; padding: 8px 10px; font-size: 0.85rem; background: #07080a; color: #fff; border: 1px solid rgba(255,255,255,0.08); border-radius: 6px; margin-top: 4px;" />
         </div>
 
         <div style="flex: 1;">
@@ -829,23 +917,6 @@
       `;
 
       container.appendChild(rowDiv);
-      handleAdminEventChange(rowId);
-    }
-
-    function handleAdminEventChange(rowId) {
-      const row = document.getElementById(rowId);
-      if (!row) return;
-      const select = row.querySelector('.admin-event-dropdown');
-      const customInput = row.querySelector('.admin-custom-input');
-
-      if (select.value === 'Other') {
-        customInput.style.display = 'block';
-        customInput.required = true;
-      } else {
-        customInput.style.display = 'none';
-        customInput.required = false;
-        customInput.value = '';
-      }
     }
 
     function addEditEventRow(selectedEvent = "", customName = "", eventDate = "") {
@@ -859,19 +930,9 @@
 
       rowDiv.innerHTML = `
         <div style="flex: 1; display: flex; flex-direction: column; gap: 4px;">
-          <select class="field select edit-event-dropdown" onchange="handleEditEventChange('${rowId}')" style="padding: 8px 10px; font-size: 0.85rem; background: #07080a; color: #fff; border: 1px solid rgba(255,255,255,0.08); border-radius: 6px;">
-            <option value="">-- Select Event --</option>
-            <option value="Engagement" ${selectedEvent === 'Engagement' ? 'selected' : ''}>Engagement</option>
-            <option value="Pre-Wedding" ${selectedEvent === 'Pre-Wedding' ? 'selected' : ''}>Pre-Wedding</option>
-            <option value="Pooja & Rituals" ${selectedEvent === 'Pooja & Rituals' ? 'selected' : ''}>Pooja & Rituals</option>
-            <option value="Haldi" ${selectedEvent === 'Haldi' ? 'selected' : ''}>Haldi</option>
-            <option value="Mehendi" ${selectedEvent === 'Mehendi' ? 'selected' : ''}>Mehendi</option>
-            <option value="Sangeet" ${selectedEvent === 'Sangeet' ? 'selected' : ''}>Sangeet</option>
-            <option value="Reception" ${selectedEvent === 'Reception' ? 'selected' : ''}>Reception</option>
-            <option value="Birthday" ${selectedEvent === 'Birthday' ? 'selected' : ''}>Birthday</option>
-            <option value="Other" ${selectedEvent === 'Other' || (selectedEvent && !['Engagement','Pre-Wedding','Pooja & Rituals','Haldi','Mehendi','Sangeet','Reception','Birthday'].includes(selectedEvent)) ? 'selected' : ''}>Other (Type Custom)</option>
+          <select class="field select edit-event-dropdown" style="padding: 8px 10px; font-size: 0.85rem; background: #07080a; color: #fff; border: 1px solid rgba(255,255,255,0.08); border-radius: 6px;">
+            ${getEventDropdownOptions(selectedEvent)}
           </select>
-          <input type="text" class="field input edit-custom-input" placeholder="Type event name..." value="${customName}" style="display: none; padding: 8px 10px; font-size: 0.85rem; background: #07080a; color: #fff; border: 1px solid rgba(255,255,255,0.08); border-radius: 6px; margin-top: 4px;" />
         </div>
 
         <div style="flex: 1;">
@@ -884,23 +945,6 @@
       `;
 
       container.appendChild(rowDiv);
-      handleEditEventChange(rowId);
-    }
-
-    function handleEditEventChange(rowId) {
-      const row = document.getElementById(rowId);
-      if (!row) return;
-      const select = row.querySelector('.edit-event-dropdown');
-      const customInput = row.querySelector('.edit-custom-input');
-
-      if (select.value === 'Other') {
-        customInput.style.display = 'block';
-        customInput.required = true;
-      } else {
-        customInput.style.display = 'none';
-        customInput.required = false;
-        customInput.value = '';
-      }
     }
 
     function handleAdminLogin() {
@@ -960,64 +1004,7 @@
           `<option value="${stg}" ${stg.toLowerCase() === currentStage.toLowerCase() ? 'selected' : ''}>${stg}</option>`
         ).join('');
 
-        // ----------------------------------------------------
-        // 1. COLLECT FORMATTED EVENT BADGES (DD-MM-YY)
-        // ----------------------------------------------------
-        let rawEventBadges = [];
-        if (c.datePrewed) rawEventBadges.push(`<span class="badge" style="background: rgba(255,165,0,0.15); color: #ffa500;">Pre-Wed: ${formatDateShort(c.datePrewed)}</span>`);
-        if (c.dateEngagement) rawEventBadges.push(`<span class="badge" style="background: rgba(147,51,234,0.15); color: #c084fc;">Eng: ${formatDateShort(c.dateEngagement)}</span>`);
-        if (c.datePooja) rawEventBadges.push(`<span class="badge" style="background: rgba(234,88,12,0.15); color: #fb923c;">Pooja: ${formatDateShort(c.datePooja)}</span>`);
-        if (c.dateHaldi) rawEventBadges.push(`<span class="badge" style="background: rgba(234,179,8,0.15); color: #facc15;">Haldi: ${formatDateShort(c.dateHaldi)}</span>`);
-        if (c.dateMehendi) rawEventBadges.push(`<span class="badge" style="background: rgba(168,85,247,0.15); color: #a855f7;">Mehendi: ${formatDateShort(c.dateMehendi)}</span>`);
-        if (c.dateSangeet) rawEventBadges.push(`<span class="badge" style="background: rgba(59,130,246,0.15); color: #60a5fa;">Sangeet: ${formatDateShort(c.dateSangeet)}</span>`);
-        if (c.dateReception) rawEventBadges.push(`<span class="badge" style="background: rgba(236,72,153,0.15); color: #f472b6;">Reception: ${formatDateShort(c.dateReception)}</span>`);
-        if (c.dateBirthday) rawEventBadges.push(`<span class="badge" style="background: rgba(239,68,68,0.15); color: #f87171;">🎉 Party: ${formatDateShort(c.dateBirthday)}</span>`);
-        if (c.dobGroom) rawEventBadges.push(`<span class="badge badge-gold">🎂 Groom: ${formatDateShort(c.dobGroom)}</span>`);
-        if (c.dobBride) rawEventBadges.push(`<span class="badge badge-pink">🎂 Bride: ${formatDateShort(c.dobBride)}</span>`);
-        
-        // Custom 'Other' Events Parsed safely with DD-MM-YY
-        if (c.dateOther && c.dateOther.trim() !== "") {
-          const rawOtherList = c.dateOther.split(",");
-          rawOtherList.forEach(item => {
-            const trimmedItem = item.trim();
-            if (trimmedItem) {
-              const sepIndex = trimmedItem.lastIndexOf(":");
-              if (sepIndex !== -1) {
-                const eName = trimmedItem.substring(0, sepIndex).trim();
-                const eDate = formatDateShort(trimmedItem.substring(sepIndex + 1).trim());
-                rawEventBadges.push(`<span class="badge" style="background: rgba(14,165,233,0.15); color: #38bdf8; border: 1px solid rgba(14,165,233,0.3);"><i class="fas fa-star" style="font-size:0.65rem;"></i> ${eName}: ${eDate}</span>`);
-              } else {
-                rawEventBadges.push(`<span class="badge" style="background: rgba(14,165,233,0.15); color: #38bdf8;"><i class="fas fa-star" style="font-size:0.65rem;"></i> ${trimmedItem}</span>`);
-              }
-            }
-          });
-        }
-
-        // ----------------------------------------------------
-        // 2. OPTION C: TOP 2 VISIBLE + COLLAPSIBLE POPOVER
-        // ----------------------------------------------------
-        let eventsHtml = `<span style="color: var(--muted); font-size: 0.75rem;">No extra events</span>`;
-        if (rawEventBadges.length > 0) {
-          if (rawEventBadges.length <= 2) {
-            eventsHtml = `<div class="event-badges-container">${rawEventBadges.join('')}</div>`;
-          } else {
-            const visibleBadges = rawEventBadges.slice(0, 2).join('');
-            const hiddenBadges = rawEventBadges.slice(2).join('');
-            const hiddenCount = rawEventBadges.length - 2;
-
-            eventsHtml = `
-              <div class="event-badges-container">
-                ${visibleBadges}
-                <div class="more-events-badge">
-                  <span>+${hiddenCount} more</span> <i class="fas fa-chevron-down" style="font-size: 0.6rem;"></i>
-                  <div class="events-popover">
-                    ${hiddenBadges}
-                  </div>
-                </div>
-              </div>
-            `;
-          }
-        }
+        let deadlineHtml = calculateDeliveryDeadline(c, currentStage);
 
         clientsBody.innerHTML += `
             <tr>
@@ -1031,8 +1018,7 @@
                 <div style="font-size: 0.72rem; color: var(--muted);">${c.bride || ''} & ${c.groom || ''}</div>
               </td>
               <td>${c.phone}</td>
-              <td><span class="badge badge-pink">${c.pin}</span></td>
-              <td>${eventsHtml}</td>
+              <td>${deadlineHtml}</td>
               <td>₹${tVal.toLocaleString('en-IN')} <span style="color: var(--green); font-size: 0.75rem;">(Paid: ₹${aVal.toLocaleString('en-IN')})</span></td>
               <td><strong style="color: ${bal > 0 ? '#ef4444' : 'var(--green)'};">₹${bal.toLocaleString('en-IN')}</strong></td>
               <td>
@@ -1133,6 +1119,52 @@
       document.body.appendChild(script);
     }
 
+    function sendQuickOnboardWhatsApp(e) {
+      e.preventDefault();
+      const name = document.getElementById("q-name").value.trim();
+      const phone = document.getElementById("q-phone").value.replace(/\D/g, '').trim();
+      const total = document.getElementById("q-total").value.trim();
+      const advance = document.getElementById("q-advance").value.trim();
+
+      if (!name || phone.length !== 10 || !total || !advance) {
+        alert("Kripya sabhi fields (Name, 10-digit Phone, Total, Advance) sahi se bharein.");
+        return;
+      }
+
+      const tempPin = phone.slice(-4) + "2026"; 
+
+      const postData = {
+        action: "addClient",
+        phone: phone,
+        pin: tempPin,
+        name: name,
+        totalAmount: total,
+        advancePaid: advance,
+        bookingAmount: advance,
+        limit: 100,
+        currentStage: "Pre-Production & Planning"
+      };
+
+      fetch(API_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(postData)
+      }).catch(() => {});
+
+      const basePortal = window.location.origin + window.location.pathname.replace(/\/manage\/.*$/, '/onboard.html');
+      const onboardUrl = `${basePortal}?onboard=true&phone=${phone}&pin=${tempPin}`;
+
+      const messageText = `Hello ${name} ji! ✨\n\nWarm congratulations from *Shaadigraphs*! 📸\nAapki wedding bookings aur commercial details register ho chuki hain (Total: ₹${Number(total).toLocaleString('en-IN')} | Paid: ₹${Number(advance).toLocaleString('en-IN')}).\n\nAapke events, dates aur baki ki details secure tarike se fill karne ke liye niche diye gaye link par click karein:\n\n${onboardUrl}\n\nWarm Regards,\nTeam Shaadigraphs`;
+
+      const waUrl = `https://wa.me/91${phone}?text=${encodeURIComponent(messageText)}`;
+      window.open(waUrl, '_blank');
+      
+      showToast("✨ Fresh Onboard Link WhatsApp par bhej diya gaya hai!");
+      document.getElementById("quick-onboard-form").reset();
+      loadAdminData();
+    }
+
     function openEditModal(phone) {
       const c = globalClientsData.find(item => String(item.phone) === String(phone));
       if (!c) return alert("Client details not found!");
@@ -1160,45 +1192,35 @@
       document.getElementById("e-dob-groom").value = c.dobGroom || "";
       document.getElementById("e-dob-bride").value = c.dobBride || "";
 
+      updateFieldPermissions('e-stage', 'e-drive', 'e-limit', 'e-video');
+
       const editContainer = document.getElementById('edit-dynamic-events-container');
       if (editContainer) {
         editContainer.innerHTML = "";
         
-        const prewed = c.datePrewed || c.evPrewed;
-        const eng = c.dateEngagement || c.evEngagement;
-        const pooja = c.datePooja || c.evPooja;
-        const haldi = c.dateHaldi || c.evHaldi;
-        const mehendi = c.dateMehendi || c.evMehendi;
-        const sangeet = c.dateSangeet || c.evSangeet;
-        const reception = c.dateReception || c.evReception;
-        const birthday = c.dateBirthday || c.evBirthday;
-        const other = c.dateOther || c.evOther;
+        const eventMappingList = [
+          { name: "Wedding", val: c.dateWedding },
+          { name: "Engagement", val: c.dateEngagement },
+          { name: "Haldi Ceremony", val: c.dateHaldi },
+          { name: "Mehandi Ceremony", val: c.dateMehandi },
+          { name: "Sangeet & Cocktail Night", val: c.dateSangeet },
+          { name: "Pre-Wedding", val: c.datePrewed },
+          { name: "Pooja & Hawan", val: c.datePooja },
+          { name: "Matkor", val: c.dateMatkor },
+          { name: "Tilak", val: c.dateTilak },
+          { name: "Roka", val: c.dateRoka },
+          { name: "Reception", val: c.dateReception },
+          { name: "Vidai", val: c.dateVidai },
+          { name: "Anniversary", val: c.dateAnniversary },
+          { name: "Birthday", val: c.dateBirthday },
+          { name: "Griha Pravesh", val: c.dateGrihaPravesh }
+        ];
 
-        if (prewed) addEditEventRow("Pre-Wedding", "", prewed);
-        if (eng) addEditEventRow("Engagement", "", eng);
-        if (pooja) addEditEventRow("Pooja & Rituals", "", pooja);
-        if (haldi) addEditEventRow("Haldi", "", haldi);
-        if (mehendi) addEditEventRow("Mehendi", "", mehendi);
-        if (sangeet) addEditEventRow("Sangeet", "", sangeet);
-        if (reception) addEditEventRow("Reception", "", reception);
-        if (birthday) addEditEventRow("Birthday", "", birthday);
-        
-        if (other && other.trim() !== "") {
-          const items = other.split(",");
-          items.forEach(it => {
-            const trimmed = it.trim();
-            if (!trimmed) return;
-            
-            const separatorIndex = trimmed.lastIndexOf(":");
-            if (separatorIndex !== -1) {
-              const namePart = trimmed.substring(0, separatorIndex).trim();
-              const datePart = trimmed.substring(separatorIndex + 1).trim();
-              addEditEventRow("Other", namePart, datePart);
-            } else {
-              addEditEventRow("Other", trimmed, "");
-            }
-          });
-        }
+        eventMappingList.forEach(item => {
+          if (item.val) {
+            addEditEventRow(item.name, "", item.val);
+          }
+        });
 
         if (editContainer.children.length === 0) {
           addEditEventRow();
@@ -1265,7 +1287,7 @@
       document.body.appendChild(script);
     }
 
-    window.onPaymentHistoryLoaded = function(res) {
+   window.onPaymentHistoryLoaded = function(res) {
       document.getElementById("history-loading").classList.add("hidden");
       document.getElementById("history-content").classList.remove("hidden");
       const tbody = document.getElementById("history-table-body");
@@ -1273,9 +1295,19 @@
 
       if (res && res.history && res.history.length > 0) {
         res.history.reverse().forEach(h => {
+          let cleanDate = h.date;
+          if (cleanDate) {
+            let dObj = new Date(cleanDate);
+            if (!isNaN(dObj.getTime())) {
+              cleanDate = dObj.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+            } else {
+              cleanDate = String(cleanDate).split(' ')[0];
+            }
+          }
+
           tbody.innerHTML += `
             <tr>
-              <td style="font-size: 0.75rem;">${h.date}</td>
+              <td style="font-size: 0.75rem;">${cleanDate}</td>
               <td style="color: var(--green); font-weight: bold;">₹${h.amount.toLocaleString('en-IN')}</td>
               <td><span class="badge badge-gold">${h.mode}</span></td>
               <td style="font-size: 0.8rem;">${h.note}</td>
@@ -1299,22 +1331,25 @@
 
       const eventRows = document.querySelectorAll('#edit-dynamic-events-container > div');
       let eventMap = {
-        prewed: "",
+        wedding: "",
         engagement: "",
-        pooja: "",
         haldi: "",
-        mehendi: "",
+        mehandi: "",
         sangeet: "",
+        prewed: "",
+        pooja: "",
+        matkor: "",
+        tilak: "",
+        roka: "",
         reception: "",
+        vidai: "",
+        anniversary: "",
         birthday: "",
-        other: ""
+        grihapravesh: ""
       };
-
-      let customEventsList = [];
 
       eventRows.forEach(row => {
         const select = row.querySelector('.edit-event-dropdown');
-        const customInput = row.querySelector('.edit-custom-input');
         const dateInput = row.querySelector('.edit-date-input');
 
         if (!select || !dateInput) return;
@@ -1324,31 +1359,22 @@
 
         if (!eventType || !eventDate) return;
 
-        if (eventType === 'other') {
-          let customName = customInput ? customInput.value.trim() : 'Custom Event';
-          if (customName) customEventsList.push(`${customName}: ${eventDate}`);
-        } else if (eventType === 'pre-wedding') {
-          eventMap.prewed = eventDate;
-        } else if (eventType === 'engagement') {
-          eventMap.engagement = eventDate;
-        } else if (eventType.includes('pooja')) {
-          eventMap.pooja = eventDate;
-        } else if (eventType === 'haldi') {
-          eventMap.haldi = eventDate;
-        } else if (eventType === 'mehendi') {
-          eventMap.mehendi = eventDate;
-        } else if (eventType === 'sangeet') {
-          eventMap.sangeet = eventDate;
-        } else if (eventType === 'reception') {
-          eventMap.reception = eventDate;
-        } else if (eventType === 'birthday') {
-          eventMap.birthday = eventDate;
-        }
+        if (eventType === 'wedding') eventMap.wedding = eventDate;
+        else if (eventType === 'engagement') eventMap.engagement = eventDate;
+        else if (eventType === 'haldi ceremony') eventMap.haldi = eventDate;
+        else if (eventType === 'mehandi ceremony') eventMap.mehandi = eventDate;
+        else if (eventType === 'sangeet & cocktail night') eventMap.sangeet = eventDate;
+        else if (eventType === 'pre-wedding') eventMap.prewed = eventDate;
+        else if (eventType === 'pooja & hawan') eventMap.pooja = eventDate;
+        else if (eventType === 'matkor') eventMap.matkor = eventDate;
+        else if (eventType === 'tilak') eventMap.tilak = eventDate;
+        else if (eventType === 'roka') eventMap.roka = eventDate;
+        else if (eventType === 'reception') eventMap.reception = eventDate;
+        else if (eventType === 'vidai') eventMap.vidai = eventDate;
+        else if (eventType === 'anniversary') eventMap.anniversary = eventDate;
+        else if (eventType === 'birthday') eventMap.birthday = eventDate;
+        else if (eventType === 'griha pravesh') eventMap.grihapravesh = eventDate;
       });
-
-      if (customEventsList.length > 0) {
-        eventMap.other = customEventsList.join(', ');
-      }
 
       const postData = {
         action: "updateClientFull",
@@ -1369,15 +1395,21 @@
         insta: document.getElementById("e-insta").value.trim(),
         dobGroom: document.getElementById("e-dob-groom").value.trim(),
         dobBride: document.getElementById("e-dob-bride").value.trim(),
-        datePrewed: eventMap.prewed,
+        dateWedding: eventMap.wedding,
         dateEngagement: eventMap.engagement,
-        datePooja: eventMap.pooja,
         dateHaldi: eventMap.haldi,
-        dateMehendi: eventMap.mehendi,
+        dateMehandi: eventMap.mehandi,
         dateSangeet: eventMap.sangeet,
+        datePrewed: eventMap.prewed,
+        datePooja: eventMap.pooja,
+        dateMatkor: eventMap.matkor,
+        dateTilak: eventMap.tilak,
+        dateRoka: eventMap.roka,
         dateReception: eventMap.reception,
+        dateVidai: eventMap.vidai,
+        dateAnniversary: eventMap.anniversary,
         dateBirthday: eventMap.birthday,
-        dateOther: eventMap.other
+        dateGrihaPravesh: eventMap.grihapravesh
       };
 
       fetch(API_URL, {
@@ -1468,22 +1500,25 @@
 
       const eventRows = document.querySelectorAll('#admin-dynamic-events-container > div');
       let eventMap = {
-        prewed: "",
+        wedding: "",
         engagement: "",
-        pooja: "",
         haldi: "",
-        mehendi: "",
+        mehandi: "",
         sangeet: "",
+        prewed: "",
+        pooja: "",
+        matkor: "",
+        tilak: "",
+        roka: "",
         reception: "",
+        vidai: "",
+        anniversary: "",
         birthday: "",
-        other: ""
+        grihapravesh: ""
       };
-
-      let customEventsList = [];
 
       eventRows.forEach(row => {
         const select = row.querySelector('.admin-event-dropdown');
-        const customInput = row.querySelector('.admin-custom-input');
         const dateInput = row.querySelector('.admin-date-input');
 
         if (!select || !dateInput) return;
@@ -1493,31 +1528,22 @@
 
         if (!eventType || !eventDate) return;
 
-        if (eventType === 'other') {
-          let customName = customInput ? customInput.value.trim() : 'Custom Event';
-          if (customName) customEventsList.push(`${customName}: ${eventDate}`);
-        } else if (eventType === 'pre-wedding') {
-          eventMap.prewed = eventDate;
-        } else if (eventType === 'engagement') {
-          eventMap.engagement = eventDate;
-        } else if (eventType.includes('pooja')) {
-          eventMap.pooja = eventDate;
-        } else if (eventType === 'haldi') {
-          eventMap.haldi = eventDate;
-        } else if (eventType === 'mehendi') {
-          eventMap.mehendi = eventDate;
-        } else if (eventType === 'sangeet') {
-          eventMap.sangeet = eventDate;
-        } else if (eventType === 'reception') {
-          eventMap.reception = eventDate;
-        } else if (eventType === 'birthday') {
-          eventMap.birthday = eventDate;
-        }
+        if (eventType === 'wedding') eventMap.wedding = eventDate;
+        else if (eventType === 'engagement') eventMap.engagement = eventDate;
+        else if (eventType === 'haldi ceremony') eventMap.haldi = eventDate;
+        else if (eventType === 'mehandi ceremony') eventMap.mehandi = eventDate;
+        else if (eventType === 'sangeet & cocktail night') eventMap.sangeet = eventDate;
+        else if (eventType === 'pre-wedding') eventMap.prewed = eventDate;
+        else if (eventType === 'pooja & hawan') eventMap.pooja = eventDate;
+        else if (eventType === 'matkor') eventMap.matkor = eventDate;
+        else if (eventType === 'tilak') eventMap.tilak = eventDate;
+        else if (eventType === 'roka') eventMap.roka = eventDate;
+        else if (eventType === 'reception') eventMap.reception = eventDate;
+        else if (eventType === 'vidai') eventMap.vidai = eventDate;
+        else if (eventType === 'anniversary') eventMap.anniversary = eventDate;
+        else if (eventType === 'birthday') eventMap.birthday = eventDate;
+        else if (eventType === 'griha pravesh') eventMap.grihapravesh = eventDate;
       });
-
-      if (customEventsList.length > 0) {
-        eventMap.other = customEventsList.join(', ');
-      }
 
       const postData = {
         action: "addClient",
@@ -1538,15 +1564,21 @@
         instagram: document.getElementById("c-insta").value.trim(),
         dobGroom: document.getElementById("c-dob-groom").value.trim(),
         dobBride: document.getElementById("c-dob-bride").value.trim(),
-        datePrewed: eventMap.prewed,
+        dateWedding: eventMap.wedding,
         dateEngagement: eventMap.engagement,
-        datePooja: eventMap.pooja,
         dateHaldi: eventMap.haldi,
-        dateMehendi: eventMap.mehendi,
+        dateMehandi: eventMap.mehandi,
         dateSangeet: eventMap.sangeet,
+        datePrewed: eventMap.prewed,
+        datePooja: eventMap.pooja,
+        dateMatkor: eventMap.matkor,
+        dateTilak: eventMap.tilak,
+        dateRoka: eventMap.roka,
         dateReception: eventMap.reception,
+        dateVidai: eventMap.vidai,
+        dateAnniversary: eventMap.anniversary,
         dateBirthday: eventMap.birthday,
-        dateOther: eventMap.other
+        dateGrihaPravesh: eventMap.grihapravesh
       };
 
       fetch(API_URL, {
@@ -1615,6 +1647,7 @@
 
     document.addEventListener("DOMContentLoaded", () => {
       addAdminEventRow();
+      updateFieldPermissions('c-stage', 'c-drive', 'c-limit', 'c-video');
     });
   </script>
 </body>
