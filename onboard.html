@@ -32,8 +32,9 @@
     .date-picker-input { cursor: pointer; color: #8e95a5; background-color: #0d0f14; }
     .date-picker-input.has-value { color: #f4efe6; }
 
-    .portal-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 14px 16px; border-radius: 12px; font-weight: 700; font-size: 0.95rem; cursor: pointer; border: none; transition: all 0.2s ease; }
+    .portal-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 14px 16px; border-radius: 12px; font-weight: 700; font-size: 0.95rem; cursor: pointer; border: none; transition: all 0.2s ease; text-decoration: none; }
     .portal-btn-primary { background: linear-gradient(135deg, #ff2d75, #db296f); color: #ffffff; box-shadow: 0 8px 22px rgba(255, 45, 117, 0.35); }
+    .portal-btn-whatsapp { background: linear-gradient(135deg, #25d366, #128c7e); color: #ffffff; box-shadow: 0 8px 22px rgba(37, 211, 102, 0.35); }
     .portal-btn-ghost { background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(244, 239, 230, 0.14); color: #f4efe6; }
     .portal-btn-compact { width: auto; padding: 8px 14px; font-size: 0.8rem; }
   </style>
@@ -67,6 +68,7 @@
   <script>
     const API_URL = "https://script.google.com/macros/s/AKfycbxiicife5FUbMsQZqzio27S5_FOxf-b7D5dXFNLWs5g9ehpVcDs4Hif5X98pG9KDdFW/exec";
     let currentActiveClient = null;
+    let globalSubmittedEventsSummary = "";
 
     function cleanDigits(val) {
       if (!val) return '';
@@ -97,12 +99,49 @@
         const match = data.clients.find(c => c.phone === urlPhone && c.pin === urlPin);
         if (match) {
           currentActiveClient = match;
-          renderOnboardForm();
+          
+          const hasVenue = match.venue && String(match.venue).trim() !== "";
+          const hasEvents = (match.dateWedding || match.dateEngagement || match.dateHaldi || match.dateMehandi || match.dateSangeet || match.datePrewed || match.datePooja || match.dateMatkor || match.dateTilak || match.dateRoka || match.dateReception || match.dateVidai || match.dateAnniversary || match.dateBirthday || match.dateGrihaPravesh);
+
+          if (hasVenue && hasEvents) {
+            renderLockedScreen();
+          } else {
+            renderOnboardForm();
+          }
         } else {
           document.getElementById('onboard-loading').innerHTML = `<h3 style="color: #ff4d6d;">Client Record Not Found</h3><p style="color: #a2aab8; margin-top: 10px;">The details associated with this link could not be verified.</p>`;
         }
       }
     };
+
+    function renderLockedScreen() {
+      document.getElementById('onboard-loading').style.display = 'none';
+      const onboardBox = document.getElementById('onboard-screen-container');
+      onboardBox.style.display = 'block';
+
+      const studioPhone = "919123192566";
+      const waMessage = `Hello Shaadigraphs, my onboarding details for ${currentActiveClient.name || 'our wedding'} are already submitted and locked.`;
+      const waUrl = `https://wa.me/${studioPhone}?text=${encodeURIComponent(waMessage)}`;
+
+      onboardBox.innerHTML = `
+        <div style="text-align: center; padding: 20px 0;">
+          <i class="fas fa-lock" style="font-size: 3rem; color: #c9a84c; margin-bottom: 16px;"></i>
+          <h2 class="portal-card-title">Details Already Locked!</h2>
+          <p class="portal-card-copy" style="line-height: 1.8; margin-top: 14px;">
+            Your wedding onboarding details and event schedules have already been submitted and secured with Shaadigraphs.<br/><br/>
+            If you need to make any urgent changes, please contact the studio directly via WhatsApp.
+          </p>
+          <div style="margin-top: 30px; display: flex; flex-direction: column; gap: 12px; align-items: center;">
+            <a href="${waUrl}" target="_blank" class="portal-btn portal-btn-whatsapp" style="max-width: 320px; text-decoration: none;">
+              <i class="fab fa-whatsapp" style="font-size: 1.2rem;"></i> Contact Studio
+            </a>
+            <a href="index.html" class="portal-btn portal-btn-ghost" style="display: inline-flex; width: auto; padding: 10px 24px; text-decoration: none; margin-top: 10px;">
+              <i class="fas fa-home"></i> Back to Home
+            </a>
+          </div>
+        </div>
+      `;
+    }
 
     function renderOnboardForm() {
       document.getElementById('onboard-loading').style.display = 'none';
@@ -146,7 +185,7 @@
           <input type="text" id="onb-groom" class="portal-input" value="${currentActiveClient.groom || ''}" placeholder="e.g. Rishu" required />
 
           <label class="portal-label">VENUE ADDRESS *</label>
-          <textarea id="onb-venue" class="portal-input" placeholder="e.g. Grand Palace Lawn, Boring Road, Patna" rows="2" required style="resize: vertical;">${currentActiveClient.venue || currentActiveClient.email || ''}</textarea>
+          <textarea id="onb-venue" class="portal-input" placeholder="e.g. Grand Palace Lawn, Boring Road, Patna" rows="2" required style="resize: vertical;">${currentActiveClient.venue || ''}</textarea>
 
           <label class="portal-label">INSTAGRAM HANDLE *</label>
           <input type="text" id="onb-insta" class="portal-input" value="${currentActiveClient.instagram || ''}" placeholder="e.g. @couple_handle" required />
@@ -173,7 +212,7 @@
 
           <div style="margin-top: 25px;">
             <button type="submit" class="portal-btn portal-btn-primary" id="onb-submit-btn">
-              <i class="fas fa-check-circle"></i> Submit & Lock Details
+              <i class="fas fa-check-circle"></i> Submit
             </button>
           </div>
         </form>
@@ -299,15 +338,14 @@
       const dobGroomVal = document.getElementById('hidden-dob-groom').value.trim();
       const dobBrideVal = document.getElementById('hidden-dob-bride').value.trim();
 
-      // Strict Validation: Check all mandatory fields
       if (!brideVal || !groomVal || !venueVal || !instaVal || !dobGroomVal || !dobBrideVal) {
-        alert("Kripya sabhi zaroori fields (Bride Name, Groom Name, Venue Address, Instagram Handle, aur Dono ke Birthdays) poori tarah bharein!");
+        alert("Please fill all required fields completely!");
         return;
       }
 
       const eventRows = document.querySelectorAll('#dynamic-events-container > div');
       if (eventRows.length === 0) {
-        alert("Kripya kam se kam ek event date zaroor add karein!");
+        alert("Please add at least one event date!");
         return;
       }
 
@@ -321,21 +359,22 @@
       });
 
       if (validEventCount === 0) {
-        alert("Kripya kam se kam ek valid Event aur Date select karein!");
+        alert("Please select at least one valid Event and Date!");
         return;
       }
 
       const btn = document.getElementById('onb-submit-btn');
-      btn.innerText = "Saving Schedules...";
+      btn.innerText = "Saving Data...";
       btn.disabled = true;
 
       const pinVal = currentActiveClient.pin;
-      
       let eventMap = {
         wedding: "", engagement: "", haldi: "", mehandi: "", sangeet: "",
         prewed: "", pooja: "", matkor: "", tilak: "", roka: "",
         reception: "", vidai: "", anniversary: "", birthday: "", grihapravesh: ""
       };
+
+      let summaryList = [];
 
       eventRows.forEach(row => {
         const select = row.querySelector('.event-select-dropdown');
@@ -346,6 +385,8 @@
         let eventType = select.value.trim();
         let eventDate = hiddenDateInput.value.trim();
         if (!eventType || !eventDate) return;
+
+        summaryList.push(`• ${eventType}: ${formatDateDDMMYYYY(eventDate)}`);
 
         let cleanType = eventType.toLowerCase();
 
@@ -366,9 +407,8 @@
         else if (cleanType === 'griha pravesh') eventMap.grihapravesh = eventDate;
       });
 
+      const globalSubmittedEventsSummary = summaryList.join("\n");
       const displayName = `${groomVal} ❤️ ${brideVal}`;
-
-      // FIX: Maintain existing limit if stage is photo selection, otherwise preserve currentActiveClient limit safely without hardcoding 125 unexpectedly
       const currentStageVal = currentActiveClient.currentStage || "Pre-Production & Planning";
       const limitVal = (currentStageVal.includes("Selection") || currentStageVal.includes("Photo Selection")) ? (currentActiveClient.limit || 100) : "";
 
@@ -415,33 +455,50 @@
         body: JSON.stringify(postData)
       })
       .then(() => {
-        onOnboardSubmittedDone();
+        onOnboardSubmittedDone(globalSubmittedEventsSummary, venueVal);
       })
       .catch((error) => {
         console.error("Error saving schedules:", error);
-        alert("Kuch error aa gaya hai. Kripya dobara try karein.");
-        btn.innerText = "Submit & Lock Details";
+        alert("An error occurred. Please try again.");
+        btn.innerText = "Submit";
         btn.disabled = false;
       });
     }
 
-    function onOnboardSubmittedDone() {
+    function onOnboardSubmittedDone(summaryText, venueVal) {
       const onboardBox = document.getElementById('onboard-screen-container');
       if (onboardBox) {
+        let eventsHtmlList = summaryText.split('\n').map(item => `<div style="padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.06); font-size: 0.9rem; color: #f4efe6;">${item}</div>`).join('');
+
+        const studioPhone = "919123192566";
+        const waMessage = `Hello Shaadigraphs,\nI have successfully submitted my wedding onboarding details.\n\nSelected Events & Dates:\n${summaryText}\n\nPlease review and confirm my booking.`;
+        const waUrl = `https://wa.me/${studioPhone}?text=${encodeURIComponent(waMessage)}`;
+
         onboardBox.innerHTML = `
-          <div style="text-align: center; padding: 20px 0;">
-            <i class="fas fa-heart" style="font-size: 3rem; color: #c9a84c; margin-bottom: 16px;"></i>
-            <h2 class="portal-card-title">Details & Schedules Successfully Locked!</h2>
-            <p class="portal-card-copy" style="line-height: 1.8; margin-top: 14px;">
-              Thank you so much! Your event dates, venue, and metadata have been successfully registered with Shaadigraphs.<br/><br/>
-              <strong style="color: #c9a84c;">A Special Note for the Shoot:</strong><br/>
-              Please cooperate fully with our creative crew during the rituals and portraits. Trust our lens, let loose, and enjoy your special days—the more relaxed and joyous you are, the more magical and cinematic your final film & frames will turn out! ✨
-            </p>
-            <div style="margin-top: 25px;">
-              <a href="index.html" class="portal-btn portal-btn-ghost" style="display: inline-flex; width: auto; padding: 10px 24px; text-decoration: none;">
-                <i class="fas fa-home"></i> Back to Home
-              </a>
+          <div style="text-align: center; margin-bottom: 20px;">
+            <span class="eyebrow portal-eyebrow">REVIEW YOUR DETAILS</span>
+            <h2 class="portal-card-title">Confirm Your Schedule</h2>
+            <p class="portal-card-copy" style="margin-bottom: 10px;">Please review your submitted events and venue address below before final confirmation.</p>
+          </div>
+
+          <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255, 45, 117, 0.2); border-radius: 12px; padding: 18px; margin-bottom: 24px; text-align: left;">
+            <div style="font-size: 0.75rem; color: #ff6699; font-weight: 700; text-transform: uppercase; margin-bottom: 8px;">
+              <i class="fas fa-map-marker-alt"></i> Venue Address
             </div>
+            <p style="font-size: 0.9rem; color: #f4efe6; margin-bottom: 16px; line-height: 1.4;">${venueVal}</p>
+
+            <div style="font-size: 0.75rem; color: #ff6699; font-weight: 700; text-transform: uppercase; margin-bottom: 8px;">
+              <i class="fas fa-calendar-alt"></i> Selected Events & Dates
+            </div>
+            <div style="margin-bottom: 8px;">
+              ${eventsHtmlList}
+            </div>
+          </div>
+
+          <div style="display: flex; gap: 12px;">
+            <button type="button" class="portal-btn portal-btn-whatsapp" onclick="window.open('${waUrl}', '_blank')" style="flex: 1;">
+              <i class="fab fa-whatsapp"></i> Confirm & Send
+            </button>
           </div>
         `;
       }
