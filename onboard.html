@@ -28,6 +28,10 @@
     .portal-label { font-size: 0.72rem; color: #ff6699; font-weight: 700; letter-spacing: 1.1px; margin-top: 8px; }
     .portal-input { width: 100%; padding: 12px 14px; background: #0d0f14; border: 1px solid rgba(255, 45, 117, 0.25); border-radius: 10px; color: #f4efe6; font-size: 0.95rem; outline: none; box-sizing: border-box; }
     .portal-input:focus { border-color: #ff2d75; box-shadow: 0 0 0 3px rgba(255, 45, 117, 0.2); }
+    
+    .date-picker-input { cursor: pointer; color: #8e95a5; background-color: #0d0f14; }
+    .date-picker-input.has-value { color: #f4efe6; }
+
     .portal-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 14px 16px; border-radius: 12px; font-weight: 700; font-size: 0.95rem; cursor: pointer; border: none; transition: all 0.2s ease; }
     .portal-btn-primary { background: linear-gradient(135deg, #ff2d75, #db296f); color: #ffffff; box-shadow: 0 8px 22px rgba(255, 45, 117, 0.35); }
     .portal-btn-ghost { background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(244, 239, 230, 0.14); color: #f4efe6; }
@@ -113,7 +117,7 @@
         <div style="text-align: center; margin-bottom: 20px;">
           <span class="eyebrow portal-eyebrow">SHAADIGRAPHS • CLIENT ONBOARDING</span>
           <h2 class="portal-card-title">${currentActiveClient.name || 'Welcome Couple'}</h2>
-          <p class="portal-card-copy" style="margin-bottom: 10px;">Please verify your details and add your custom event dates below.</p>
+          <p class="portal-card-copy" style="margin-bottom: 10px;">Please verify your details and select your custom event dates below.</p>
         </div>
 
         <div style="background: rgba(201, 168, 76, 0.08); border: 1px solid rgba(201, 168, 76, 0.3); border-radius: 12px; padding: 16px; margin-bottom: 24px;">
@@ -136,37 +140,36 @@
 
         <form id="client-onboard-form" class="portal-form" onsubmit="submitClientOnboardForm(event)">
           <label class="portal-label">BRIDE'S FULL NAME *</label>
-          <input type="text" id="onb-bride" class="portal-input" value="${currentActiveClient.bride || ''}" required />
+          <input type="text" id="onb-bride" class="portal-input" value="${currentActiveClient.bride || ''}" placeholder="e.g. Ruhi" required />
 
           <label class="portal-label">GROOM'S FULL NAME *</label>
-          <input type="text" id="onb-groom" class="portal-input" value="${currentActiveClient.groom || ''}" required />
+          <input type="text" id="onb-groom" class="portal-input" value="${currentActiveClient.groom || ''}" placeholder="e.g. Rishu" required />
 
-          <label class="portal-label">EMAIL ADDRESS *</label>
-          <input type="email" id="onb-email" class="portal-input" value="${currentActiveClient.email || ''}" placeholder="e.g. couple@gmail.com" required />
+          <label class="portal-label">VENUE ADDRESS *</label>
+          <textarea id="onb-venue" class="portal-input" placeholder="e.g. Grand Palace Lawn, Boring Road, Patna" rows="2" required style="resize: vertical;">${currentActiveClient.venue || currentActiveClient.email || ''}</textarea>
 
-          <label class="portal-label">INSTAGRAM HANDLE</label>
-          <input type="text" id="onb-insta" class="portal-input" value="${currentActiveClient.instagram || ''}" placeholder="e.g. @couple_handle" />
+          <label class="portal-label">INSTAGRAM HANDLE *</label>
+          <input type="text" id="onb-insta" class="portal-input" value="${currentActiveClient.instagram || ''}" placeholder="e.g. @couple_handle" required />
 
           <div style="margin-top: 8px;">
-            <label class="portal-label">BIRTHDAY (GROOM)</label>
-            <input type="date" id="onb-dob-groom" class="portal-input" style="color-scheme: dark;" />
+            <label class="portal-label">BIRTHDAY (GROOM) *</label>
+            <input type="text" id="onb-dob-groom" class="portal-input date-picker-input" value="${currentActiveClient.dobGroom || ''}" placeholder="Select Date (DD-MM-YYYY)" readonly onclick="openCalendarPicker(this)" required />
+            <input type="date" id="hidden-dob-groom" value="${currentActiveClient.dobGroom || ''}" style="display:none;" onchange="syncDateValue(this, 'onb-dob-groom')" />
           </div>
           <div style="margin-top: 8px;">
-            <label class="portal-label">BIRTHDAY (BRIDE)</label>
-            <input type="date" id="onb-dob-bride" class="portal-input" style="color-scheme: dark;" />
+            <label class="portal-label">BIRTHDAY (BRIDE) *</label>
+            <input type="text" id="onb-dob-bride" class="portal-input date-picker-input" value="${currentActiveClient.dobBride || ''}" placeholder="Select Date (DD-MM-YYYY)" readonly onclick="openCalendarPicker(this)" required />
+            <input type="date" id="hidden-dob-bride" value="${currentActiveClient.dobBride || ''}" style="display:none;" onchange="syncDateValue(this, 'onb-dob-bride')" />
           </div>
 
-          <label class="portal-label" style="margin-top: 20px; color: #c9a84c;"><i class="fas fa-calendar-alt"></i> ADD EVENT DATES & SCHEDULES</label>
-          <p style="font-size: 0.8rem; color: #8e95a5; margin-bottom: 12px;">Add your events dynamically using the button below:</p>
+          <label class="portal-label" style="margin-top: 20px; color: #c9a84c;"><i class="fas fa-calendar-alt"></i> ADD EVENT DATES & SCHEDULES *</label>
+          <p style="font-size: 0.8rem; color: #8e95a5; margin-bottom: 12px;">Add at least one event date using the button below:</p>
 
           <div id="dynamic-events-container" style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 15px;"></div>
 
           <button type="button" class="portal-btn portal-btn-ghost portal-btn-compact" onclick="addEventRow()" style="width: auto; margin-bottom: 20px;">
             <i class="fas fa-plus"></i> Add Event
           </button>
-
-          <label class="portal-label">WEDDING DATE / PIN * (DDMMYYYY)</label>
-          <input type="text" id="onb-pin" class="portal-input" value="${currentActiveClient.pin || ''}" placeholder="e.g. 28062026" required />
 
           <div style="margin-top: 25px;">
             <button type="submit" class="portal-btn portal-btn-primary" id="onb-submit-btn">
@@ -175,128 +178,199 @@
           </div>
         </form>
       `;
+      
+      ['onb-dob-groom', 'onb-dob-bride'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el && el.value) {
+          const hidId = 'hidden-' + id.replace('onb-', '');
+          const hid = document.getElementById(hidId);
+          if (hid) hid.value = el.value;
+          el.value = formatDateDDMMYYYY(el.value);
+          el.classList.add('has-value');
+        }
+      });
+
       addEventRow();
+    }
+
+    function formatDateDDMMYYYY(dateStr) {
+      if (!dateStr) return "";
+      const parts = dateStr.split('-');
+      if (parts.length === 3) {
+        return `${parts[2]}-${parts[1]}-${parts[0]}`;
+      }
+      return dateStr;
+    }
+
+    function openCalendarPicker(displayInput) {
+      const idStr = displayInput.id.replace('onb-', '');
+      const hiddenInput = document.getElementById('hidden-' + idStr);
+      if (hiddenInput) {
+        if (typeof hiddenInput.showPicker === 'function') {
+          hiddenInput.showPicker();
+        } else {
+          hiddenInput.click();
+        }
+      }
+    }
+
+    function syncDateValue(hiddenInput, displayInputId) {
+      const displayInput = document.getElementById(displayInputId);
+      if (displayInput && hiddenInput.value) {
+        displayInput.value = formatDateDDMMYYYY(hiddenInput.value);
+        displayInput.classList.add('has-value');
+      }
     }
 
     function addEventRow(selectedEvent = "", customName = "", eventDate = "") {
       const container = document.getElementById('dynamic-events-container');
       if (!container) return;
 
-      const rowId = 'ev-row-' + Date.now() + Math.random().toString(36).substr(2, 4);
+      const uniqueKey = Date.now() + Math.random().toString(36).substr(2, 4);
+      const rowId = 'ev-row-' + uniqueKey;
       const rowDiv = document.createElement('div');
       rowDiv.id = rowId;
       rowDiv.style.cssText = "display: flex; gap: 10px; align-items: center; background: rgba(255,255,255,0.03); padding: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.08);";
 
+      let formattedDisplayDate = eventDate ? formatDateDDMMYYYY(eventDate) : "";
+
       rowDiv.innerHTML = `
         <div style="flex: 1; display: flex; flex-direction: column; gap: 4px;">
-          <select class="portal-input event-select-dropdown" onchange="handleEventDropdownChange('${rowId}')" style="padding: 8px 10px; font-size: 0.85rem;">
+          <select class="portal-input event-select-dropdown" style="padding: 8px 10px; font-size: 0.85rem;" required>
             <option value="">-- Select Event --</option>
+            <option value="Wedding" ${selectedEvent === 'Wedding' ? 'selected' : ''}>Wedding</option>
             <option value="Engagement" ${selectedEvent === 'Engagement' ? 'selected' : ''}>Engagement</option>
+            <option value="Haldi Ceremony" ${selectedEvent === 'Haldi Ceremony' ? 'selected' : ''}>Haldi Ceremony</option>
+            <option value="Mehandi Ceremony" ${selectedEvent === 'Mehandi Ceremony' ? 'selected' : ''}>Mehandi Ceremony</option>
+            <option value="Sangeet & Cocktail Night" ${selectedEvent === 'Sangeet & Cocktail Night' ? 'selected' : ''}>Sangeet & Cocktail Night</option>
             <option value="Pre-Wedding" ${selectedEvent === 'Pre-Wedding' ? 'selected' : ''}>Pre-Wedding</option>
-            <option value="Pooja & Rituals" ${selectedEvent === 'Pooja & Rituals' ? 'selected' : ''}>Pooja & Rituals</option>
-            <option value="Haldi" ${selectedEvent === 'Haldi' ? 'selected' : ''}>Haldi</option>
-            <option value="Mehendi" ${selectedEvent === 'Mehendi' ? 'selected' : ''}>Mehendi</option>
-            <option value="Sangeet" ${selectedEvent === 'Sangeet' ? 'selected' : ''}>Sangeet</option>
+            <option value="Pooja & Hawan" ${selectedEvent === 'Pooja & Hawan' ? 'selected' : ''}>Pooja & Hawan</option>
+            <option value="Matkor" ${selectedEvent === 'Matkor' ? 'selected' : ''}>Matkor</option>
+            <option value="Tilak" ${selectedEvent === 'Tilak' ? 'selected' : ''}>Tilak</option>
+            <option value="Roka" ${selectedEvent === 'Roka' ? 'selected' : ''}>Roka</option>
             <option value="Reception" ${selectedEvent === 'Reception' ? 'selected' : ''}>Reception</option>
+            <option value="Vidai" ${selectedEvent === 'Vidai' ? 'selected' : ''}>Vidai</option>
+            <option value="Anniversary" ${selectedEvent === 'Anniversary' ? 'selected' : ''}>Anniversary</option>
             <option value="Birthday" ${selectedEvent === 'Birthday' ? 'selected' : ''}>Birthday</option>
-            <option value="Other" ${selectedEvent === 'Other' ? 'selected' : ''}>Other (Type Custom)</option>
+            <option value="Griha Pravesh" ${selectedEvent === 'Griha Pravesh' ? 'selected' : ''}>Griha Pravesh</option>
           </select>
-          <input type="text" class="portal-input event-custom-input" placeholder="Type event name..." value="${customName}" style="display: none; padding: 8px 10px; font-size: 0.85rem; margin-top: 4px;" />
         </div>
         <div style="flex: 1;">
-          <input type="date" class="portal-input event-date-input" value="${eventDate}" style="padding: 8px 10px; font-size: 0.85rem; color-scheme: dark;" />
+          <input type="text" id="display-date-${uniqueKey}" class="portal-input date-picker-input event-display-date" value="${formattedDisplayDate}" placeholder="Select Date (DD-MM-YYYY)" readonly onclick="openDynamicCalendar('${uniqueKey}')" style="padding: 8px 10px; font-size: 0.85rem;" required />
+          <input type="date" id="hidden-date-${uniqueKey}" value="${eventDate}" style="display:none;" onchange="syncDynamicDate('${uniqueKey}')" />
         </div>
         <button type="button" onclick="document.getElementById('${rowId}').remove()" style="background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.3); color: #ef4444; width: 34px; height: 34px; border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center;">
           <i class="fas fa-trash-alt" style="font-size: 0.8rem;"></i>
         </button>
       `;
       container.appendChild(rowDiv);
-      handleEventDropdownChange(rowId);
+
+      const disp = document.getElementById(`display-date-${uniqueKey}`);
+      if (disp && disp.value) disp.classList.add('has-value');
     }
 
-    function handleEventDropdownChange(rowId) {
-      const row = document.getElementById(rowId);
-      if (!row) return;
-      const select = row.querySelector('.event-select-dropdown');
-      const customInput = row.querySelector('.event-custom-input');
-      if (select.value === 'Other') {
-        customInput.style.display = 'block';
-        customInput.required = true;
-      } else {
-        customInput.style.display = 'none';
-        customInput.required = false;
-        customInput.value = '';
+    function openDynamicCalendar(uniqueKey) {
+      const hiddenInput = document.getElementById(`hidden-date-${uniqueKey}`);
+      if (hiddenInput) {
+        if (typeof hiddenInput.showPicker === 'function') {
+          hiddenInput.showPicker();
+        } else {
+          hiddenInput.click();
+        }
+      }
+    }
+
+    function syncDynamicDate(uniqueKey) {
+      const hiddenInput = document.getElementById(`hidden-date-${uniqueKey}`);
+      const displayInput = document.getElementById(`display-date-${uniqueKey}`);
+      if (hiddenInput && displayInput && hiddenInput.value) {
+        displayInput.value = formatDateDDMMYYYY(hiddenInput.value);
+        displayInput.classList.add('has-value');
       }
     }
 
     function submitClientOnboardForm(e) {
       if (e && e.preventDefault) e.preventDefault();
+
+      const brideVal = document.getElementById('onb-bride').value.trim();
+      const groomVal = document.getElementById('onb-groom').value.trim();
+      const venueVal = document.getElementById('onb-venue').value.trim();
+      const instaVal = document.getElementById('onb-insta').value.trim();
+      const dobGroomVal = document.getElementById('hidden-dob-groom').value.trim();
+      const dobBrideVal = document.getElementById('hidden-dob-bride').value.trim();
+
+      // Strict Validation: Check all mandatory fields
+      if (!brideVal || !groomVal || !venueVal || !instaVal || !dobGroomVal || !dobBrideVal) {
+        alert("Kripya sabhi zaroori fields (Bride Name, Groom Name, Venue Address, Instagram Handle, aur Dono ke Birthdays) poori tarah bharein!");
+        return;
+      }
+
+      const eventRows = document.querySelectorAll('#dynamic-events-container > div');
+      if (eventRows.length === 0) {
+        alert("Kripya kam se kam ek event date zaroor add karein!");
+        return;
+      }
+
+      let validEventCount = 0;
+      eventRows.forEach(row => {
+        const select = row.querySelector('.event-select-dropdown');
+        const hiddenDateInput = row.querySelector('input[type="date"]');
+        if (select && hiddenDateInput && select.value.trim() && hiddenDateInput.value.trim()) {
+          validEventCount++;
+        }
+      });
+
+      if (validEventCount === 0) {
+        alert("Kripya kam se kam ek valid Event aur Date select karein!");
+        return;
+      }
+
       const btn = document.getElementById('onb-submit-btn');
       btn.innerText = "Saving Schedules...";
       btn.disabled = true;
 
-      const brideVal = document.getElementById('onb-bride').value.trim();
-      const groomVal = document.getElementById('onb-groom').value.trim();
-      const emailVal = document.getElementById('onb-email').value.trim();
-      const instaVal = document.getElementById('onb-insta').value.trim();
-      const dobGroomVal = document.getElementById('onb-dob-groom').value.trim();
-      const dobBrideVal = document.getElementById('onb-dob-bride').value.trim();
-      const pinVal = document.getElementById('onb-pin').value.trim();
-
-      const eventRows = document.querySelectorAll('#dynamic-events-container > div');
+      const pinVal = currentActiveClient.pin;
       
-      let eventMap = { 
-        prewed: "", 
-        engagement: "", 
-        pooja: "", 
-        haldi: "", 
-        mehendi: "", 
-        sangeet: "", 
-        reception: "", 
-        birthday: "", 
-        other: "" 
+      let eventMap = {
+        wedding: "", engagement: "", haldi: "", mehandi: "", sangeet: "",
+        prewed: "", pooja: "", matkor: "", tilak: "", roka: "",
+        reception: "", vidai: "", anniversary: "", birthday: "", grihapravesh: ""
       };
-      let customEventsList = [];
 
       eventRows.forEach(row => {
         const select = row.querySelector('.event-select-dropdown');
-        const customInput = row.querySelector('.event-custom-input');
-        const dateInput = row.querySelector('.event-date-input');
-        if (!select || !dateInput) return;
+        const hiddenDateInput = row.querySelector('input[type="date"]');
+        
+        if (!select || !hiddenDateInput) return;
         
         let eventType = select.value.trim();
-        let eventDate = dateInput.value.trim();
+        let eventDate = hiddenDateInput.value.trim();
         if (!eventType || !eventDate) return;
 
         let cleanType = eventType.toLowerCase();
 
-        if (cleanType === 'pre-wedding') {
-          eventMap.prewed = eventDate;
-        } else if (cleanType === 'engagement') {
-          eventMap.engagement = eventDate;
-        } else if (cleanType.includes('pooja')) {
-          eventMap.pooja = eventDate;
-        } else if (cleanType === 'haldi') {
-          eventMap.haldi = eventDate;
-        } else if (cleanType === 'mehendi') {
-          eventMap.mehendi = eventDate;
-        } else if (cleanType === 'sangeet') {
-          eventMap.sangeet = eventDate;
-        } else if (cleanType === 'reception') {
-          eventMap.reception = eventDate;
-        } else if (cleanType === 'birthday') {
-          eventMap.birthday = eventDate; // Guaranteed Birthday Event Column Map
-        } else if (cleanType === 'other') {
-          let customName = customInput ? customInput.value.trim() : 'Custom Event';
-          if (customName) customEventsList.push(`${customName}: ${eventDate}`);
-        }
+        if (cleanType === 'wedding') eventMap.wedding = eventDate;
+        else if (cleanType === 'engagement') eventMap.engagement = eventDate;
+        else if (cleanType === 'haldi ceremony') eventMap.haldi = eventDate;
+        else if (cleanType === 'mehandi ceremony') eventMap.mehandi = eventDate;
+        else if (cleanType === 'sangeet & cocktail night') eventMap.sangeet = eventDate;
+        else if (cleanType === 'pre-wedding') eventMap.prewed = eventDate;
+        else if (cleanType === 'pooja & hawan') eventMap.pooja = eventDate;
+        else if (cleanType === 'matkor') eventMap.matkor = eventDate;
+        else if (cleanType === 'tilak') eventMap.tilak = eventDate;
+        else if (cleanType === 'roka') eventMap.roka = eventDate;
+        else if (cleanType === 'reception') eventMap.reception = eventDate;
+        else if (cleanType === 'vidai') eventMap.vidai = eventDate;
+        else if (cleanType === 'anniversary') eventMap.anniversary = eventDate;
+        else if (cleanType === 'birthday') eventMap.birthday = eventDate;
+        else if (cleanType === 'griha pravesh') eventMap.grihapravesh = eventDate;
       });
 
-      if (customEventsList.length > 0) {
-        eventMap.other = customEventsList.join(', ');
-      }
-
       const displayName = `${groomVal} ❤️ ${brideVal}`;
+
+      // FIX: Maintain existing limit if stage is photo selection, otherwise preserve currentActiveClient limit safely without hardcoding 125 unexpectedly
+      const currentStageVal = currentActiveClient.currentStage || "Pre-Production & Planning";
+      const limitVal = (currentStageVal.includes("Selection") || currentStageVal.includes("Photo Selection")) ? (currentActiveClient.limit || 100) : "";
 
       const postData = {
         action: "updateClientFull",
@@ -306,34 +380,38 @@
         bride: brideVal,
         groom: groomVal,
         driveLink: currentActiveClient.driveLink || "",
-        limit: currentActiveClient.limit || 100,
+        limit: limitVal,
         booking: currentActiveClient.bookingAmount || 0,
         advance: currentActiveClient.advancePaid || 0,
         total: currentActiveClient.totalAmount || 0,
         delivery: currentActiveClient.deliveryDate || "",
-        stage: currentActiveClient.currentStage || "Pre-Production & Planning",
+        stage: currentStageVal,
         video: currentActiveClient.videoDownloadLink || "",
-        email: emailVal,
+        venue: venueVal,
         insta: instaVal,
         dobGroom: dobGroomVal,
         dobBride: dobBrideVal,
-        datePrewed: eventMap.prewed,
+        dateWedding: eventMap.wedding,
         dateEngagement: eventMap.engagement,
-        datePooja: eventMap.pooja,
         dateHaldi: eventMap.haldi,
-        dateMehendi: eventMap.mehendi,
+        dateMehandi: eventMap.mehandi,
         dateSangeet: eventMap.sangeet,
+        datePrewed: eventMap.prewed,
+        datePooja: eventMap.pooja,
+        dateMatkor: eventMap.matkor,
+        dateTilak: eventMap.tilak,
+        dateRoka: eventMap.roka,
         dateReception: eventMap.reception,
+        dateVidai: eventMap.vidai,
+        dateAnniversary: eventMap.anniversary,
         dateBirthday: eventMap.birthday,
-        dateOther: eventMap.other
+        dateGrihaPravesh: eventMap.grihapravesh
       };
 
       fetch(API_URL, {
         method: "POST",
         mode: "no-cors",
-        headers: {
-          "Content-Type": "application/json"
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(postData)
       })
       .then(() => {
@@ -355,7 +433,7 @@
             <i class="fas fa-heart" style="font-size: 3rem; color: #c9a84c; margin-bottom: 16px;"></i>
             <h2 class="portal-card-title">Details & Schedules Successfully Locked!</h2>
             <p class="portal-card-copy" style="line-height: 1.8; margin-top: 14px;">
-              Thank you so much! Your event dates and metadata have been successfully registered with Shaadigraphs.<br/><br/>
+              Thank you so much! Your event dates, venue, and metadata have been successfully registered with Shaadigraphs.<br/><br/>
               <strong style="color: #c9a84c;">A Special Note for the Shoot:</strong><br/>
               Please cooperate fully with our creative crew during the rituals and portraits. Trust our lens, let loose, and enjoy your special days—the more relaxed and joyous you are, the more magical and cinematic your final film & frames will turn out! ✨
             </p>

@@ -59,7 +59,7 @@
 
     .field { text-align: left; margin-bottom: 16px; }
     .field label { display: block; font-size: 0.72rem; text-transform: uppercase; color: var(--muted); font-weight: 700; margin-bottom: 6px; letter-spacing: 0.5px; }
-    .field input, .field select {
+    .field input, .field select, .field textarea {
       width: 100%;
       background: #07080a;
       border: 1px solid var(--border);
@@ -70,7 +70,7 @@
       outline: none;
       transition: border 0.3s;
     }
-    .field input:focus, .field select:focus { border-color: var(--accent); }
+    .field input:focus, .field select:focus, .field textarea:focus { border-color: var(--accent); }
     .field input:disabled { opacity: 0.4; cursor: not-allowed; background: #040506; }
 
     .btn {
@@ -400,8 +400,8 @@
                 <input type="url" id="c-video" placeholder="Drive Video File Link" />
               </div>
               <div class="field">
-                <label>Client Email (Col O)</label>
-                <input type="email" id="c-email" placeholder="client@gmail.com" />
+                <label>Venue Address (Col O)</label>
+                <textarea id="c-venue" placeholder="Grand Palace Lawn, Boring Road, Patna" rows="2" style="resize: vertical;"></textarea>
               </div>
               <div class="field">
                 <label>Instagram Handle (Col P)</label>
@@ -567,11 +567,27 @@
           </div>
         </div>
 
+        <!-- COMPACT CLIENT-FILLED DETAILS (READ-ONLY DISPLAY IN EDIT MODAL) -->
+        <div style="background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border); border-radius: 10px; padding: 14px; margin-bottom: 16px;">
+          <div style="font-size: 0.72rem; color: var(--accent-gold); font-weight: 700; text-transform: uppercase; margin-bottom: 10px;">
+            <i class="fas fa-info-circle"></i> Client Submitted Details (Read-Only)
+          </div>
+          <div class="grid-2" style="font-size: 0.82rem; gap: 8px; color: var(--muted);">
+            <div><strong>Venue Address:</strong> <span id="disp-venue" style="color: #fff;">-</span></div>
+            <div><strong>Instagram:</strong> <span id="disp-insta" style="color: #fff;">-</span></div>
+            <div><strong>Groom DOB:</strong> <span id="disp-dob-groom" style="color: #fff;">-</span></div>
+            <div><strong>Bride DOB:</strong> <span id="disp-dob-bride" style="color: #fff;">-</span></div>
+          </div>
+          <div style="margin-top: 10px; font-size: 0.78rem;">
+            <strong>Booked Events & Dates:</strong> <span id="disp-events-list" style="color: #f4efe6;">-</span>
+          </div>
+        </div>
+
         <!-- DYNAMIC EVENT SELECTOR FOR EDIT MODAL -->
         <div style="background: rgba(201, 168, 76, 0.05); border: 1px dashed rgba(201, 168, 76, 0.3); border-radius: 12px; padding: 16px; margin-bottom: 16px;">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
             <span style="font-size: 0.76rem; color: var(--accent-gold); font-weight: 700; text-transform: uppercase;">
-              <i class="fas fa-tasks"></i> Booked Events & Dates
+              <i class="fas fa-tasks"></i> Manage Events & Dates
             </span>
             <span style="font-size: 0.72rem; color: var(--muted);">Manage events dynamically</span>
           </div>
@@ -694,28 +710,6 @@
           <input type="url" id="e-video" placeholder="Final Master Video Drive link" />
         </div>
 
-        <div class="grid-2">
-          <div class="field">
-            <label>Client Email</label>
-            <input type="email" id="e-email" />
-          </div>
-          <div class="field">
-            <label>Instagram Handle</label>
-            <input type="text" id="e-insta" />
-          </div>
-        </div>
-
-        <div class="grid-2">
-          <div class="field">
-            <label>Groom Birthday (Col Q)</label>
-            <input type="date" id="e-dob-groom" style="color-scheme: dark;" />
-          </div>
-          <div class="field">
-            <label>Bride Birthday (Col R)</label>
-            <input type="date" id="e-dob-bride" style="color-scheme: dark;" />
-          </div>
-        </div>
-
         <div style="display: flex; gap: 10px; margin-top: 15px;">
           <button type="submit" class="btn" id="btn-update-client"><i class="fas fa-save"></i> Save Changes to Sheet1</button>
           <button type="button" class="btn" onclick="closeEditModal()" style="background: #334155;">Cancel</button>
@@ -776,8 +770,6 @@
       return dStr;
     }
 
-    // Calculate 45-day deadline countdown with green "Upcoming" badge
-    // Calculate countdown: Event date tak "Upcoming", event ke baad 45-day delivery deadline
     function calculateDeliveryDeadline(c, currentStage) {
       if (currentStage === "Delivered") {
         return `<span class="badge badge-green"><i class="fas fa-check-circle"></i> Delivered</span>`;
@@ -814,12 +806,10 @@
       let timeToEvent = latestEventDate.getTime() - today.getTime();
       let daysToEvent = Math.ceil(timeToEvent / (1000 * 60 * 60 * 24));
 
-      // CASE 1: Event aane wala hai (Future) -> Show days left for event
       if (daysToEvent > 0) {
         return `<span class="badge" style="background: rgba(37, 211, 102, 0.15); color: #25d366; font-weight: 700;"><i class="fas fa-calendar-alt"></i> Upcoming (${daysToEvent}d to Wedding)</span>`;
       }
 
-      // CASE 2: Event ho chuka hai -> Start 45 days delivery deadline countdown
       let deadlineDate = new Date(latestEventDate);
       deadlineDate.setDate(deadlineDate.getDate() + 45);
 
@@ -1119,7 +1109,6 @@
       document.body.appendChild(script);
     }
 
-    JavaScript
     function sendQuickOnboardWhatsApp(e) {
       e.preventDefault();
       const name = document.getElementById("q-name").value.trim();
@@ -1187,36 +1176,44 @@
       document.getElementById("e-delivery").value = c.deliveryDate || "";
       document.getElementById("e-stage").value = c.currentStage || c.stage || "Pre-Production & Planning";
       document.getElementById("e-video").value = c.videoDownloadLink || "";
-      document.getElementById("e-email").value = c.email || "";
-      document.getElementById("e-insta").value = c.instagram || "";
       
-      document.getElementById("e-dob-groom").value = c.dobGroom || "";
-      document.getElementById("e-dob-bride").value = c.dobBride || "";
+      // Populate read-only client details in modal
+      document.getElementById("disp-venue").innerText = c.venue || c.email || "Not filled yet";
+      document.getElementById("disp-insta").innerText = c.instagram || "Not provided";
+      document.getElementById("disp-dob-groom").innerText = c.dobGroom ? formatDateShort(c.dobGroom) : "Not set";
+      document.getElementById("disp-dob-bride").innerText = c.dobBride ? formatDateShort(c.dobBride) : "Not set";
+
+      const eventMappingList = [
+        { name: "Wedding", val: c.dateWedding },
+        { name: "Engagement", val: c.dateEngagement },
+        { name: "Haldi", val: c.dateHaldi },
+        { name: "Mehandi", val: c.dateMehandi },
+        { name: "Sangeet", val: c.dateSangeet },
+        { name: "Pre-Wedding", val: c.datePrewed },
+        { name: "Pooja", val: c.datePooja },
+        { name: "Matkor", val: c.dateMatkor },
+        { name: "Tilak", val: c.dateTilak },
+        { name: "Roka", val: c.dateRoka },
+        { name: "Reception", val: c.dateReception },
+        { name: "Vidai", val: c.dateVidai },
+        { name: "Anniversary", val: c.dateAnniversary },
+        { name: "Birthday", val: c.dateBirthday },
+        { name: "Griha Pravesh", val: c.dateGrihaPravesh }
+      ];
+
+      let activeEventsText = [];
+      eventMappingList.forEach(item => {
+        if (item.val) {
+          activeEventsText.push(`${item.name} (${formatDateShort(item.val)})`);
+        }
+      });
+      document.getElementById("disp-events-list").innerText = activeEventsText.length > 0 ? activeEventsText.join(' • ') : "No events scheduled yet";
 
       updateFieldPermissions('e-stage', 'e-drive', 'e-limit', 'e-video');
 
       const editContainer = document.getElementById('edit-dynamic-events-container');
       if (editContainer) {
         editContainer.innerHTML = "";
-        
-        const eventMappingList = [
-          { name: "Wedding", val: c.dateWedding },
-          { name: "Engagement", val: c.dateEngagement },
-          { name: "Haldi Ceremony", val: c.dateHaldi },
-          { name: "Mehandi Ceremony", val: c.dateMehandi },
-          { name: "Sangeet & Cocktail Night", val: c.dateSangeet },
-          { name: "Pre-Wedding", val: c.datePrewed },
-          { name: "Pooja & Hawan", val: c.datePooja },
-          { name: "Matkor", val: c.dateMatkor },
-          { name: "Tilak", val: c.dateTilak },
-          { name: "Roka", val: c.dateRoka },
-          { name: "Reception", val: c.dateReception },
-          { name: "Vidai", val: c.dateVidai },
-          { name: "Anniversary", val: c.dateAnniversary },
-          { name: "Birthday", val: c.dateBirthday },
-          { name: "Griha Pravesh", val: c.dateGrihaPravesh }
-        ];
-
         eventMappingList.forEach(item => {
           if (item.val) {
             addEditEventRow(item.name, "", item.val);
@@ -1332,21 +1329,9 @@
 
       const eventRows = document.querySelectorAll('#edit-dynamic-events-container > div');
       let eventMap = {
-        wedding: "",
-        engagement: "",
-        haldi: "",
-        mehandi: "",
-        sangeet: "",
-        prewed: "",
-        pooja: "",
-        matkor: "",
-        tilak: "",
-        roka: "",
-        reception: "",
-        vidai: "",
-        anniversary: "",
-        birthday: "",
-        grihapravesh: ""
+        wedding: "", engagement: "", haldi: "", mehandi: "", sangeet: "",
+        prewed: "", pooja: "", matkor: "", tilak: "", roka: "",
+        reception: "", vidai: "", anniversary: "", birthday: "", grihapravesh: ""
       };
 
       eventRows.forEach(row => {
@@ -1392,10 +1377,6 @@
         delivery: document.getElementById("e-delivery").value,
         stage: document.getElementById("e-stage").value,
         video: document.getElementById("e-video").value.trim(),
-        email: document.getElementById("e-email").value.trim(),
-        insta: document.getElementById("e-insta").value.trim(),
-        dobGroom: document.getElementById("e-dob-groom").value.trim(),
-        dobBride: document.getElementById("e-dob-bride").value.trim(),
         dateWedding: eventMap.wedding,
         dateEngagement: eventMap.engagement,
         dateHaldi: eventMap.haldi,
@@ -1475,7 +1456,7 @@
       const basePortal = window.location.origin + window.location.pathname.replace(/\/manage\/.*$/, '/onboard.html');
       const onboardUrl = `${basePortal}?onboard=true&phone=${cleanPhone}&pin=${cleanPin}`;
 
-      const messageText = `Hello ${clientName} ji! ✨\n\nAapko aane wale shubh dinon ke liye dher saari congratulations! 🎉\n\nApne wedding events aur dates update karne ke liye yeh secure link open karein:\n\n${onboardUrl}\n\n- Team Shaadigraphs 📸`;
+      const messageText = `Hello ${clientName} ji! ✨\n\nHeartiest congratulations on your upcoming wedding days! 🎉\n\nPlease open this secure link to update your wedding events and dates:\n\n${onboardUrl}\n\n- Team Shaadigraphs 📸`;
 
       const waUrl = `https://wa.me/91${cleanPhone}?text=${encodeURIComponent(messageText)}`;
       window.open(waUrl, '_blank');
@@ -1501,21 +1482,9 @@
 
       const eventRows = document.querySelectorAll('#admin-dynamic-events-container > div');
       let eventMap = {
-        wedding: "",
-        engagement: "",
-        haldi: "",
-        mehandi: "",
-        sangeet: "",
-        prewed: "",
-        pooja: "",
-        matkor: "",
-        tilak: "",
-        roka: "",
-        reception: "",
-        vidai: "",
-        anniversary: "",
-        birthday: "",
-        grihapravesh: ""
+        wedding: "", engagement: "", haldi: "", mehandi: "", sangeet: "",
+        prewed: "", pooja: "", matkor: "", tilak: "", roka: "",
+        reception: "", vidai: "", anniversary: "", birthday: "", grihapravesh: ""
       };
 
       eventRows.forEach(row => {
@@ -1561,7 +1530,7 @@
         deliveryDate: document.getElementById("c-delivery").value,
         currentStage: document.getElementById("c-stage").value,
         videoDownloadLink: document.getElementById("c-video").value.trim(),
-        email: document.getElementById("c-email").value.trim(),
+        venue: document.getElementById("c-venue").value.trim(),
         instagram: document.getElementById("c-insta").value.trim(),
         dobGroom: document.getElementById("c-dob-groom").value.trim(),
         dobBride: document.getElementById("c-dob-bride").value.trim(),
